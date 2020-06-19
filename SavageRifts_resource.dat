@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the assortment of miscellaneous things that are required for
+      the game system. Miscellaneous things include the mechanisms for managing applied
+      damage, user images, and personal info for each actor. It also includes things
+      used to track resource pools, such as those used for managing the available
+      attribute points, skill points, etc.
+-->
+
+<document signature="Hero Lab Data">
+
+  <!-- Expression Helper Things  -->
+  <thing
+    id="HeroJourneyHelper"
+    name="Expression Helper"
+    compset="ExprHelpHJ">
+    <fieldval field="ehHJIndex" value="1"/>
+	
+    <!-- Automatically add the helper to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+	<eval phase="PreTraits" priority="10000" index="1"><![CDATA[
+	~if there are no selections on the Hero Journey tab choosers required, then we're done.
+	doneif ((#resmax[resHJSel] ) = 0)
+
+	~consume additional resource slots when 
+
+	~Count Edges with HelperRiftsAE.HeroJourneySel tag
+    foreach pick in hero from Edge where "HelperRiftsAE.HeroJourneySel"
+	  field[ehHJCst].value += 1
+	  nexteach
+    perform #resspent[resHJSel,+,field[ehHJCst].value,"Hero's Journey Selection"]
+
+		]]></eval>
+		
+    </thing>
+	
+  <thing
+    id="FrameworkHelper"
+    name="Framework Helper"
+    compset="ExprHelpFra">
+    <fieldval field="ehFrameIndex" value="1"/>
+	
+    <!-- Automatically add the helper to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+	<eval phase="PreTraits" priority="10000" index="1"><![CDATA[
+	~if there are no selections on the Framework tab choosers required, then we're done.
+	doneif ((#resmax[resFraEdges] + #resmax[resFraSel1] + #resmax[resFraSel2] ) = 0)
+
+	~consume additional resource slots when 
+
+	~Count Edges with HelperRiftsAE.FrameEdge tag
+    foreach pick in hero from Edge where "HelperRiftsAE.FrameEdge"
+	  field[ehFrameEdgeCst].value += 1
+	  nexteach
+    perform #resspent[resFraEdges,+,field[ehFrameEdgeCst].value,"Framework"]
+	
+	~Count items with HelperRiftsAE.FrameSel1 tag
+    foreach pick in hero where "HelperRiftsAE.FrameSel1"
+	  field[ehFrameCst].value += 1
+	  nexteach
+    perform #resspent[resFraSel1,+,field[ehFrameCst].value,"Framework"]
+   
+	~Count items with HelperRiftsAE.FrameSel1 tag
+    foreach pick in hero where "HelperRiftsAE.FrameSel2"
+	  field[ehFrameCst2].value += 1
+	  nexteach
+    perform #resspent[resFraSel2,+,field[ehFrameCst2].value,"Framework"]
+
+		]]></eval>
+    </thing>
+	
+  <!-- Racial - Bonus Abilities resource  -->
+  <thing
+    id="resRaceSel"
+    name="Racial Selections"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    </thing>
+
+  <!-- Iconic Frameworks - Edges resource  -->
+  <thing
+    id="resFraEdges"
+    name="Iconic Framework Edges"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
+  <!-- Iconic Frameworks - Bonus Abilities resource  -->
+  <thing
+    id="resFraSel1"
+    name="Iconic Framework Selections"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
+  <thing
+    id="resFraSel2"
+    name="Iconic Framework Selections 2"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    </thing>
+  <!-- Hero's Journey - Bonus Abilities resource  -->
+  <thing
+    id="resHJSel"
+    name="Hero's Journey Selections"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
+  <thing 
+    id="resFortune" 
+	name="Fortune and Glory Points" 
+	compset="Resource" 
+	panellink="framework">
+    <fieldval field="resObject" value="Fortune"/>
+    <tag group="Helper" tag="Bootstrap"/>
+    <tag group="Helper" tag="Creation"/>
+    <tag group="Helper" tag="NPCImpact"/>
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid (because fortune and glory is part of the MARS, selections are on the Framework tab)
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid (because fortune and glory is part of the MARS, selections are on the Framework tab)
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+    </thing> 
+	
+  <thing 
+    id="resHeroJrn" 
+	name="Hero&apos;s Journey" 
+	compset="Resource" 
+	panellink="herojourney">
+    <fieldval field="resObject" value="HerosJourney"/>
+    <tag group="Helper" tag="Bootstrap"/>
+    <tag group="Helper" tag="Creation"/>
+    <tag group="Helper" tag="NPCImpact"/>
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[herojourney] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[herojourney] = 0
+
+      ]]></evalrule>
+    </thing>
+
+  <!-- Burn tracker for Juicer -->
+  <thing
+    id="trkBurn"
+    name="Burn"
+    compset="Tracker">
+
+    <!-- Automatically add the tracker to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+
+    <!-- Resetting the tracker sets the value to the maximum -->
+    <tag group="Helper" tag="ResetMax"/>
+
+    <!-- Hide the tracker unless we actually have a need for it -->
+    <tag group="Hide" tag="Tracker"/>
+    </thing>
+  </document>

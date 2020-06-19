@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definitions of components associated with equipment such as
+      weapons, armor, gear, etc.
+-->
+
+<document signature="Hero Lab Structure">
+
+  <!-- ArmorSpecial component -->
+  <component
+    id="ArmorSpecial"
+    name="Armor Special"
+    autocompset="no"
+    ispublic="no">
+
+    <!-- Toughness bonus for the armor -->
+    <field
+      id="arToughness"
+      name="Toughness Modifier"
+      type="derived"
+      defvalue="0">
+      </field>
+	  
+    <!-- Special details about the armor -->
+    <field
+      id="arSpecial"
+      name="Special"
+      type="derived"
+      maxlength="200">
+      </field>
+	  
+    <!-- Synthesized notes about the armor -->
+    <field
+      id="arSpecDisp"
+      name="Notes"
+      type="derived"
+      maxlength="250">
+      </field>
+	  
+    <!-- Areas of coverage for the armor -->
+    <field
+      id="arCoverage"
+      name="Coverage"
+      type="derived"
+      maxlength="100">
+      </field>
+	  
+    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
+        mark ourselves as not satisfying the requirement -->
+
+    <!-- Assign any derived special notes to the appropriate field -->
+    <eval index="1" phase="Render" priority="1000"><![CDATA[
+      var special as string
+
+      ~append any special attributes appropriately (if any)
+      var attribs as string
+      attribs = tagnames[ArmorSpecial.?,", "]
+      if (empty(attribs) = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= attribs
+        endif
+
+      ~append any special details for this weapon
+      if (field[arSpecial].isempty = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= field[arSpecial].text
+        endif
+
+      ~we've synthesized the notes for the weapon
+      field[arSpecDisp].text = special
+      ]]></eval>
+	  
+    <!-- compile the display for body coverage to the appropriate field -->
+    <eval index="2" phase="Render" priority="500"><![CDATA[
+      var cover as string
+	  var temp as string
+	  
+	  ~if this is armor, include the areas covered by the equipment
+      cover = tagabbrevs[ArmorLoc.?,","]
+      if (empty(cover) = 0) then
+        temp = "Covers: " & cover
+        endif
+
+      ~we've synthesized the notes for the weapon
+      field[arCoverage].text = temp
+      ]]></eval>
+
+    <!-- modify hero toughness based on embedded value -->
+    <eval index="3" phase="PreTraits" priority="5500"><![CDATA[
+	if (field[grIsEquip].value <> 0) then
+	  if (field[arToughness].value <> 0) then
+	    perform #traitadjust[trTough,+,field[arToughness].value,"Armor"]
+	    endif
+	  endif
+		
+      ]]></eval>
+    </component>
+	
+  <!-- ArmorSpecial component -->
+  <component
+    id="ShieldSpecial"
+    name="Shield Special"
+    autocompset="no"
+    ispublic="no">
+	  
+    <!-- Special details about the armor -->
+    <field
+      id="shSpecial"
+      name="Special"
+      type="derived"
+      maxlength="200">
+      </field>
+	  
+    <!-- Synthesized notes about the armor -->
+    <field
+      id="shSpecDisp"
+      name="Notes"
+      type="derived"
+      maxlength="250">
+      </field>
+	  
+    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
+        mark ourselves as not satisfying the requirement -->
+
+    <!-- Assign any derived special notes to the appropriate field -->
+    <eval index="1" phase="Render" priority="1000"><![CDATA[
+      var special as string
+
+      ~append any special attributes appropriately (if any)
+      var attribs as string
+      attribs = tagnames[ArmorSpecial.?,", "]
+      if (empty(attribs) = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= attribs
+        endif
+
+      ~append any special details for this weapon
+      if (field[shSpecial].isempty = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= field[shSpecial].text
+        endif
+
+      ~we've synthesized the notes for the weapon
+      field[shSpecDisp].text = special
+      ]]></eval>
+    </component>
+	
+  <!-- RiftsPowerAr component -->
+  <component
+    id="RiftsPowerAr"
+    name="Power Armor (Rifts)"
+    autocompset="no"
+    ispublic="no">
+	  
+    <!-- Synthesized notes about the Strength of the power armor -->
+    <field
+      id="vhStrDisplay"
+      name="Strength"
+      type="derived"
+      maxlength="250">
+      </field>
+
+    <!-- Pace -->
+    <field
+      id="vhPAPace"
+      name="Strength"
+      type="derived">
+      </field>
+
+    <!-- Running Die -->
+    <field
+      id="vhPARunning"
+      name="Strength"
+      type="derived">
+      </field>
+	  
+    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
+        mark ourselves as not satisfying the requirement -->
+
+    <eval phase="PreTraits" priority="5000"><![CDATA[var DiffStr as number
+	DiffStr = tagvalue[vhArmorStrRiftsAE.?] - #traituser[attrStr]
+	
+	field[vhStrDisplay].text = tagnames[vhArmorStrRiftsAE.?,", "] 
+
+	~ Set strength to Armor Strength if equipped
+	if (field[grIsEquip].value <> 0) then
+	  perform hero.assign[HelperRiftsAE.SuperStrength]
+	  #traitinplay[attrStr] += DiffStr
+	  
+	  ~ add to Toughness of hero
+	  #traitinplay[trTough] += field[vhTough].text
+	  
+	  endif
+	  ]]></eval>
+	  
+    </component>
+	
+  <!-- Define various component sets associated with the components defined above. -->
+
+  <!-- No compsets are auto-defined for the component -->
+
+  <!-- Armor -->
+  <compset
+    id="ArmorSRA"
+    stackable="yes">
+    <compref component="Armor"/>
+    <compref component="ArmorSpecial"/>
+    <compref component="Defense"/>
+    <compref component="Equippable"/>
+    <compref component="Gear"/>
+    </compset> 
+	
+  <!-- Shield -->
+  <compset
+    id="ShieldSRA"
+    stackable="yes">
+    <compref component="Shield"/>
+    <compref component="ShieldSpecial"/>
+    <compref component="Defense"/>
+    <compref component="Equippable"/>
+    <compref component="Gear"/>
+    </compset>
+	
+  <!-- Power Armor -->
+  <compset
+    id="PowerArSRA">
+    <compref component="PowerAr"/>
+    <compref component="RiftsPowerAr"/>
+    <compref component="Equippable"/>
+    <compref component="Vehicle"/>
+    <compref component="Gear"/>
+    </compset>
+	
+  </document>

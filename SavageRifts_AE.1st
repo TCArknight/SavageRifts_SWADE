@@ -1,0 +1,317 @@
+ <?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains all specifications pertaining to the operational control of
+      the data files. This includes usage pools, sources, sortsets, and other related
+      mechanisms.
+-->
+
+<document signature="Hero Lab Structure">
+  <!-- TCA: Tags specific to Rifts -->
+
+  <group
+    id="BreedAdvAE"
+    dynamic="yes">
+    <value id="Fast"/>      <!-- Breed Advantage: Fast Breed -->
+    <value id="Agile"/>     
+    <value id="Strong"/>    
+    <value id="Rugged"/>    
+    <value id="Tracker"/>
+    <value id="Tough"/>  
+    <value id="Water"/>    
+    <value id="Selected"/>  <!-- Indicates selected from the Racial Tab -->  
+    </group>
+ 
+  <group
+    id="RaceAbCategoryAE"
+	sequence="explicit">   
+    <value id="Ability" order="1"/>    <!-- Tag for Racial/IF Abilities -->     
+    <value id="Comp" order="2"/>       <!-- Tag for Racial/IF Complications -->     
+    </group>
+
+  <group
+    id="LangCategoryAE"
+	sequence="explicit">   
+    <value id="Custom" order="1"/>    <!-- Tag for Languages in the Rifts setting -->  
+    <value id="Rifts" order="2"/> 
+    </group>
+	
+  <group
+    id="HelperRiftsAE"
+    dynamic="yes">
+    <value id="SecondaryPower"/>       <!-- Hide Racial Tab -->  
+    <value id="HasSecondaryAB"/>       <!-- Hide Racial Tab -->   
+    <value id="ShowRacialTab"/>       <!-- Show Racial Tab -->     
+    <value id="HideRacialTab"/>       <!-- Hide Racial Tab -->  
+    <value id="HideRacialAbility"/>   <!-- Hide Racial Abilities -->   
+    <value id="HideRacialProp"/>      <!-- Hide Racial Properties -->     
+    <value id="FortuneAndGlory"/>     <!-- Allow Fortune and Glory selections -->
+	<value id="NoHerosJourney"/>      <!-- Disallow Hero's Journey selections -->
+    <value id="RaceSelect"/>          <!-- Racial Ability selected through Helper -->     
+    <value id="BonusRaceEdge"/>       <!-- Bonus Racial Edge -->     
+    <value id="BonusRaceHind"/>  <!-- Bonus Racial Hindrance -->     
+    <value id="FrameSel1"/>           <!-- Framework Ability selected through Helper 1--> 
+    <value id="FrameSel2"/>           <!-- Framework Ability selected through Helper 2--> 
+    <value id="FrameEdge"/>           <!-- Framework Edge selected through Helper 1-->    
+    <value id="HeroJourneySel"/> <!-- Hero's Journey option selected through Helper -->     
+    <value id="TKnoSkill"/>           <!-- Tag for selected Tramadore Knowledge Skill -->     
+    <value id="SpellSkill"/>          <!-- Tag the Hero's Spellcasting skill -->   
+    <value id="MARS"/>                <!-- indicates a M.A.R.S framework -->   
+    <value id="HHEquip"/>             <!-- indicates a specific Edge for Headhunter (Mars Cyber Techno Warrior) equipment -->     
+    <value id="StartGear"/>           <!-- indicates starting gear framework ability -->  
+    <value id="SuperStrength"/>       <!-- indicates starting gear framework ability -->  
+    <value id="MegaPowerValid"/>      <!-- indicates access to the Mega Power version of powers -->
+    <value id="NoCostPower"/>         <!-- indicates power for free -->
+    <value id="DragonAbility"/>       <!-- indicates dragon hatchling ability upgrade -->	
+    <value id="Gain10PPE"/>       <!-- indicates a gain of 10 instead of 5 PPE for the Power Points edge -->
+    <value id="Gain10ISP"/>       <!-- indicates a gain of 10 instead of 5 ISP for the Power Points edge -->
+    <value id="ShowRiftsCyber"/>      <!-- show Rifts Cyberware iunsead of SciFi -->
+    <value id="ShowGenHvy"/>        <!-- show Generic Heavy Gear iunsead of SciFi -->
+    <value id="CyberNotValid"/>       <!--  -->	
+    <value id="NonStdBuildMaj"/>       <!-- has a Non-Standard Build (Major) racial property -->
+    <value id="PPENotValid"/>       <!-- cannot use PPE (magic) -->	
+    <value id="ISPNotValid"/>       <!-- cannot use ISP (psionic) -->	
+    <value id="ABMagicNotValid"/>       <!-- cannot use Arcane Background (Magic) -->
+    <value id="ABMiracleNotValid"/>       <!-- cannot use Arcane Background (Miracles) -->
+    <value id="AugmentInvalid"/>       <!-- cannot use Crazy or Juicer augmentation -->	
+    <value id="CyberArmorActive"/>       <!-- cannot use Crazy or Juicer augmentation -->
+    <value id="DoublePP"/>          <!-- double Power Points from the Power Points edge -->	
+    <value id="DoublePPBase"/>          <!-- double base Power Points from the Arcane Background -->
+    </group>
+	
+  <!-- Power Group tags - Used for tagging powers valid for selection in various choosers, etc. -->
+  <group
+    id="PwrGroupRiftsAE">
+    <value id="MindMelter"/>       <!-- Mind Melter powers  -->     
+    </group>
+	
+  <!-- Hero's Journey Table -->
+  <group
+    id="HJCategoryRiftsAE"
+	sequence="explicit"
+    dynamic="yes">
+    <value id="BodArm" name="Body Armor" order="1"/>    
+    <value id="CCW" name="Close Combat Weapons" order="2"/>    
+    <value id="Cyber" name="Cybernetics" order="3"/>    
+    <value id="Edu" name="Education" order="4"/>    
+    <value id="EncMys" name="Enchanted Items/Mystic Gadgets" order="5"/> 
+    <value id="ExpWis" name="Experience/Wisdom" order="6"/>    
+    <value id="MagMys" name="Magic/Mysticism" order="7"/>    
+    <value id="Psi" name="Psionics" order="8"/>    
+    <value id="Ranged" name="Ranged Weapons" order="9"/>    
+    <value id="Train" name="Training" order="10"/>    
+    <value id="Under" name="Underworld/Black Ops" order="11"/>        
+    </group>
+	
+  <!-- Hero's Journey -->
+  <group
+    id="HJRiftsAE"
+    dynamic="yes">
+    <value id="HJRiftsAE" />	
+    </group>
+
+  <!-- Cyberware Identity -->
+  <group
+    id="CyberwareSRA"
+    dynamic="yes">
+    <value id="Cyberware" />	
+    </group>
+	
+  <!-- Cybernetics Categories -->
+  <group
+    id="CyberCatRiftsAE"
+	sequence="explicit">
+    <value id="BioRep" name="Bio-Enhancements and Replacements" order="1"/>    
+    <value id="CombatEnh" name="Combat Enhancement" order="2"/>    
+    <value id="Comm" name="Communications, Data and Sensory Systems" order="3"/>    
+    <value id="Mobility" name="Mobility" order="4"/>    
+    <value id="Weapons" name="Weapons and Tools" order="5"/>            
+    </group>
+
+  <!-- WeaponCat group - tags identifying the specific category of weapon
+  -->
+  <group
+    id="WeaponCat"
+    dynamic="yes">
+    <value id="CloseCbt" name="Close Combat" />
+    <value id="Personal" name="Personal Ranged" />
+    <value id="Vehicle" name="Vehicular" />
+    </group>
+	
+  <!-- TCA: Power/Robot Armor Strength Tags  -->
+  <group
+    id="vhArmorStrRiftsAE"
+    name="Armor Strength">
+    <value id="7" name="d12+1"/>
+    <value id="8" name="d12+2"/>
+    <value id="9" name="d12+3"/>
+    <value id="10" name="d12+4"/>
+    <value id="11" name="d12+5"/>
+    <value id="12" name="d12+6"/>
+    <value id="13" name="d12+7"/>
+    <value id="14" name="d12+8"/>
+    <value id="15" name="d12+9"/>
+    <value id="16" name="d12+10"/>
+    <value id="17" name="d12+11"/>
+    <value id="18" name="d12+12"/>
+    </group>
+	
+  <!-- TCA: Power/Robot Armor Strength Tags  -->
+  <group
+    id="RunningDieRiftsAE"
+    name="Running Die">
+    <value id="1" name="d2"/>
+    <value id="2" name="d4"/>
+    <value id="3" name="d6"/>
+    <value id="4" name="d8"/>
+    <value id="5" name="d10"/>
+    <value id="6" name="d12"/>
+    <value id="7" name="2d6"/>
+    <value id="8" name="2d8"/>
+    <value id="9" name="2d10"/>
+    <value id="10" name="2d12"/>
+    </group>		
+
+  <!-- TCA: Armor Special Quality tags  -->
+  <group
+    id="ArmorSpecial"
+    name="Armor Special"
+    dynamic="yes">
+    <value id="FullEnvPro" name="Full Environmental Protection"/>
+    </group>
+
+
+  <!-- TCA: Power Point Type  -->
+  <group
+    id="PPType"
+    name="Power Point Type"
+    dynamic="yes">
+    <value id="ISP" name="ISP"/>
+    <value id="PPE" name="PPE"/>
+    <value id="STD" name="Standard"/>
+    </group>
+
+	
+  <!-- TCA: Savage Rifts Sources -->
+  <source
+    id="sepRiftsAE"
+    name="Savage Rifts (SWAdE)"
+    selectable="no"
+    parent="UserParent"
+    sortorder="0"
+    description="Savage Rifts Setting for SWAdE">
+    </source>
+
+  <source
+    id="srcRiftsTLPGAE"
+    name="Savage Rifts - TLPG (Core)"
+    parent="sepRiftsAE"
+    reportable="yes"
+	sortorder="1"
+    description="The Tomorrow Legion Players Guide material is Core rules for Savage Rifts.">
+    </source>
+
+  <source
+    id="srcRiftsSavFoesAE"
+    name="Savage Foes of North America"
+    parent="sepRiftsAE"
+    reportable="yes"
+    selectable="yes"
+	sortorder="2"
+    description="Material from the supplement.">
+    </source>
+	
+  <source
+    id="sepRiftsSuppAE"
+    name="Savage Rifts Supplements"
+    selectable="no"
+    parent="sepRiftsAE"
+    sortorder="2"
+    description="Savage Rifts Sourcebook Expansions">
+    </source>
+
+  <source
+    id="srcRiftsTLFMAE"
+    name="Tomorrow Legion Field Manual"
+    parent="sepRiftsSuppAE"
+    selectable="yes"
+    reportable="yes"
+	sortorder="1"
+    description="Material from the supplement.">
+    </source>
+	
+  <source
+    id="srcRiftsArcMysAE"
+    name="Arcana and Mysticism"
+    parent="sepRiftsSuppAE"
+    selectable="yes"
+    reportable="yes"
+	sortorder="2"
+    description="Material from the supplement.">
+    </source> 
+
+  <source
+    id="srcRiftsBloBanAE"
+    name="Blood and Banes"
+    parent="sepRiftsSuppAE"
+    selectable="yes"
+    reportable="yes"
+	sortorder="3"
+    description="Material from the supplement.">
+    </source> 
+
+  <source
+    id="srcRiftsEmpHumAE"
+    name="Empires of Humanity"
+    parent="sepRiftsSuppAE"
+    selectable="yes"
+    reportable="yes"
+	sortorder="4"
+    description="Material from the supplement.">
+    </source>   
+  <!-- TCA: Various sortsets for Savage Rifts -->
+  <sortset
+    id="LangSortChoose"
+    name="Language Choose">
+    <sortkey isfield="no" id="LangCategoryAE"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
+  <sortset
+    id="RaceAbCategoryAE"
+    name="Racial Ability">
+    <sortkey isfield="no" id="RaceAbCategoryAE"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
+  <sortset
+    id="HerosJourney"
+    name="Hero's Journey">
+    <sortkey isfield="no" id="HJCategoryRiftsAE"/>
+	<sortkey isfield="no" id="explicit"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>	
+
+  <!-- Define a sortset that lists activated abilities, then temporary in-play adjustments. -->
+  <sortset
+    id="CyberwareSRA"
+    name="Cyberware sort">
+    <sortkey isfield="no" id="CyberCatRiftsAE" isascend="yes"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+
+  <!-- Define a sortset that lists vehicles by type, era, and then name. -->
+  <sortset
+    id="GenVehicle"
+    name="Vehicles By Size and Name">
+    <sortkey isfield="yes" id="vhSize"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
+  <!-- Define a sortset that lists Advances in chronological order. -->
+  <sortset
+    id="AdvanceOut"
+    name="Advances in Order">
+    <sortkey isfield="yes" id="advOrder" isascend="yes"/>
+    </sortset>
+    	
+</document>

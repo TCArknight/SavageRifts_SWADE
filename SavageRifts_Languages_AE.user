@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Data">
+  <thing id="lgSRASepCustom" name="– Custom Languages –" compset="Language" isshowonly="yes">
+    <tag group="LangCategoryAE" tag="Custom"/>
+    </thing>
+  <thing id="lgSRACustom" name="Custom Language" description="User-specified language." compset="Language" summary="Can speak a specified language.">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="LangCategoryAE" tag="Custom"/>
+    <tag group="User" tag="NeedDomain"/>
+    </thing>
+  <thing id="lgSRASepRifts" name="– Rifts Languages –" compset="Language" isshowonly="yes">
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRAAmerican" name="American" description="English as it evolved primarily in the United States and Canada before the HelperRiftsAE. It is not only the most common language on the continent, but also very prevalent as a trade tongue globally." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="American"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRASpanish" name="Spanish" description="Another fairly ubiquitous tongue on the continent, especially out west and in the south." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Spanish"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRADragon" name="Dragonese/Elven" description="Considered an offensive (and outlawed) language by the Coalition, this is the common language of magic wielders and mystical beings. It’s the official language of the True Federation of Magic (though American is more commonly spoken and used in the Magic Zone)." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Dragonese/Elven"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRAChinese" name="Chinese" description="The standardized Mandarin form that evolved from the original Beijing dialect is the majority version spoken and written, though various regions of Asia feature their own iterations. The western coast of North America features large populations of those who speak Chinese." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Chinese"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRAGobblely" name="Gobblely" description="A common tongue spoken by many of the “barbaric” races that threaten civilization globally. This includes goblins, orcs, hobgoblins, ogres, and many similar creatures. There is no written component, save a few coarse symbols that have mostly clan or ritual meaning." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Gobblely"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRAJapanese" name="Japanese" description="The main language of the Japanese Islands and the New Japanese Republic, spoken by many in what was the Pacific Northwest of the United States, as well as much of the west coast of Canada." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Japanese"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="User" tag="RiftsLang"/>
+    </thing>
+  <thing id="lgSRAEuro" name="Euro" description="Most of the mainland of Europe and western Eurasia speak and read this amalgamation of Russian, German, and Polish in the post-Rifts world. A much smaller population speaks it on the North or South American continents." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Euro"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRATechnoCan" name="Techno-Can" description="Strictly functioning as a written/coding language, this highly modified combination of American and various advanced coding languages is used universally to communicate technical data and as a kind of “tech-language” for technical journals, shared coding projects, and related efforts." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Techno-Can"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+  <thing id="lgSRAFaerie" name="Faerie Speak" description="Another mystical language, common to various faerie folk and related beings. Highly common in the Magic Zone and similar areas, and related enough to Dragonese/Elven to facilitate very basic communication between those who speak one and those who speak the other." compset="Language" summary="This represents a specific Langauge" uniqueness="unique">
+    <fieldval field="domDomain" value="Faerie Speak"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NoDomain"/>
+    <tag group="LangCategoryAE" tag="Rifts"/>
+    </thing>
+
+  </document>
