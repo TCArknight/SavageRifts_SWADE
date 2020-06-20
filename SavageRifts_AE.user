@@ -5036,8 +5036,9 @@ if (field[usrChosen1].ischosen <> 0) then
   field[usrChosen1].chosen.field[trtCreate].value += 2
   endif]]></eval>
     </thing>
-  <thing id="fgSRAAgileDex" name="05 - Agile and Dexterous" description="Your hero adds one die type to Agility and begins with either the Ambidextrous or Quick Edge." compset="Fortune">
+  <thing id="fgSRAAgileDexAmbi" name="05 - Agile and Dexterous (Ambidextrous)" description="Your hero adds one die type to Agility and begins with either the Ambidextrous or Quick Edge." compset="Fortune" summary="Your hero adds one die type to Agility and begins with either the Ambidextrous Edge.">
     <usesource source="srcRiftsTLPGAE"/>
+    <bootstrap thing="edgAmbidextrous"></bootstrap>
     <eval phase="PreTraits" priority="5000">#traitcreation[attrAgi] += 1</eval>
     </thing>
   <thing id="fgSRASmartLearned" name="06 - Smart and Learned" description="Your hero adds one die type to Smarts and two die types to any three Smarts-linked skills." compset="Fortune">
@@ -5084,7 +5085,7 @@ hero.child[FrameworkHelper].field[ehFrameHdr2].text = header]]></eval>
     <bootstrap thing="edgCharismatic"></bootstrap>
     <bootstrap thing="edgSRAIKnowAGuy"></bootstrap>
     </thing>
-  <thing id="fgSRAFortuneFav1" name="12 - Fortune Favors The Bold (Brave)" description="Your hero begins with the Brave Edge (or Elan if he already has Brave). He also begins each session with one additional Benny." compset="Fortune">
+  <thing id="fgSRAFortuneFav1" name="12 - Fortune Favors The Bold (Brave)" description="Your hero begins with the Brave Edge (or Elan if he already has Brave). He also begins each session with one additional Benny." compset="Fortune" summary="Begin with Brave edge; start each session with one additional Benny.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgBraveSWADE"></bootstrap>
     <pickreq thing="edgBraveSWADE" ispreclude="yes"/>
@@ -5100,7 +5101,7 @@ hero.child[FrameworkHelper].field[ehFrameHdr2].text = header]]></eval>
   @valid = 1
   endif]]></evalrule>
     </thing>
-  <thing id="fgSRAAnimalMagnet" name="15 - Animal Magnetism" description="Your hero has an uncanny affinity with animals. Gain the Beast Master Edge twice and increase the default Size of companion animals to 3." compset="Fortune">
+  <thing id="fgSRAAnimalMagnet" name="15 - Animal Magnetism" description="Your hero has an uncanny affinity with animals. Gain the Beast Master Edge twice and increase the default Size of companion animals to 3." compset="Fortune" summary="Gain the Beast Master Edge twice and increase the default Size of companion animals to 3.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgBeastMaster">
       <autotag group="thing" tag="skipprereq"/>
@@ -5109,18 +5110,18 @@ hero.child[FrameworkHelper].field[ehFrameHdr2].text = header]]></eval>
       <autotag group="thing" tag="skipprereq"/>
       </bootstrap>
     </thing>
-  <thing id="fgSRAYoungAppren" name="16 - My Young Apprentice" description="Gain the Sidekick Edge. The sidekick is a Wild Card character with his or her own Iconic Framework. Additionally, roll once on the Experience &amp; Wisdom, Training, or Underworld &amp; Black Ops table; your hero and sidekick both gain the result, reflecting a notable shared experience." compset="Fortune">
+  <thing id="fgSRAYoungAppren" name="16 - My Young Apprentice" description="Gain the Sidekick Edge. The sidekick is a Wild Card character with his or her own Iconic Framework. Additionally, roll once on the Experience &amp; Wisdom, Training, or Underworld &amp; Black Ops table; your hero and sidekick both gain the result, reflecting a notable shared experience." compset="Fortune" summary="Gain the Sidekick Edge; Roll once on the Experience &amp; Wisdom, Training, or Underworld &amp; Black Ops table; your hero and sidekick both gain the result.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgSideKck"></bootstrap>
     </thing>
-  <thing id="fgSRABardsTale" name="17 - A Bard&apos;s Tale" description="Add two die types to Performance, begin with the Fame Edge, and gain a free reroll when using Performance. Begin with a set of performance gear." compset="Fortune">
+  <thing id="fgSRABardsTale" name="17 - A Bard&apos;s Tale" description="Add two die types to Performance, begin with the Fame Edge, and gain a free reroll when using Performance. Begin with a set of performance gear." compset="Fortune" summary="Add two die types to Performance, begin with the Fame Edge, and gain a free reroll when using Performance.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgFame">
       <autotag group="thing" tag="skipprereq"/>
       </bootstrap>
     <eval phase="PreTraits" priority="5000">hero.childfound[skPerformance].field[trtCreate].value += 2</eval>
     </thing>
-  <thing id="fgSRAMerryBand" name="18 - A Merry Band" description="Your hero has proven himself as a leader of the downtrodden, earning the Command and Followers Edges. Your followers roll for Allied Personalities and use the Experienced Soldier profile, see Allies in {i}Savage Worlds{/i}." compset="Fortune">
+  <thing id="fgSRAMerryBand" name="18 - A Merry Band" description="Your hero has proven himself as a leader of the downtrodden, earning the Command and Followers Edges. Your followers roll for Allied Personalities and use the Experienced Soldier profile, see Allies in {i}Savage Worlds{/i}." compset="Fortune" summary="Your hero has proven himself as a leader of the downtrodden, earning the Command and Followers Edges. Your followers roll for Allied Personalities and use the Experienced Soldier profile">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgCommandSWADE">
       <autotag group="thing" tag="skipprereq"/>
@@ -5129,7 +5130,7 @@ hero.child[FrameworkHelper].field[ehFrameHdr2].text = header]]></eval>
       <autotag group="thing" tag="skipprereq"/>
       </bootstrap>
     </thing>
-  <thing id="fgSRACharmFluent" name="19 - Charmingly Fluent" description="Begin with the Linguist Edge. Gain +1 Persuasion with native speakers of a language foreign to your hero, and Reactions begin two steps higher." compset="Fortune">
+  <thing id="fgSRACharmFluent" name="19 - Charmingly Fluent" description="Begin with the Linguist Edge. Gain +1 Persuasion with native speakers of a language foreign to your hero, and Reactions begin two steps higher." compset="Fortune" summary="+1 Persuasion with native speakers of a language foreign to your hero, and Reactions begin two steps higher.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgSRALinguist"></bootstrap>
     </thing>
@@ -5203,19 +5204,23 @@ hero.childfound[skPsionics].field[trtNetRoll].value -= cyb</eval>
     <usesource source="srcRiftsTLPGAE"/>
     <tag group="Helper" tag="FGReachOut"/>
     </thing>
-  <thing id="fgSRAFortuneFav2" name="12 - Fortune Favors The Bold (Elan)" description="Your hero begins with the Brave Edge (or Elan if he already has Brave). He also begins each session with one additional Benny." compset="Fortune">
+  <thing id="fgSRAFortuneFav2" name="12 - Fortune Favors The Bold (Elan)" description="Your hero begins with the Brave Edge (or Elan if he already has Brave). He also begins each session with one additional Benny." compset="Fortune" summary="Begin with Elan edge; start each session with one additional Benny.">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgElanSWADE"></bootstrap>
     <pickreq thing="edgBraveSWADE"/>
     </thing>
-  <preclude id="edgRichSWADE" source="srcRiftsTLPGAE"/>
+  <thing id="fgSRAAgileDexQui" name="05 - Agile and Dexterous (Quick)" description="Your hero adds one die type to Agility and begins with either the Ambidextrous or Quick Edge." compset="Fortune" summary="Your hero adds one die type to Agility and begins with the Quick Edge.">
+    <usesource source="srcRiftsTLPGAE"/>
+    <bootstrap thing="edgQuick"></bootstrap>
+    <eval phase="PreTraits" priority="5000">#traitcreation[attrAgi] += 1</eval>
+    </thing>
   <preclude id="edgRich2SWADE" source="srcRiftsTLPGAE"/>
   <preclude id="racHuman" source="srcRiftsTLPGAE"/>
   <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
   <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
   <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
   <preclude id="hinIllit" source="srcRiftsTLPGAE"/>
-  <extthing thing="skPsionics" group="Helper" tag="SmartsSkill"/>
+  <preclude id="edgRichSWADE" source="srcRiftsTLPGAE"/>
   <extthing thing="skBattle" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skTaunt" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skWeirdSci" group="Helper" tag="SmartsSkill"/>
@@ -5272,4 +5277,5 @@ hero.childfound[skPsionics].field[trtNetRoll].value -= cyb</eval>
   <extthing thing="skSpellcst" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skSurvival" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skElectron" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skPsionics" group="Helper" tag="SmartsSkill"/>
   </document>
