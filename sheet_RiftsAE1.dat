@@ -568,7 +568,52 @@
       </output_table>
     </portal>
 
+  <!-- sraCyberware portal
+        This is a table of all Cyberware for the actor.
+  -->
+  <portal
+    id="sraCyberware"
+    style="outNormal">
+    <output_table
+      component="CyberwareSRA"
+      showtemplate="sraCyberPick">
+      <headertitle><![CDATA[
+        @text = "Cyberware (Strain: " & hero.child[resStrainSRA].field[resSpent].value & " of " & hero.child[resStrainSRA].field[resMax].value & ")"
+        ]]></headertitle>
+      </output_table>
+    </portal>
 
+
+  <!-- sraFortuneGlory portal
+        This is a table of all Cyberware for the actor.
+  -->
+  <portal
+    id="sraFortuneGlory"
+    style="outNormal">
+    <output_table
+      component="Fortune"
+      showtemplate="sraFGPick">
+      <headertitle><![CDATA[
+        @text = "Fortune & Glory"
+        ]]></headertitle>
+      </output_table>
+    </portal>
+	
+  <!-- sraCyberware portal
+        This is a table of all Cyberware for the actor.
+  -->
+  <portal
+    id="sraHerosJourn"
+    style="outNormal">
+    <output_table
+      component="HerosJourney"
+      showtemplate="sraHeroJrnyPick">
+      <headertitle><![CDATA[
+        @text = "Hero's Journey"
+        ]]></headertitle>
+      </output_table>
+    </portal>
+	
   <!-- sraAttrPick template
         This template presents the contents of each attribute. Each attribute has its
         total value, base value, and any adjustments shown separately.
@@ -1149,14 +1194,21 @@
           var arcname as string
          	var abname as string
          	var trkpoints as number
+			
          	arcname = left(tagnames[Arcane.?],pos(tagnames[Arcane.?],","))
+			
           foreach pick in hero where "component.Arcane"
             abname = left(eachpick.tagnames[Arcane.?],pos(eachpick.tagnames[Arcane.?],","))
+			
             if (compare(abname,arcname) = 0) then
               trkpoints = eachpick.field[trkMax].value
               endif
             nexteach
-          @text = arcname & " (" & trkpoints & " Points)"
+          @text = arcname 
+		  if (trkpoints <> 0) then
+		    @text &= " (" & trkpoints & " Points)"
+			endif
+			
           ]]></labeltext>
         </output_label>
       </portal>
@@ -1843,7 +1895,7 @@
               temp &= cover
               endif
 			  
-		    special = field[arSpecDisp].text
+		    special = field[defSpecDisp].text
 			
             if (empty(temp) = 0) then
               temp &= "; " & special
@@ -1851,7 +1903,7 @@
               temp &= special
               endif
           elseif (tagis[component.ShieldSpecial] <> 0) then
-		    special = field[shSpecDisp].text
+		    special = field[defSpecDisp].text
 			
             if (empty(temp) = 0) then
               temp &= "; " & special
@@ -2870,7 +2922,113 @@
 
     </template>
 
+  <!-- sraCyberPick template
+        This template outputs Cyberware just like abilities, with a prominent name
+        and the summary text in small letters next to it.
+  -->
+  <template
+    id="sraCyberPick"
+    name="Output Cyberware Table"
+    compset="CyberwareSRA"
+    marginvert="2">
 
+    <portal
+      id="details"
+      style="outMedLt">
+      <output_label>
+        <labeltext><![CDATA[
+		  @text = "{b}"
+		  
+		  if (field[stackQty].value > 1) then 
+		    @text &= field[grStkName].text
+		  else
+		    @text &= field[name].text
+			endif
+			
+          @text &= ":{/b} {size 32}" & field[gcybSummary].text & "{br}{br}"
+          ]]></labeltext>
+        </output_label>
+      </portal>
+
+    <position><![CDATA[
+      ~our details width spans the entire template width
+      portal[details].width = width
+
+      ~our height is the height of our portal
+      height = portal[details].bottom
+      ]]></position>
+    </template>
+  <!-- sraCyberPick template
+        This template outputs Cyberware just like abilities, with a prominent name
+        and the summary text in small letters next to it.
+  -->
+  <template
+    id="sraHeroJrnyPick"
+    name="Output Hero's Journey Table"
+    compset="HerosJourney"
+    marginvert="2">
+
+    <portal
+      id="details"
+      style="outMedLt">
+      <output_label>
+        <labeltext><![CDATA[
+		  var temp as string
+		  
+		  temp = tagnames[HJCategorySRA.?]
+		  temp &= ": " & field[name].text
+		  
+		  @text = "{b}" & temp
+			
+          @text &= ":{/b} {size 32}" & field[summary].text & "{br}{br}"
+          ]]></labeltext>
+        </output_label>
+      </portal>
+
+    <position><![CDATA[
+      ~our details width spans the entire template width
+      portal[details].width = width
+
+      ~our height is the height of our portal
+      height = portal[details].bottom
+      ]]></position>
+    </template>	
+	
+  <!-- sraFGPick template
+        This template outputs Cyberware just like abilities, with a prominent name
+        and the summary text in small letters next to it.
+  -->
+  <template
+    id="sraFGPick"
+    name="Output Fortune and Glory Table"
+    compset="Fortune"
+    marginvert="2">
+
+    <portal
+      id="details"
+      style="outMedLt">
+      <output_label>
+        <labeltext><![CDATA[
+		  var temp as string
+		  
+		  temp = tagnames[HJCategorySRA.?]
+		  temp &= ": " & field[name].text
+		  
+		  @text = "{b}" & temp
+			
+          @text &= ":{/b} {size 32}" & field[summary].text & "{br}{br}"
+          ]]></labeltext>
+        </output_label>
+      </portal>
+
+    <position><![CDATA[
+      ~our details width spans the entire template width
+      portal[details].width = width
+
+      ~our height is the height of our portal
+      height = portal[details].bottom
+      ]]></position>
+    </template>
   <!-- sraLogos layout
         This layout sizes and positions the Hero Lab and game system logos. The logos
         can be either stacked or shown side-by-side, based on the global variable set
@@ -2937,7 +3095,6 @@
         endif
       ]]></position>
     </layout>
-
 
   <!-- sraLeftSide layout
         This layout is rendered down the left side of the sheet and contains the
@@ -3120,10 +3277,12 @@
   <layout
     id="sraGear">
     <portalref portal="sraGear"/>
+    <portalref portal="sraCyberware"/>
     <portalref portal="sraPersonal"/>
     <position><![CDATA[
       ~position the various tables appropriately
       perform portal[sraGear].autoplace
+      perform portal[sraCyberware].autoplace
       perform portal[sraPersonal].autoplace
 
       ~our layout height is the extent of the elements within

@@ -16,10 +16,11 @@
       component="HerosJourney"
       showtemplate="hjPick"
 	  showsortset="HerosJourney"
-      choosetemplate="SimpleItem"
-	  choosesortset="HerosJourney"
+      choosetemplate="hjSelect"
+	  choosesortset="HerosJourneyRoll"
       addpick="resHeroJrn"
       descwidth="350">
+      <denytag usehero="yes" container="HJInvalidCatSRA" thing="HJCategorySRA"/>
       <titlebar><![CDATA[
         @text = "Add a Hero's Journey entry"
         if (hero.tagis[Hero.Creature] = 0) then
@@ -181,6 +182,57 @@
 		]]></header>
 		</template>
 
+
+  <template
+    id="hjSelect"
+    name="Hero's Journey Selection"
+    compset="HerosJourney"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+	    <labeltext><![CDATA[
+		  var temp as string
+
+		  if (tagis[thing.showonly] = 0) then
+		    temp &= "{align left}"
+		    endif
+
+		  temp &= field[name].text
+		  
+		  if (empty(field[hjRangeTxt].text) = 1) then
+		    temp &= " " & field[hjRangeTxt].text
+		    endif
+			
+		  @text = temp
+		  
+		  ]]></labeltext>
+        </label>
+      </portal>
+	  
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[name].height
+	  width = 200
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+	  
+	  ~position our tallest portal at the top
+      portal[name].top = 0
+
+      ~position the name portal on the far left and use availble space, with a gap for menus
+      perform portal[name].alignedge[left,0]
+      portal[name].width = width
+
+      ]]></position>
+
+    </template>
+
   <template
     id="hjPick"
     name="Hero's Journey Pick"
@@ -195,13 +247,8 @@
       <label>
 	    <labeltext><![CDATA[
 		  var temp as string
-		  var mylen as number
 		  
-	      temp = tagids[HJCategoryRiftsAE.?,","] 
-		  mylen = length(temp)-13
-		  
-		  temp = mid(temp,13,mylen)
-		  
+		  temp = tagnames[HJCategorySRA.?]
 		  temp &= ": " & field[name].text
 		  
 		  @text = temp

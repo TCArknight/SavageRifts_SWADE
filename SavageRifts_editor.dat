@@ -18,7 +18,405 @@
     description="Languages"
     summary="Defines a language that can be added to a character.">
     </editthing>
+  <!-- Melee editthing - for melee weapons -->
+  <editthing
+    group="Rifts"
+    compset="MeleeSRA"
+    name="Hand Weapon (Rifts)"
+    prefix="wp"
+    description="Armor, vehicles, and simple equipment all have their own tabs for creating objects of those types."
+    summary="Defines a melee weapon that can be selected on the Armory tab.">
+    <inputthing
+      name="Weapon Type"
+      helptext="Specify the type for this weapon.">
+      <it_tagpick group="WeaponType" tag="?" require="yes" deftag="MedBlades"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Die"
+      helptext="Specify the weapon die used by this weapon. If the weapon does basic damage of 'Str' or if a special damage is required, don't specify a weapon die.">
+      <it_tagpick group="WeaponDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Special Damage"
+      helptext="Specify the non-standard damage rating of the weapon. Leave blank unless the weapon has special damage that is not tied to a weapon die.">
+      <it_field field="wpDamage"/>
+      </inputthing>
+    <inputthing
+      name="Attack Bonus"
+      helptext="Specify the attack bonus of the weapon.">
+      <it_field field="wpBonus"/>
+      </inputthing>
+    <inputthing
+      name="Damage Bonus"
+      helptext="Specify the damage bonus of the weapon (may be negative).">
+      <it_field field="wpDmgBonus"/>
+      </inputthing>
+    <inputthing
+      name="Parry Bonus"
+      helptext="Specify the parry bonus of the weapon (may be negative).">
+      <it_field field="wpParry"/>
+      </inputthing>
+    <inputthing
+      name="Armor Piercing"
+      helptext="Specify the armor piercing rating of the weapon.">
+      <it_field field="wpPiercing"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Reach"
+      helptext="Specify the reach of the weapon.">
+      <it_field field="wpReach"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Damage Bonus Text"
+      helptext="Additional Damage Bonus Text to be placed between the base damage and any standard damage bonus.">
+      <it_field field="wpDmgBoTxt"/>
+      </inputthing>
+    <inputthing
+      name="Strength Requirement Die"
+      helptext="Specify the minimum strength required die type for this weapon. If the weapon uses a weapon die or has no strength requirement, do not specify.">
+      <it_tagpick group="StrReqDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this armor has an effect that can be activated by the user">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Actvation Text"
+      helptext="Specify text displayed with the activation checkbox.">
+      <it_field field="wpActiveText"/>
+      </inputthing>
+    <inputthing
+      name="Special Traits"
+      helptext="Specify any number of special traits that apply to this Weapon.">
+      <it_taglist group="Weapon" tag="?" />
+      </inputthing>	  
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    <inputthing
+      name="Weight"
+      helptext="Specify the weight of the item in pounds.">
+      <it_field field="gearWeight"/>
+      </inputthing>
+    <inputthing
+      name="Two-Handed Weapon?"
+      helptext="Specify whether this weapon is two-handed.">
+      <it_tagcheck group="Equipment" tag="TwoHand"/>
+      </inputthing>
+    <inputthing
+      name="Special Behaviors"
+      helptext="Specify any special behaviors for the weapon of which the user should be reminded.">
+      <it_field field="wpSpecial"/>
+      </inputthing>
+    <inputthing
+      name="Natural Attack?"
+      helptext="Specify whether this weapon should be treated as a natural attack.">
+      <it_tagcheck group="Equipment" tag="Natural"/>
+      </inputthing>
+    <inputthing
+      name="Hide from User?"
+      helptext="Specify whether this weapon should be hidden from the user-selectable weapon list.">
+      <it_tagcheck group="Hide" tag="Equipment"/>
+      </inputthing>
+    <inputthing
+      name="Ultra Tech?"
+      helptext="Specify whether this is considered Ultra Tech from the Sci-Fi Companion.">
+      <it_tagcheck group="Equipment" tag="UltraTech"/>
+      </inputthing>
+    <inputthing
+      name="Treat as Standard Gear"
+      helptext="Specify whether this item is designated as 'standard gear' that can be readily omitted from use with selected Savage Settings.">
+      <it_tagcheck group="Equipment" tag="Standard"/>
+      </inputthing>
+    <inputthing
+      name="Usable with Mod Slots and no Slot Cost?"
+      helptext="Specify whether this weapon is usable in Equipment Modification Slots from the Sci-Fi Companion. Note that this only needs to be selected if there is not a value in 'Modification Slots Used'">
+      <it_tagcheck group="Equipment" tag="ModSlotUse"/>
+      </inputthing>
+    </editthing>
 
+  <!-- Ranged editthing - for ranged weapons -->
+  <editthing
+    group="Rifts"
+    compset="RangedSRA"
+    name="Ranged Weapon (Rifts)"
+    prefix="wp"
+    description="Armor, vehicles, and simple equipment all have their own tabs for creating objects of those types."
+    summary="Defines a ranged weapon that can be selected on the Armory tab.">
+    <inputthing
+      name="Weapon Type"
+      helptext="Specify the type for this weapon.">
+      <it_tagpick group="WeaponType" tag="?" require="yes" deftag="MedRange"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Damage"
+      helptext="Specify the damage rating of the weapon.">
+      <it_field field="wpDamage"/>
+      </inputthing>
+    <inputthing
+      name="Attack Bonus"
+      helptext="Specify the attack bonus of the weapon.">
+      <it_field field="wpBonus"/>
+      </inputthing>
+    <inputthing
+      name="Damage Bonus"
+      helptext="Specify the damage bonus of the weapon (may be negative).">
+      <it_field field="wpDmgBonus"/>
+      </inputthing>
+    <inputthing
+      name="Strength Requirement Die"
+      helptext="Specify the minimum strength required die type for this weapon. If the weapon has no strength requirement, do not specify.">
+      <it_tagpick group="StrReqDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Short Range"
+      helptext="Specify the short range distance of the weapon.">
+      <it_field field="wpShort"/>
+      </inputthing>
+    <inputthing
+      name="Medium Range"
+      helptext="Specify the medium range distance of the weapon.">
+      <it_field field="wpMedium"/>
+      </inputthing>
+    <inputthing
+      name="Long Range"
+      helptext="Specify the long range distance of the weapon.">
+      <it_field field="wpLong"/>
+      </inputthing>
+    <inputthing
+      name="Armor Piercing"
+      helptext="Specify the armor piercing rating of the weapon.">
+      <it_field field="wpPiercing"/>
+      </inputthing>
+    <inputthing
+      name="Actions to Reload"
+      helptext="Specify the number of actions required to reload the weapon.">
+      <it_field field="wpReload"/>
+      </inputthing>
+    <inputthing
+      name="Rate of Fire"
+      helptext="Specify the rate of fire for the weapon.">
+      <it_field field="wpFireRate"/>
+      </inputthing>
+    <inputthing
+      name="Number of Shots"
+      helptext="Specify the number of shots for the weapon.">
+      <it_field field="wpShots"/>
+      </inputthing>
+    <inputthing
+      name="Ammunition Size"
+      helptext="Specify the ammunition size/type utilized by the weapon.">
+      <it_field field="wpAmmo"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Damage Bonus Text"
+      helptext="Additional Damage Bonus Text to be placed between the base damage and any standard damage bonus.">
+      <it_field field="wpDmgBoTxt"/>
+      </inputthing>
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this armor has an effect that can be activated by the user">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Actvation Text"
+      helptext="Specify text displayed with the activation checkbox.">
+      <it_field field="wpActiveText"/>
+      </inputthing>
+    <inputthing
+      name="Special Traits"
+      helptext="Specify any number of special traits that apply to this weapon.">
+      <it_taglist group="Weapon" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    <inputthing
+      name="Weight"
+      helptext="Specify the weight of the item in pounds.">
+      <it_field field="gearWeight"/>
+      </inputthing>
+    <inputthing
+      name="Two-Handed Weapon?"
+      helptext="Specify whether this weapon is two-handed.">
+      <it_tagcheck group="Equipment" tag="TwoHand"/>
+      </inputthing>
+    <inputthing
+      name="Special Behaviors"
+      helptext="Specify any special behaviors for the weapon of which the user should be reminded.">
+      <it_field field="wpSpecial"/>
+      </inputthing>
+    <inputthing
+      name="Natural Attack?"
+      helptext="Specify whether this weapon should be treated as a natural attack.">
+      <it_tagcheck group="Equipment" tag="Natural"/>
+      </inputthing>
+    <inputthing
+      name="Hide from User?"
+      helptext="Specify whether this weapon should be hidden from the user-selectable weapon list.">
+      <it_tagcheck group="Hide" tag="Equipment"/>
+      </inputthing>
+    <inputthing
+      name="Ultra Tech?"
+      helptext="Specify whether this is considered Ultra Tech from the Sci-Fi Companion.">
+      <it_tagcheck group="Equipment" tag="UltraTech"/>
+      </inputthing>
+    <inputthing
+      name="Treat as Standard Gear"
+      helptext="Specify whether this item is designated as 'standard gear' that can be readily omitted from use with selected Savage Settings.">
+      <it_tagcheck group="Equipment" tag="Standard"/>
+      </inputthing>
+    <inputthing
+      name="Usable with Mod Slots and no Slot Cost?"
+      helptext="Specify whether this weapon is usable in Equipment Modification Slots from the Sci-Fi Companion. Note that this only needs to be selected if there is not a value in 'Modification Slots Used'">
+      <it_tagcheck group="Equipment" tag="ModSlotUse"/>
+      </inputthing>
+    </editthing>
+
+  <!-- SpecWeap editthing - for special weapons -->
+  <editthing
+    group="Rifts"
+    compset="SpecWeapSRA"
+    name="Special Weapon (Rifts)"
+    prefix="wp"
+    description="Armor, vehicles, and simple equipment all have their own tabs for creating objects of those types."
+    summary="Defines a special weapon that can be selected on the Armory tab.">
+    <inputthing
+      name="Weapon Type"
+      helptext="Specify the type for this weapon.">
+      <it_tagpick group="WeaponType" tag="?" require="yes" deftag="SpecCannon"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Damage"
+      helptext="Specify the damage rating of the weapon.">
+      <it_field field="wpDamage"/>
+      </inputthing>
+    <inputthing
+      name="Attack Bonus"
+      helptext="Specify the attack bonus of the weapon.">
+      <it_field field="wpBonus"/>
+      </inputthing>
+    <inputthing
+      name="Strength Requirement Die"
+      helptext="Specify the minimum strength required die type for this weapon. If the weapon has no strength requirement, do not specify.">
+      <it_tagpick group="StrReqDie" tag="?" />
+      </inputthing>
+    <inputthing
+      name="Short Range"
+      helptext="Specify the short range distance of the weapon.">
+      <it_field field="wpShort"/>
+      </inputthing>
+    <inputthing
+      name="Medium Range"
+      helptext="Specify the medium range distance of the weapon.">
+      <it_field field="wpMedium"/>
+      </inputthing>
+    <inputthing
+      name="Long Range"
+      helptext="Specify the long range distance of the weapon.">
+      <it_field field="wpLong"/>
+      </inputthing>
+    <inputthing
+      name="Armor Piercing"
+      helptext="Specify the armor piercing rating of the weapon.">
+      <it_field field="wpPiercing"/>
+      </inputthing>
+    <inputthing
+      name="Actions to Relead"
+      helptext="Specify the number of actions required to reload the weapon.">
+      <it_field field="wpReload"/>
+      </inputthing>
+    <inputthing
+      name="Rate of Fire"
+      helptext="Specify the rate of fire for the weapon.">
+      <it_field field="wpFireRate"/>
+      </inputthing>
+    <inputthing
+      name="Number of Shots"
+      helptext="Specify the number of shots for the weapon.">
+      <it_field field="wpShots"/>
+      </inputthing>
+    <inputthing
+      name="Ammunition Size"
+      helptext="Specify the ammunition size/type utilized by the weapon.">
+      <it_field field="wpAmmo"/>
+      </inputthing>
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this armor has an effect that can be activated by the user">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Actvation Text"
+      helptext="Specify text displayed with the activation checkbox.">
+      <it_field field="wpActiveText"/>
+      </inputthing>
+    <inputthing
+      name="Special Traits"
+      helptext="Specify any number of special traits that apply to this weapon.">
+      <it_taglist group="Weapon" tag="?" />
+      </inputthing>
+    <inputthing
+      name="Cost Uses Vehicle Size?"
+      helptext="Specify whether this weapon uses vehicle Size as part of it's Cost calculation. Note: This is for the Sci-Fi Companion.">
+      <it_tagcheck group="User" tag="SizeCost"/>
+      </inputthing>
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    <inputthing
+      name="Weight"
+      helptext="Specify the weight of the item in pounds.">
+      <it_field field="gearWeight"/>
+      </inputthing>
+    <inputthing
+      name="Modification Slots Used"
+      helptext="Specify the number of Modification Slots this equipment takes up. Note: This is for the Sci-Fi Companion, and only needs to be set for those weapons with nothing in the .">
+      <it_field field="grModsUsed"/>
+      </inputthing>
+    <inputthing
+      name="Usable with Mod Slots and no Slot Cost?"
+      helptext="Specify whether this weapon is usable in Equipment Modification Slots from the Sci-Fi Companion. Note that this only needs to be selected if there is not a value in 'Modification Slots Used'">
+      <it_tagcheck group="Equipment" tag="ModSlotUse"/>
+      </inputthing>
+    <inputthing
+      name="Two-Handed Weapon?"
+      helptext="Specify whether this weapon is two-handed.">
+      <it_tagcheck group="Equipment" tag="TwoHand"/>
+      </inputthing>
+    <inputthing
+      name="Special Behaviors"
+      helptext="Specify any special behaviors for the weapon of which the user should be reminded.">
+      <it_field field="wpSpecial"/>
+      </inputthing>
+    <inputthing
+      name="Natural Attack?"
+      helptext="Specify whether this weapon should be treated as a natural attack.">
+      <it_tagcheck group="Equipment" tag="Natural"/>
+      </inputthing>
+    <inputthing
+      name="Hide from User?"
+      helptext="Specify whether this weapon should be hidden from the user-selectable weapon list.">
+      <it_tagcheck group="Hide" tag="Equipment"/>
+      </inputthing>
+    <inputthing
+      name="Ultra Tech?"
+      helptext="Specify whether this is considered Ultra Tech from the Sci-Fi Companion.">
+      <it_tagcheck group="Equipment" tag="UltraTech"/>
+      </inputthing>
+    <inputthing
+      name="Treat as Standard Gear"
+      helptext="Specify whether this item is designated as 'standard gear' that can be readily omitted from use with selected Savage Settings.">
+      <it_tagcheck group="Equipment" tag="Standard"/>
+      </inputthing>
+    </editthing>
   <!-- Framework Ability editthing -->
   <editthing
     group="Rifts"
@@ -65,6 +463,12 @@
         !Arcane.SuperPower &amp; !Skill.skKnow
       </match>
       </it_linkage>
+      </inputthing>
+    <!-- For framework abilities associated with an Arcane Background, this provides tags to forward to restrict available powers -->
+    <inputthing
+      name="Invalid Powers"
+      helptext="Specify which Powers are NOT available to those with this Arcane Background.">
+      <it_taglist group="PowerDeny" tag="?" />
       </inputthing>
     <inputthing
       name="Focus for Knowledge Skill"
@@ -186,6 +590,21 @@
       <it_tagcheck group="Equipment" tag="StackArmor"/>
       </inputthing>
     <inputthing
+      name="Strength Requirement Die"
+      helptext="Specify the minimum strength required die type for this armor.">
+      <it_tagpick group="ArmorStrReqDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this armor has an effect that can be activated by the user">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Actvation Text"
+      helptext="Specify text displayed with the activation checkbox.">
+      <it_field field="defActiveText"/>
+      </inputthing>
+    <inputthing
       name="Special Traits"
       helptext="Specify any number of special traits that apply to this armor.">
       <it_taglist group="ArmorSpecial" tag="?" />
@@ -247,6 +666,11 @@
       <it_tagpick group="ArmorStrReqDie" tag="?"/>
       </inputthing>
     <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this shield has an effect that can be activated by the user">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
       name="Cost"
       helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
       <it_field field="grCost"/>
@@ -277,6 +701,21 @@
     description="The Hero's Journey entry defines a selection on a table for the hero."
     summary="Defines an entry on a Hero's Journey table.">
     <inputthing
+      name="Hero's Journey Table"
+      helptext="Specify the table this entry goes to.">
+      <it_tagpick group="HJCategorySRA" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Minimum Roll"
+      helptext="Specify the low roll needed to get the entry on the table.">
+      <it_field field="hjRangeMin"/>
+      </inputthing>
+    <inputthing
+      name="Maximum Roll"
+      helptext="Specify the high roll needed to get the entry on the table.">
+      <it_field field="hjRangeMax"/>
+      </inputthing>
+    <inputthing
       name="Menu #1 Source"
       helptext="Specify the source from which to retrieve choices for display in the first menu.">
       <it_tagpick group="ChooseSrc1" tag="?"/>
@@ -296,6 +735,16 @@
     prefix="fg"
     description="The Hero's Journey entry defines a selection on a table for the hero."
     summary="Defines an entry on the MARS Fortune and Glory table.">
+    <inputthing
+      name="Minimum Roll"
+      helptext="Specify the low roll needed to get the entry on the table.">
+      <it_field field="fgRangeMin"/>
+      </inputthing>
+    <inputthing
+      name="Maximum Roll"
+      helptext="Specify the high roll needed to get the entry on the table.">
+      <it_field field="fgRangeMax"/>
+      </inputthing>
     <inputthing
       name="Menu #1 Source"
       helptext="Specify the source from which to retrieve choices for display in the first menu.">

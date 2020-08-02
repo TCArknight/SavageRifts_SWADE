@@ -26,7 +26,7 @@
 
         Outbound parameter: iteminfo
   -->
-  <procedure id="InfoPARifts" scripttype="mouseinfo"><![CDATA[
+  <procedure id="InfoVehRifts" scripttype="mouseinfo"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -66,7 +66,7 @@
       iteminfo &= "{b}Pace:{/b} " & field[vhPAPace].text & " + Run d" & field[vhPARunning].text & " (" & field[vhTopSpeed].text & " MPH){br}"
     elseif (tagis[VehType.Walker] <> 0) then
       iteminfo &= "{b}Strength:{/b} " & tagnames[vhWalkerSt.?] & "{br}"
-      iteminfo &= "{b}Pace:{/b} " & field[vhTopSpeed].text & "{br}"
+      iteminfo &= "{b}Pace+Run (MPH):{/b} " & field[vhAccel].text & " (" & field[vhTopSpeed].text & " MPH){br}"
     else
       iteminfo &= "{b}Acc/Top Speed:{/b} " & field[vhAccel].text & "/" & field[vhTopSpeed].text & "{br}"
       endif
@@ -85,19 +85,26 @@
     ~finish with generic special traits
     ~report any special details about the weapon (omitting if there are none)
     var special as string
-    special = tagnames[Vehicle.?,", "]
+	var vehspec as string
 	
-    if (!field[vhSpecial].isempty + !empty(special) > 0) then
+    special = tagnames[Vehicle.?,", "]
+	vehspec = field[vhSpecial].text
+	
+    if (!empty(vehspec) + !empty(special) > 0) then
       iteminfo &= "{b}Special:{/b} "
       if (empty(special) = 0) then
         iteminfo &= special
         endif
-      if (field[vhSpecial].isempty = 0) then
-        if (empty(special) = 0) then
-          iteminfo &= "{br}{br}{b}Notes: {/b}"
-          endif
-        iteminfo &= field[vhSpecial].text
+
+      if (empty(special) = 0) then
+        iteminfo &= ", "
         endif
+		
+      if (empty(vehspec) = 0) then
+        iteminfo &= vehspec
+        endif	  
+
+	  iteminfo &= "{br}"
       endif
 
     iteminfo &= "{br}"
@@ -134,7 +141,7 @@
       multiplier = ""
       ModList = ""
 
-      foreach pick in gizmo
+      foreach pick in gizmo where "component.Modificatn"
         if (eachpick.tagis[Modificatn.Modificatn] = 0) then
           if (compare(prevmod,eachpick.idstring) = 0) then
             dupcount += 1

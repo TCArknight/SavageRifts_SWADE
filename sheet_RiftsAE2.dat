@@ -382,7 +382,7 @@
           if (tagis[VehType.Starship] <> 0) then
             @text = "Starship: " & field[name].text
           elseif (tagis[VehType.Walker] <> 0) then
-            @text = "Walker: " & field[name].text
+            @text = "Robot Vehicle: " & field[name].text
           elseif (tagis[VehType.PowerAr] <> 0) then
             @text = "Power Armor: " & field[name].text
           else
@@ -419,7 +419,7 @@
             @text &= "{b}Pace:{/b} " & field[vhPAPace].text & " + Run d" & field[vhPARunning].text & " (" & field[vhTopSpeed].text & " MPH){br}"
           elseif (tagis[VehType.Walker] <> 0) then
             @text &= "{b}Strength:{/b} " & tagnames[vhWalkerSt.?] & "{br}"
-            @text &= "{b}Pace:{/b} " & field[vhTopSpeed].text & "{br}"
+            @text &= "{b}Pace+Run (MPH):{/b} " & field[vhAccel].text & " (" & field[vhTopSpeed].text & " MPH){br}"
           else
             @text &= "{b}Acc/Top Speed:{/b} " & field[vhAccel].text & "/" & field[vhTopSpeed].text & "{br}"
             endif
@@ -533,11 +533,17 @@
                     else
                       ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text
                       endif
+                    if (eachpick.field[summary].isempty = 0) then
+                      ModList &= " (" & eachpick.field[summary].text & ")"
+                      endif					
                   else
                     if (eachpick.field[stackQty].value > 1) then
                       ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
                     else
                       ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+                      endif
+                    if (eachpick.field[summary].isempty = 0) then
+                      ModList &= " (" & eachpick.field[summary].text & ")" 
                       endif
                     endif
 
@@ -563,7 +569,7 @@
 
           ~if there is any load-out for the vehicle, output it
           if (empty(loadout) = 0) then
-            @text &= "{b}Weapons/Equipment:{/b}{br}" & loadout
+            @text &= "{br}{b}Weapons/Equipment:{/b}{br}" & loadout
             endif
 
 		]]></labeltext>
@@ -640,12 +646,14 @@
     <portalref portal="sraCreature"/>
     <portalref portal="sraDrawback"/>
     <portalref portal="sraSPAttack"/>
+    <portalref portal="sraHerosJourn"/>
     <portalref portal="sraPersonal"/>
     <portalref portal="sraPower"/>
     <portalref portal="sraSPPower"/>
     <portalref portal="oArmor"/>
     <portalref portal="sraWeapon"/>
     <portalref portal="sraGear"/>
+    <portalref portal="sraCyberware"/>
     <portalref portal="zAlly"/>
     <portalref portal="zVehicle"/>
     <position><![CDATA[
@@ -666,11 +674,13 @@
       perform portal[sraDrawback].autoplace
       perform portal[sraSPAttack].autoplace
       perform portal[sraPersonal].autoplace
+      perform portal[sraHerosJourn].autoplace
       perform portal[sraPower].autoplace
       perform portal[sraSPPower].autoplace
       perform portal[oArmor].autoplace
       perform portal[sraWeapon].autoplace
       perform portal[sraGear].autoplace
+      perform portal[sraCyberware].autoplace
 
       ~only include allies if the user has enabled them
       if (hero.tagis[source.ShowAlly] = 0) then

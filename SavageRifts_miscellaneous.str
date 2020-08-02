@@ -11,6 +11,20 @@
     name="Fortune and Glory"
 	autocompset="no">
 
+    <field
+      id="fgRangeMin"
+      name="Minimum roll for the entry"
+      type="derived"
+	  minvalue="1">
+	  </field>
+
+    <field
+      id="fgRangeMax"
+      name="Maximum roll for the entry"
+      type="derived"
+	  minvalue="1">
+	  </field>
+	  
     <!-- Each fortune must consume an instance in the resource tracking edges -->
     <eval index="1" phase="Setup" priority="5000"><![CDATA[
       ~if this fortune is not added directly to the hero (i.e. an advance), skip it entirely
@@ -56,14 +70,36 @@
       type="derived"
 	  maxlength="500">
 	  </field>
+
+    <field
+      id="hjRangeMin"
+      name="Minimum roll for the entry"
+      type="derived"
+	  minvalue="1">
+	  </field>
+
+    <field
+      id="hjRangeMax"
+      name="Maximum roll for the entry"
+      type="derived"
+	  minvalue="1">
+	  </field>
+
+    <field
+      id="hjRangeTxt"
+      name="Maximum roll for the entry"
+      type="derived"
+	  maxlength="15">
+	  </field>
 	  
     <!-- Each HJ Entry needs its own identity tag to detect cascading dependencies via prereqs -->
-    <identity group="HJRiftsAE"/>
+    <identity group="HeroJourneyRifts"/>
 	
 	<!-- Forward the Heros Journey table and identity to the actor -->
     <eval index="1" phase="Initialize" priority="2100"><![CDATA[
-      perform forward[HJRiftsAE.?]
-	  perform forward[HJCategoryRiftsAE.?]
+      perform forward[HeroJourneyRifts.?]
+	  perform forward[HJCategorySRA.?]
+
       ]]></eval>
 	  
     <!-- Each hero journey selection must consume an instance in the resource tracking edges -->
@@ -79,6 +115,36 @@
 
       ~consume additional edge slots
       perform #resspent[resHeroJrn,+,1,field[name].text]
+      ]]></eval>
+	  
+	<!-- build the roll range for display -->
+    <eval index="3" phase="Render" priority="2000"><![CDATA[
+	  ~ if we're a showonly item, then we don't need to  have a value
+	  doneif (tagis[thing.showonly] <> 0)
+	  
+	  ~ if we're a NoRollValue item, then we don't need to  have a value
+	  doneif (tagis[Helper.NoRollValue] <> 0)
+	  
+	  var min as number
+	  var max as number
+	  var rollStr as string
+		  
+	  ~ build roll
+	  min = field[hjRangeMin].value
+	  max = field[hjRangeMax].value
+	  			
+	  if (min = max) then
+		~single number entry
+		if (min > 0) then
+		  rollStr &= "(" & min & ")"
+	      endif
+		else
+		  ~range entry
+		  rollStr &= "(" & min & " - " & max & ")"
+	      endif
+			
+      field[hjRangeTxt].text = rollStr
+
       ]]></eval>
     </component>
 

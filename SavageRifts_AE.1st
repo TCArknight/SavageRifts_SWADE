@@ -67,7 +67,6 @@
     <value id="ShowRiftsCyber"/>      <!-- show Rifts Cyberware iunsead of SciFi -->
     <value id="ShowGenHvy"/>        <!-- show Generic Heavy Gear iunsead of SciFi -->
     <value id="CyberNotValid"/>       <!--  -->	
-    <value id="NonStdBuildMaj"/>       <!-- has a Non-Standard Build (Major) racial property -->
     <value id="PPENotValid"/>       <!-- cannot use PPE (magic) -->	
     <value id="ISPNotValid"/>       <!-- cannot use ISP (psionic) -->	
     <value id="ABMagicNotValid"/>       <!-- cannot use Arcane Background (Magic) -->
@@ -86,9 +85,9 @@
 	
   <!-- Hero's Journey Table -->
   <group
-    id="HJCategoryRiftsAE"
+    id="HJCategorySRA"
 	sequence="explicit"
-    dynamic="yes">
+    dynamic="no">
     <value id="BodArm" name="Body Armor" order="1"/>    
     <value id="CCW" name="Close Combat Weapons" order="2"/>    
     <value id="Cyber" name="Cybernetics" order="3"/>    
@@ -102,9 +101,16 @@
     <value id="Under" name="Underworld/Black Ops" order="11"/>        
     </group>
 	
+  <!-- Hero's Journey Valid -->
+  <group
+    id="HJInvalidCatSRA"
+    dynamic="no"
+    inherit="HJCategorySRA">       
+    </group>	
+	
   <!-- Hero's Journey -->
   <group
-    id="HJRiftsAE"
+    id="HeroJourneyRifts"
     dynamic="yes">
     <value id="HJRiftsAE" />	
     </group>
@@ -179,7 +185,6 @@
     <value id="FullEnvPro" name="Full Environmental Protection"/>
     </group>
 
-
   <!-- TCA: Power Point Type  -->
   <group
     id="PPType"
@@ -215,7 +220,7 @@
     name="Savage Foes of North America"
     parent="sepRiftsAE"
     reportable="yes"
-    selectable="yes"
+    selectable="no"
 	sortorder="2"
     description="Material from the supplement.">
     </source>
@@ -243,7 +248,7 @@
     id="srcRiftsArcMysAE"
     name="Arcana and Mysticism"
     parent="sepRiftsSuppAE"
-    selectable="yes"
+    selectable="no"
     reportable="yes"
 	sortorder="2"
     description="Material from the supplement.">
@@ -253,7 +258,7 @@
     id="srcRiftsBloBanAE"
     name="Blood and Banes"
     parent="sepRiftsSuppAE"
-    selectable="yes"
+    selectable="no"
     reportable="yes"
 	sortorder="3"
     description="Material from the supplement.">
@@ -263,7 +268,7 @@
     id="srcRiftsEmpHumAE"
     name="Empires of Humanity"
     parent="sepRiftsSuppAE"
-    selectable="yes"
+    selectable="no"
     reportable="yes"
 	sortorder="4"
     description="Material from the supplement.">
@@ -286,11 +291,30 @@
   <sortset
     id="HerosJourney"
     name="Hero's Journey">
-    <sortkey isfield="no" id="HJCategoryRiftsAE"/>
+    <sortkey isfield="no" id="HJCategorySRA"/>
 	<sortkey isfield="no" id="explicit"/>
     <sortkey isfield="no" id="_Name_"/>
     </sortset>	
+	
+  <sortset
+    id="HerosJourneyRoll"
+    name="Hero's Journey (Roll)">
+    <sortkey isfield="no" id="HJCategorySRA"/>
+	<sortkey isfield="no" id="explicit"/>
+    <sortkey isfield="yes" id="hjRangeMin"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
 
+	
+  <sortset
+    id="FortuneRoll"
+    name="Fortune and Glory (Roll)">
+    <sortkey isfield="no" id="HJCategorySRA"/>
+	<sortkey isfield="no" id="explicit"/>
+    <sortkey isfield="yes" id="fgRangeMin"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
   <!-- Define a sortset that lists activated abilities, then temporary in-play adjustments. -->
   <sortset
     id="CyberwareSRA"

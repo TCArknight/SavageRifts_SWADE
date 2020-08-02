@@ -15,6 +15,14 @@
     autocompset="no"
     panellink="cyberSRA">
 
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="gcybSummary"
+      name="Value"
+      type="derived"
+      maxlength="150">
+      </field>
+	  
     <!-- This contains the amount of Strain the Cyberware exerts -->
     <field
       id="gcybStrain"
@@ -162,6 +170,10 @@
 	    field[grCost].value *= 2
         endif
       ]]></eval>
+	  
+    <eval index="4" phase="Render" priority="9000" name="Build gcybSummary"><![CDATA[
+	  field[gcybSummary].text = field[summary].text
+      ]]></eval>	 
 	  
     <evalrule index="1" phase="Validate" priority="9000" message="Cyberware exceeds limit on number of uses per item."><![CDATA[
       var totaluses as number

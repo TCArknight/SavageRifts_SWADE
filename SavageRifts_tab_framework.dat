@@ -106,7 +106,7 @@
       component="Fortune"
       showtemplate="fgSelPick"
       choosetemplate="SimpleItem"
-	  choosesortset="explicit"
+	  choosesortset="FortuneRoll"
       addpick="resFortune"
       descwidth="350">
       <titlebar><![CDATA[

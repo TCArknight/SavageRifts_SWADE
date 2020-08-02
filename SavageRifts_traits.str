@@ -97,9 +97,9 @@
     <eval index="1" phase="Setup" priority="5000"><![CDATA[
       perform forward[FraAbility.?]
       ]]></eval>
-
+	  
     <!-- If we have a user field, map it into the derived field -->
-    <eval index="3" phase="Setup" priority="5000"><![CDATA[
+    <eval index="2" phase="Setup" priority="5000"><![CDATA[
       ~if this pick was NOT user-added, no user fields can be accessed
       doneif (isuser = 0)
 

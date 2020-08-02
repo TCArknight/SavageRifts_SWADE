@@ -169,7 +169,7 @@
         action="info">
         </action>
       <mouseinfo><![CDATA[
-        call InfoPARifts
+        call InfoVehRifts
         ]]></mouseinfo>
       </portal>
 
@@ -261,15 +261,26 @@
         ]]></mouseinfo>
       </portal>
 
-    <portal
+    <!-- <portal
       id="info"
       style="actInfo">
       <action
         action="info">
         </action>
       <mouseinfo/>
-      </portal>
+      </portal> -->
 
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo><![CDATA[
+        call InfoVehRifts
+        ]]></mouseinfo>
+      </portal>
+	  
     <portal
       id="edit"
       style="actEdit"

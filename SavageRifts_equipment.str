@@ -6,24 +6,140 @@
 
 <document signature="Hero Lab Structure">
 
-  <!-- ArmorSpecial component -->
+  <!-- WeaponBase component
+        All weapons derive from this component. Weapons track a bonus value and damage
+        rating, as well as a strength requirement. The net attack value for the weapon
+        is calculating, incorporating any penalties that may be applied due to special
+        circumstances (e.g. failing to meet the strength requirement).
+  -->
   <component
-    id="ArmorSpecial"
-    name="Armor Special"
+    id="WeaponBaseSRA"
+    name="Weapon"
     autocompset="no"
+    panellink="armorySRA"
     ispublic="no">
 
-    <!-- Toughness bonus for the armor -->
+    <!-- Are the Weapon's abilities on/applicable? This is for Weapon that either has a conditional modifier that depends on external factors
+         like a Survival bonus that's only good in a certain type of terrain, or a Charisma modifier that depends on the sex of the target. 
+         It's a separate issue from Equipping/Unequipping the object, as being in effect or not has no effect on the Strain -->
     <field
-      id="arToughness"
-      name="Toughness Modifier"
-      type="derived"
-      defvalue="0">
+      id="wpActive"
+      name="Weapon is Active/Applicable"
+      type="user"
+      minvalue="0"
+      maxvalue="1"
+      defvalue="1">
       </field>
 	  
     <!-- Special details about the armor -->
     <field
-      id="arSpecial"
+      id="wpActiveText"
+      name="Activation Text"
+      type="derived"
+      maxlength="50">
+      </field>
+
+    <!-- Synthesized Alternate notes about the weapon (excludes AP from special string) -->
+    <field
+      id="wpNotesAlt"
+      name="Notes"
+      type="derived"
+      maxlength="250">
+      </field>
+	  
+    <!-- Final weapon damage for display -->
+    <field
+      id="wpShowDmgAlt"
+      name="Final Damage for Display"
+      type="derived"
+      maxfinal="20">
+      <!-- If we have a weapon die, synthesize for display, else use wpDamage -->
+      <finalize><![CDATA[
+        ~use the weapon die to display the damage, else use the explicit damage
+        if (tagis[component.WeapMelee] + tagis[WeaponDie.?] < 2) then
+          @text = field[wpDamage].text
+        else
+          var die as number
+		  var mult as number
+		  
+          if (@ispick = 0) then
+            die = tagvalue[WeaponDie.?] * 2
+          else
+            die = field[wpDie].value * 2
+            endif
+		  mult = tagvalue[Helper.DieMult?]
+		  if (mult > 1) then
+		    @text = "Str+" & mult & "d" & die
+		  else 
+            @text = "Str+d" & die
+			endif
+          endif
+
+        ~append any weapon damage bonus text
+        if (field[wpDmgBoTxt].isempty = 0) then
+          @text &= field[wpDmgBoTxt].text
+          endif
+
+        ~append any weapon damage bonus
+        if (field[wpDmgBonus].value <> 0) then
+          @text &= signed(field[wpDmgBonus].value)
+          endif
+        ]]></finalize>
+      </field>
+    <!-- Assign any derived special notes to the appropriate field -->
+    <eval index="1" phase="Render" priority="1000"><![CDATA[
+      var special as string
+
+      ~report the armor piercing rating of the weapon (if any)
+      ~if (field[wpPiercing].value > 0) then
+      ~  if (empty(special) = 0) then
+      ~    special &= ", "
+      ~    endif
+      ~  special &= "AP " & field[wpPiercing].value
+      ~  endif
+
+      ~report the weapon as two-handed (if any)
+      if (tagis[Equipment.TwoHand] <> 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= "Requires two hands"
+        endif
+
+      ~append any special attributes appropriately (if any)
+      var attribs as string
+      attribs = tagabbrevs[Weapon.?,", "]
+      if (empty(attribs) = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= attribs
+        endif
+
+      ~append any special details for this weapon
+      if (field[wpSpecial].isempty = 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= field[wpSpecial].text
+        endif
+
+      ~we've synthesized the notes for the weapon
+      field[wpNotesAlt].text = special
+      ]]></eval>
+	  
+    </component>
+
+  <!-- DefenseSRA component -->
+  <component
+    id="DefenseSRA"
+    name="Defense (Rifts)"
+    autocompset="no"
+    ispublic="no">
+
+    <!-- Special details about the armor -->
+    <field
+      id="defSpecial"
       name="Special"
       type="derived"
       maxlength="200">
@@ -31,23 +147,32 @@
 	  
     <!-- Synthesized notes about the armor -->
     <field
-      id="arSpecDisp"
+      id="defSpecDisp"
       name="Notes"
       type="derived"
       maxlength="250">
       </field>
-	  
-    <!-- Areas of coverage for the armor -->
+
+    <!-- Are the Armor's abilities on/applicable? This is for Armor that either has a conditional modifier that depends on external factors
+         like a Survival bonus that's only good in a certain type of terrain, or a Charisma modifier that depends on the sex of the target. 
+         It's a separate issue from Equipping/Unequipping the object, as being in effect or not has no effect on the Strain -->
     <field
-      id="arCoverage"
-      name="Coverage"
-      type="derived"
-      maxlength="100">
+      id="defActive"
+      name="Defense is Active/Applicable"
+      type="user"
+      minvalue="0"
+      maxvalue="1"
+      defvalue="1">
       </field>
 	  
-    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
-        mark ourselves as not satisfying the requirement -->
-
+    <!-- Special details about the armor -->
+    <field
+      id="defActiveText"
+      name="Activation Text"
+      type="derived"
+      maxlength="50">
+      </field>	
+	  
     <!-- Assign any derived special notes to the appropriate field -->
     <eval index="1" phase="Render" priority="1000"><![CDATA[
       var special as string
@@ -63,16 +188,43 @@
         endif
 
       ~append any special details for this weapon
-      if (field[arSpecial].isempty = 0) then
+      if (field[defSpecial].isempty = 0) then
         if (empty(special) = 0) then
           special &= ", "
           endif
-        special &= field[arSpecial].text
+        special &= field[defSpecial].text
         endif
 
       ~we've synthesized the notes for the weapon
-      field[arSpecDisp].text = special
-      ]]></eval>
+      field[defSpecDisp].text = special
+      ]]></eval>	  	  
+    </component>
+
+  <!-- ArmorSpecial component -->
+  <component
+    id="ArmorSpecial"
+    name="Armor Special"
+    autocompset="no"
+    ispublic="no">
+
+    <!-- Toughness bonus for the armor -->
+    <field
+      id="arToughness"
+      name="Toughness Modifier"
+      type="derived"
+      defvalue="0">
+      </field>
+	  
+    <!-- Areas of coverage for the armor -->
+    <field
+      id="arCoverage"
+      name="Coverage"
+      type="derived"
+      maxlength="100">
+      </field>	  
+	  
+    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
+        mark ourselves as not satisfying the requirement -->
 	  
     <!-- compile the display for body coverage to the appropriate field -->
     <eval index="2" phase="Render" priority="500"><![CDATA[
@@ -107,50 +259,6 @@
     autocompset="no"
     ispublic="no">
 	  
-    <!-- Special details about the armor -->
-    <field
-      id="shSpecial"
-      name="Special"
-      type="derived"
-      maxlength="200">
-      </field>
-	  
-    <!-- Synthesized notes about the armor -->
-    <field
-      id="shSpecDisp"
-      name="Notes"
-      type="derived"
-      maxlength="250">
-      </field>
-	  
-    <!-- If equipped and the minimum strength isn't satisfied, apply any penalty and
-        mark ourselves as not satisfying the requirement -->
-
-    <!-- Assign any derived special notes to the appropriate field -->
-    <eval index="1" phase="Render" priority="1000"><![CDATA[
-      var special as string
-
-      ~append any special attributes appropriately (if any)
-      var attribs as string
-      attribs = tagnames[ArmorSpecial.?,", "]
-      if (empty(attribs) = 0) then
-        if (empty(special) = 0) then
-          special &= ", "
-          endif
-        special &= attribs
-        endif
-
-      ~append any special details for this weapon
-      if (field[shSpecial].isempty = 0) then
-        if (empty(special) = 0) then
-          special &= ", "
-          endif
-        special &= field[shSpecial].text
-        endif
-
-      ~we've synthesized the notes for the weapon
-      field[shSpecDisp].text = special
-      ]]></eval>
     </component>
 	
   <!-- RiftsPowerAr component -->
@@ -207,12 +315,60 @@
 
   <!-- No compsets are auto-defined for the component -->
 
+  <!-- Ranged - ranged weapons -->
+  <compset
+    id="RangedSRA"
+    stackable="yes">
+    <compref component="WeaponBase"/>
+    <compref component="WeaponBaseSRA"/>
+    <compref component="WeapRange"/>
+    <compref component="Equippable"/>
+    <compref component="Modificatn"/>
+    <compref component="Gear"/>
+    </compset>
+
+  <!-- Special - special weapons (which are very similar to ranged weapons) -->
+  <!-- RDS SFC Added Modificatn component to allow it to use the Modification properties from the Sci-Fi-Companion -->
+  <compset
+    id="SpecWeapSRA"
+    stackable="yes">
+    <compref component="WeaponBase"/>
+    <compref component="WeaponBaseSRA"/>
+    <compref component="WeapRange"/>
+    <compref component="WeapSpec"/>
+    <compref component="Equippable"/>
+    <compref component="Modificatn"/>
+    <compref component="Gear"/>
+    </compset>
+
+  <!-- Melee - melee weapons -->
+  <compset
+    id="MeleeSRA"
+    stackable="yes">
+    <compref component="WeaponBase"/>
+    <compref component="WeaponBaseSRA"/>
+    <compref component="WeapMelee"/>
+    <compref component="Equippable"/>
+    <compref component="Gear"/>
+    </compset>
+
+  <!-- Weapon - all weapons (above) must include these fields -->
+  <compset
+    id="WeaponSRA"
+    stackable="yes">
+    <compref component="WeaponBase"/>
+    <compref component="WeaponBaseSRA"/>
+    <compref component="Equippable"/>
+    <compref component="Gear"/>
+    </compset>
+	
   <!-- Armor -->
   <compset
     id="ArmorSRA"
     stackable="yes">
     <compref component="Armor"/>
     <compref component="ArmorSpecial"/>
+    <compref component="DefenseSRA"/>
     <compref component="Defense"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
@@ -224,6 +380,17 @@
     stackable="yes">
     <compref component="Shield"/>
     <compref component="ShieldSpecial"/>
+    <compref component="DefenseSRA"/>
+    <compref component="Defense"/>
+    <compref component="Equippable"/>
+    <compref component="Gear"/>
+    </compset>
+
+  <!-- Shield -->
+  <compset
+    id="DefenseSRA"
+    stackable="yes">
+    <compref component="DefenseSRA"/>
     <compref component="Defense"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>

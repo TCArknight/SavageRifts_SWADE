@@ -45,7 +45,7 @@
 
 	append liston& @newline
     foreach pick in hero where tagexpr
-	  append listitem & @boldon & eachpick.tagnames[HJCategoryRiftsAE.?,","] & @boldoff & @newline
+	  append listitem & @boldon & eachpick.tagnames[HJCategorySRA.?,","] & @boldoff & @newline
       append liston & @newline 
 	  append listitem & eachpick.field[name].text & ": " & eachpick.field[summary].text & @newline
 	  append listoff & @newline
@@ -134,9 +134,9 @@
             endif
           endif
 		if (eachpick.tagis[component.ArmorSpecial] <> 0) then
-		   if (eachpick.field[arSpecDisp].isempty = 0) then
+		   if (eachpick.field[defSpecDisp].isempty = 0) then
 		     ~There is text in the grNotes field, so output it
-             details &= "; " & eachpick.field[arSpecDisp].text
+             details &= "; " & eachpick.field[defSpecDisp].text
              endif
 		   endif
 		   
@@ -564,7 +564,7 @@
 		  endif
 		
         ~output Hero's Journey selections
-		if (hero.tagis[HJCategoryRiftsAE.?] <> 0) then
+		if (hero.tagis[HJCategorySRA.?] <> 0) then
 		  append @newline
           append @boldon & "Hero's Journey: " & @boldoff & @newline
           tagexpr = "component.HerosJourney"
@@ -747,7 +747,7 @@
 		  endif
 		
         ~output Hero's Journey selections
-		if (hero.tagis[HJCategoryRiftsAE.?] <> 0) then
+		if (hero.tagis[HJCategorySRA.?] <> 0) then
 		  append @newline
           append @boldon & "Hero's Journey: " & @boldoff & @newline
           tagexpr = "component.HerosJourney"
