@@ -11248,6 +11248,7 @@ perform assign[Equipment.TwoHand]</eval>
     <tag group="StrReqDie" tag="6"/>
     <tag group="Weapon" tag="Raise2d6" name="+2d6 dmg on a raise"/>
     <tag group="Weapon" tag="Atomic"/>
+    <tag group="Weapon" tag="MegaDamage"/>
     <eval phase="Initialize" priority="2000">doneif (ispick = 0)
 doneif (isuser = 0)
 
@@ -11988,18 +11989,20 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="stackQty" value="2"/>
         <assignval field="wsLinked" value="1"/>
         <assignval field="livename" value="Dual-Linked Medium Rail Guns"/>
-        <assignval field="wpSpecial" value="(Right Forearm, may load silver-tipped wooden rounds)"/>
+        <assignval field="wpSpecial" value="may load silver-tipped wooden rounds"/>
+        <assignval field="wpLocation" value="Right Forearm"/>
         </bootstrap>
       <bootstrap thing="wpSRALightRailGun">
         <assignval field="wsFixed" value="1"/>
-        <assignval field="wpSpecial" value="(Chest, Fixed Forward, can fire at grappled opponents)"/>
+        <assignval field="wpSpecial" value="can fire at grappled opponents"/>
+        <assignval field="wpLocation" value="Chest, Fixed Forward"/>
         </bootstrap>
       <bootstrap thing="wpSRAIonCannonMd">
-        <assignval field="wpSpecial" value="(Left Forearm)"/>
+        <assignval field="wpLocation" value="Left Forearm"/>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Chest)"/>
+        <assignval field="wpLocation" value="Chest"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="14"/>
         <assignval field="stackQty" value="2"/>
@@ -12009,10 +12012,10 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wsLinked" value="1"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="livename" value="Dual-Linked Anti-Personnel Lasers"/>
-        <assignval field="wpSpecial" value="(Eyes)"/>
+        <assignval field="wpLocation" value="Eyes"/>
         </bootstrap>
       <bootstrap thing="wpSRAHvyFlameThr">
-        <assignval field="wpSpecial" value="(Jaws)"/>
+        <assignval field="wpLocation" value="Jaws"/>
         </bootstrap>
       <bootstrap thing="wpSRAGunwolfMelee">
         <assignval field="livename" value="Assault Jaws/Claws/Spiked Rail Gun Barrels"/>
@@ -12045,30 +12048,32 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="WeaponType" tag="SFVehMelee"/>
     <tag group="Hide" tag="Equipment"/>
     </thing>
-  <thing id="vhSRANGEX5" name="NG-EX5 Behemoth Explorer" description="Popular with explorers, researchers, and mercenaries as a mobile base camp or command post. The massive robot features ten rooms, each with bunks for four passengers, a dining area, observation deck, and storage bay for power armor and vehicles Size 3 or less." compset="Walker">
+  <thing id="vhSRANGEX5" name="NG EX-5 Behemoth Explorer" description="Popular with explorers, researchers, and mercenaries as a mobile base camp or command post. The massive robot features ten rooms, each with bunks for four passengers, a dining area, observation deck, and storage bay for power armor and vehicles Size 3 or less." compset="Walker">
     <fieldval field="vhCrew" value="3+40"/>
     <fieldval field="vhCost" value="85 M"/>
     <fieldval field="grCost" value="85000000"/>
     <fieldval field="vhTough" value="50"/>
     <fieldval field="vhArmor" value="18"/>
     <fieldval field="vhSize" value="11"/>
-    <fieldval field="grMaxMods" value="12"/>
     <fieldval field="vhTopSpeed" value="40"/>
-    <fieldval field="vhSpecial" value="Crew Quarters and Living Space, Med Bay and Lab, Enhanced Sensors, Mods 10 (as Cargo Space)"/>
     <fieldval field="vhAccel" value="10+d8"/>
+    <fieldval field="grMaxMods" value="10"/>
     <usesource source="srcRiftsTLPGAE"/>
-    <tag group="VehEra" tag="RiftsEra"/>
     <tag group="Vehicle" tag="MDCArmor"/>
     <tag group="vhWalkerSt" tag="16"/>
     <tag group="VehType" tag="Walker"/>
+    <tag group="VehEra" tag="RiftsEra"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="24"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="wpDamage" value="5d6"/>
+        </bootstrap>
+      <bootstrap thing="modSRACargoSpace">
+        <assignval field="stackQty" value="10"/>
         </bootstrap>
       </child>
     </thing>
@@ -12090,18 +12095,18 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="12"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="wpDamage" value="5d6"/>
         </bootstrap>
       <bootstrap thing="wpSRAHvyRailGun">
-        <assignval field="wpSpecial" value="(Head Turret)"/>
+        <assignval field="wpLocation" value="Head Turret"/>
         </bootstrap>
       <bootstrap thing="wpSRALaserMdVeh">
         <autotag group="Weapon" tag="ReactFire"/>
-        <assignval field="wpSpecial" value="(Ventral Sponson)"/>
+        <assignval field="wpLocation" value="Ventral Sponson"/>
         </bootstrap>
       </child>
     </thing>
@@ -12123,22 +12128,22 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="12"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="wpDamage" value="5d6"/>
         </bootstrap>
       <bootstrap thing="wpSRAHvyRailGun">
-        <assignval field="wpSpecial" value="(Head Turret)"/>
+        <assignval field="wpLocation" value="Head Turret)"/>
         </bootstrap>
       <bootstrap thing="wpSRALaserMdVeh">
         <autotag group="Weapon" tag="ReactFire"/>
-        <assignval field="wpSpecial" value="(Ventral Sponson)"/>
+        <assignval field="wpLocation" value="Ventral Sponson"/>
         </bootstrap>
       <bootstrap thing="wpSRAAPLaser">
         <assignval field="wsFixed" value="1"/>
-        <assignval field="wpSpecial" value="(Chest, Fixed Forward)"/>
+        <assignval field="wpLocation" value="Chest, Fixed Forward"/>
         </bootstrap>
       </child>
     </thing>
@@ -12161,7 +12166,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Legs)"/>
+        <assignval field="wpLocation" value="Legs"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="6"/>
         <assignval field="stackQty" value="2"/>
@@ -12174,16 +12179,16 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wpPiercing" value="24"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="5"/>
-        <assignval field="wpSpecial" value="(Shoulders)"/>
+        <assignval field="wpLocation" value="Shoulders"/>
         </bootstrap>
       <bootstrap thing="wpSRAAPLaser">
         <assignval field="wsLinked" value="1"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="livename" value="Dual-Linked Anti-Personnel Lasers"/>
-        <assignval field="wpSpecial" value="(Chest Sponson)"/>
+        <assignval field="wpLocation" value="Chest Sponson"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedRailGun">
-        <assignval field="wpSpecial" value="(Right Forearm)"/>
+        <assignval field="wpLocation" value="Right Forearm"/>
         </bootstrap>
       </child>
     </thing>
@@ -12209,7 +12214,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wsLinked" value="1"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="livename" value="Dual-Linked Medium Ion Cannons"/>
-        <assignval field="wpSpecial" value="(Chest Sponson — torso rotates 360°)"/>
+        <assignval field="wpLocation" value="Chest Sponson — torso rotates 360°"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMissile">
         <autotag group="Weapon" tag="MedBurst"/>
@@ -12218,7 +12223,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wpPiercing" value="24"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="16"/>
-        <assignval field="wpSpecial" value="(Shoulder Turret)"/>
+        <assignval field="wpLocation" value="Shoulder Turret"/>
         </bootstrap>
       </child>
     </thing>
@@ -12244,7 +12249,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wsLinked" value="1"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="livename" value="Dual-Linked Medium Ion Cannons"/>
-        <assignval field="wpSpecial" value="(Chest Sponson — torso rotates 360°)"/>
+        <assignval field="wpLocation" value="Chest Sponson — torso rotates 360°"/>
         </bootstrap>
       </child>
     </thing>
@@ -12267,8 +12272,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="Vehicle" tag="Nimble"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12280,7 +12285,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
@@ -12305,8 +12310,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="VehType" tag="Walker"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12318,15 +12323,16 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="wpDamage" value="5d6"/>
+        <assignval field="modValue" value="1"/>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Shoulders)"/>
+        <assignval field="wpLocation" value="Shoulders"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="12"/>
         <assignval field="stackQty" value="2"/>
@@ -12334,7 +12340,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Lower Legs)"/>
+        <assignval field="wpLocation" value="Lower Legs"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="4"/>
         <assignval field="stackQty" value="2"/>
@@ -12345,17 +12351,17 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wsLinked" value="1"/>
         <assignval field="stackQty" value="2"/>
         <assignval field="livename" value="Dual-Linked Medium Ion Cannons"/>
-        <assignval field="wpSpecial" value="(Chest, Fixed Forward)"/>
+        <assignval field="wpLocation" value="Chest, Fixed Forward"/>
         </bootstrap>
       <bootstrap thing="wpSRAVehVibroSwd">
         <autotag group="Weapon" tag="Retract"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms"/>
         <assignval field="stackQty" value="2"/>
         </bootstrap>
       <bootstrap thing="wpSRAHvyFlameThr">
         <assignval field="stackQty" value="2"/>
         <assignval field="wsLinked" value="1"/>
-        <assignval field="wpSpecial" value="(Lower Legs)"/>
+        <assignval field="wpLocation" value="Lower Legs"/>
         <assignval field="wpDamage" value="3d10"/>
         <assignval field="wpDmgBonus" value="3"/>
         <assignval field="wpFireRate" value="1"/>
@@ -12382,9 +12388,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="vhWalkerSt" tag="15"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAHvyRailGun">
-        <autotag group="Equipment" tag="TwoHand"/>
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpBonus" value="1"/>
         </bootstrap>
@@ -12393,7 +12398,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Shoulders, Forward)"/>
+        <assignval field="wpLocation" value="Shoulders, Forward)"/>
         <assignval field="wpFireRate" value="4"/>
         <assignval field="wpShots" value="15"/>
         <assignval field="stackQty" value="2"/>
@@ -12440,8 +12445,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="VehType" tag="Walker"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12453,7 +12458,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms)"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
@@ -12482,8 +12487,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="VehType" tag="Walker"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12495,7 +12500,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms)"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
@@ -12529,8 +12534,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="VehType" tag="Walker"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12542,7 +12547,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms)"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
@@ -12555,10 +12560,10 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         <assignval field="wpFireRate" value="6"/>
         <assignval field="wpShots" value="96"/>
         <assignval field="livename" value="TX-871MM Rotary Missile Launcher"/>
-        <assignval field="wpSpecial" value="(Shoulder Pod)"/>
+        <assignval field="wpLocation" value="Shoulder Pod)"/>
         </bootstrap>
       <bootstrap thing="wpSRAIonCannonMd">
-        <assignval field="wpSpecial" value="(Shoulder Pod)"/>
+        <assignval field="wpLocation" value="Shoulder Pod)"/>
         </bootstrap>
       </child>
     </thing>
@@ -12580,8 +12585,8 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="VehType" tag="Walker"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRALightRailGun">
-        <autotag group="Weapon" tag="Handheld"/>
         <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAMedMG">
         <autotag group="Weapon" tag="ReactFire"/>
@@ -12593,7 +12598,7 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
         </bootstrap>
       <bootstrap thing="wpSRAMiniMissLau">
         <autotag group="Weapon" tag="SmallBurst"/>
-        <assignval field="wpSpecial" value="(Forearms)"/>
+        <assignval field="wpLocation" value="Forearms)"/>
         <assignval field="wpFireRate" value="2"/>
         <assignval field="wpShots" value="3"/>
         <assignval field="stackQty" value="2"/>
@@ -12664,13 +12669,18 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="vhArmorStrRiftsAE" tag="8"/>
     <tag group="VehType" tag="PowerAr"/>
     <child entity="LoadOut">
-      <bootstrap thing="wpSRANeuralDisRif"></bootstrap>
-      <bootstrap thing="wpSRACAS"></bootstrap>
+      <bootstrap thing="wpSRANeuralDisRif">
+        <assignval field="wpLocation" value="Handheld"/>
+        </bootstrap>
+      <bootstrap thing="wpSRACAS">
+        <assignval field="wpLocation" value="Left Forearm"/>
+        </bootstrap>
       <bootstrap thing="wpSRAAPLaser">
         <autotag group="Weapon" tag="IgnoreLas"/>
         </bootstrap>
       <bootstrap thing="wpSRAVehGrenLaun">
         <assignval field="stackQty" value="2"/>
+        <assignval field="wpLocation" value="Shoulders"/>
         </bootstrap>
       </child>
     </thing>
@@ -12679,17 +12689,17 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <fieldval field="wpMedium" value="36"/>
     <fieldval field="wpLong" value="72"/>
     <fieldval field="wpSpecial" value="Target must make a Vigor roll at −4 (– 8 with raise), and suffer the following result: target is Distracted/Stunned on a raise/success, Incapacitated/Wounded on failure/Critical failure"/>
+    <fieldval field="wpDamage" value="-"/>
     <usesource source="srcRiftsTLFMAE"/>
-    <tag group="Hide" tag="Equipment"/>
-    <tag group="Weapon" tag="Handheld"/>
     <tag group="Weapon" tag="ReactFire"/>
     <tag group="WeaponType" tag="SFVehLaser"/>
+    <tag group="Hide" tag="Equipment"/>
     </thing>
   <thing id="wpSRACAS" name="Capture Assault System" compset="SpecWeapSRA">
     <fieldval field="wpShort" value="36"/>
     <fieldval field="wpMedium" value="72"/>
     <fieldval field="wpLong" value="144"/>
-    <fieldval field="wpSpecial" value="targets make an opposed Agility check against the Shooting roll. If the shooter wins the{br}target is Entangled, or Bound with a raise. bolo is Hardness 24, (Left Forearm)"/>
+    <fieldval field="wpSpecial" value="targets make an opposed Agility check against the Shooting roll. If the shooter wins the target is Entangled, or Bound with a raise. bolo is Hardness 24"/>
     <fieldval field="wpShots" value="10"/>
     <fieldval field="wpDamage" value="3d4"/>
     <usesource source="srcRiftsTLFMAE"/>
@@ -12700,13 +12710,14 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <fieldval field="wpShort" value="18"/>
     <fieldval field="wpMedium" value="36"/>
     <fieldval field="wpLong" value="72"/>
-    <fieldval field="wpSpecial" value="4 each of 3 types: Tear Gas (LBT, Vigor at −2 (– 4 raise) or Stunned), Concussion (MBT, targets affected by {i}havoc{/i} per the power), Fragmentation (3d6 Damage, LBT) , (Shoulders)"/>
+    <fieldval field="wpSpecial" value="4 each of 3 types: Tear Gas (LBT, Vigor at −2 (– 4 raise) or Stunned), Concussion (MBT, targets affected by {i}havoc{/i} per the power), Fragmentation (3d6 Damage, LBT) "/>
     <fieldval field="wpShots" value="12"/>
     <fieldval field="wpFireRate" value="6"/>
+    <fieldval field="wpDamage" value="Per Grenade"/>
     <usesource source="srcRiftsTLPGAE"/>
-    <tag group="Equipment" tag="ModSlotUse"/>
     <tag group="WeaponType" tag="SFVehGrenL"/>
     <tag group="Hide" tag="Equipment"/>
+    <tag group="Equipment" tag="ModSlotUse"/>
     </thing>
   <thing id="vhSRAMkPA12" name="Naruni MK-PA12 Mecha-Knight" description="A flashy, heavily built power suit featuring medieval plate armor styling and energy sword, the Mecha-Knight is a favorite of Cyber-Knights and nostalgic warriors across North America. The suit’s advanced flight capabilities and powerful particle beam energy rifle—with shoulder attachment clamp for hands-free brawling—have made the suit a classic example of what the interdimensional arms dealers can bring to market." compset="PowerArSRA">
     <fieldval field="vhPAPace" value="11"/>
@@ -12728,13 +12739,13 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="vhArmorStrRiftsAE" tag="10"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAVehPartBeam">
-        <autotag group="Weapon" tag="Handheld"/>
+        <assignval field="wpLocation" value="Handheld"/>
         </bootstrap>
       <bootstrap thing="wpSRAVehEnergySwd"></bootstrap>
       <bootstrap thing="wpSRAAPLaser">
         <assignval field="wsLinked" value="1"/>
         <assignval field="livename" value="Dual-Linked Anti-Personnel Laser"/>
-        <assignval field="wpSpecial" value="(Right Shoulder, Front)"/>
+        <assignval field="wpLocation" value="Right Shoulder, Front"/>
         </bootstrap>
       </child>
     </thing>
@@ -12770,14 +12781,14 @@ field[livename].text = field[name].text & " (" & PPE & ")"]]></eval>
     <tag group="Vehicle" tag="MDCArmor"/>
     <child entity="LoadOut">
       <bootstrap thing="wpSRAMedRailGun">
-        <assignval field="wpSpecial" value="(Turret)"/>
+        <assignval field="wpLocation" value="Turret)"/>
         </bootstrap>
       <bootstrap thing="wpSRALaserLtVeh">
-        <assignval field="wpSpecial" value="(Front Sponson)"/>
+        <assignval field="wpLocation" value="Front Sponson)"/>
         </bootstrap>
       <bootstrap thing="wpSRAAntiPerIon">
         <assignval field="stackQty" value="2"/>
-        <assignval field="wpSpecial" value="(Right and Left Sponsons)"/>
+        <assignval field="wpLocation" value="Right and Left Sponsons)"/>
         </bootstrap>
       <bootstrap thing="modSRACargoBayEC">
         <assignval field="stackQty" value="8"/>
@@ -12807,12 +12818,188 @@ newname = replace(newname,")",carrycap, 0)
 
 field[livename].text = newname]]></eval>
     </thing>
-  <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
-  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
+  <thing id="vhSRAWIAHB2000" name="WI-AHB2000 Assault Hover Bike" compset="Vehicle">
+    <fieldval field="vhSize" value="2"/>
+    <fieldval field="grMaxMods" value="10"/>
+    <fieldval field="vhTopSpeed" value="300"/>
+    <fieldval field="vhHandling" value="1"/>
+    <fieldval field="vhTough" value="21"/>
+    <fieldval field="vhArmor" value="12"/>
+    <fieldval field="vhCrew" value="1"/>
+    <fieldval field="vhCost" value="900 K"/>
+    <fieldval field="grCost" value="900000"/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <tag group="Vehicle" tag="NuclearPwr"/>
+    <tag group="Vehicle" tag="STS"/>
+    <tag group="Vehicle" tag="MaxRangeUnl"/>
+    <tag group="VehType" tag="Aircraft"/>
+    <tag group="VehEra" tag="Civilian"/>
+    <tag group="Vehicle" tag="MDCArmor"/>
+    <tag group="Vehicle" tag="ExposedCrew"/>
+    <tag group="Vehicle" tag="VTOLMove"/>
+    <child entity="LoadOut">
+      <bootstrap thing="wpSRAVehPartBeam">
+        <assignval field="stackQty" value="2"/>
+        <assignval field="livename" value="Dual-Linked Particle Beam Guns"/>
+        <assignval field="wsFixed" value="1"/>
+        <assignval field="wpShort" value="20"/>
+        <assignval field="wpMedium" value="40"/>
+        <assignval field="wpLong" value="80"/>
+        <assignval field="wpDamage" value="4d8"/>
+        <assignval field="wpPiercing" value="16"/>
+        <assignval field="wpLocation" value="Front, Fixed)"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAAPLaser">
+        <autotag group="Weapon" tag="HeavyPulse"/>
+        <assignval field="wsLinked" value="1"/>
+        <assignval field="livename" value="Dual-Linked Anti-Personnel Laser Pods"/>
+        <assignval field="wpLocation" value="Front, Fixed)"/>
+        <assignval field="wsFixed" value="1"/>
+        <assignval field="wpFireRate" value="5"/>
+        <assignval field="stackQty" value="2"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAMiniMissLau">
+        <autotag group="Weapon" tag="SmallBurst"/>
+        <assignval field="wpLocation" value="Front, Fixed)"/>
+        <assignval field="wpFireRate" value="6"/>
+        <assignval field="wpShots" value="6"/>
+        <assignval field="wpDamage" value="5d6"/>
+        </bootstrap>
+      </child>
+    </thing>
+  <thing id="vhSRANGEX20" name="NG EX-20 Bulldog Explorer" description="Building on the immense popularity of the EX-5 Behemoth Explorer, the EX-20 Bulldog is a smaller, four-legged exploration robot vehicle featuring a central robot claw for bulldozing, excavation, and terrain clearance as well as two smaller arms for more detailed work. Intended as a non-combat mobile explorer’s camp, the Bulldog features four sleeping compartments with personal lockers, a small laboratory, and tiny shower." compset="Walker">
+    <fieldval field="shortname" value="NG EX-20 Bulldog"/>
+    <fieldval field="grMaxMods" value="10"/>
+    <fieldval field="vhSize" value="7"/>
+    <fieldval field="vhSpecial" value="Crew Quarters and Living Space, Lab, Mods 1 (configured as Cargo Space), Tread System (for smooth roads only, 70 MPH)."/>
+    <fieldval field="grCost" value="31000000"/>
+    <fieldval field="vhCost" value="31 M"/>
+    <fieldval field="vhCrew" value="3+5"/>
+    <fieldval field="vhArmor" value="16"/>
+    <fieldval field="vhTough" value="36"/>
+    <fieldval field="vhTopSpeed" value="50"/>
+    <fieldval field="vhAccel" value="12+d8"/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <tag group="VehType" tag="Walker"/>
+    <tag group="VehEra" tag="RiftsEra"/>
+    <tag group="vhWalkerSt" tag="13"/>
+    <child entity="LoadOut">
+      <bootstrap thing="modSRACargoSpace"></bootstrap>
+      <bootstrap thing="wpSRALaserLtVeh">
+        <assignval field="livename" value="Main Gun (Laser Mode)"/>
+        <assignval field="wpLocation" value="Top Turret"/>
+        <assignval field="wpSpecial" value="Double Barrels, The gunner is a –6 Called Shot with no ECC benefits"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAIonCannonLt">
+        <assignval field="livename" value="Main Gun (Ion Mode)"/>
+        <assignval field="wpLocation" value="Top Turret"/>
+        <assignval field="wpSpecial" value="Double Barrels, The gunner is a –6 Called Shot with no ECC benefits"/>
+        </bootstrap>
+      <bootstrap thing="wpSRALightRailGun">
+        <assignval field="wpLocation" value="Front Turret"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAMiniMissLau">
+        <autotag group="Weapon" tag="SmallBurst"/>
+        <assignval field="wpLocation" value="Left Turret"/>
+        <assignval field="wpFireRate" value="6"/>
+        <assignval field="wpShots" value="36"/>
+        <assignval field="wpDamage" value="5d6"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAGiaHandClaw"></bootstrap>
+      </child>
+    </thing>
+  <thing id="vhSRANGEXC17" name="NG EXC-17 Ogre Exploration &amp; Labor Robot" description="A stocky, broad-shouldered robot with a hunched, squat build and massive powerful arms, the Ogre is designed for strength, stability, and hauling power. The EX-17’s right hand is articulated to move and manipulate objects, including ripping up trees by their roots, as well as handle cargo or specimens and includes a camera to document its work. The claw-like left hand is designed for felling, mining, digging, drilling, excavating ruins, and recovering salvage. The pilot compartment provides an excellent view for the crew, but its reinforced windows are a liability in combat—which it wasn’t designed for. The Ogre steadily handles rivers, lakes, mud slides, flash floods, deep snow, and icy blizzards without losing traction. It is often employed to rescue damaged or trapped robot vehicles and heavy equipment, qualities invaluable to exploration teams as well." compset="Walker">
+    <fieldval field="shortname" value="NG EXC-17 Ogre"/>
+    <fieldval field="vhAccel" value="10+d6"/>
+    <fieldval field="vhTopSpeed" value="35"/>
+    <fieldval field="vhTough" value="44"/>
+    <fieldval field="vhArmor" value="20"/>
+    <fieldval field="vhCrew" value="2+3"/>
+    <fieldval field="vhCost" value="35 M"/>
+    <fieldval field="grCost" value="35000000"/>
+    <fieldval field="grMaxMods" value="10"/>
+    <fieldval field="vhSize" value="9"/>
+    <fieldval field="vhSpecial" value="View Ports, MDC Armor, Crew Quarters (4), Cargo Space, language translator. Stability bonus +3 Handling, takes –3d6 ram damage. Winch and cables provide +4 on checks to free or drag targets."/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <tag group="vhWalkerSt" tag="18"/>
+    <tag group="VehEra" tag="RiftsEra"/>
+    <tag group="VehType" tag="Walker"/>
+    <tag group="Vehicle" tag="MDCArmor"/>
+    <child entity="LoadOut">
+      <bootstrap thing="wpSRAAntiPerIon">
+        <assignval field="wpLocation" value="Nose Turret"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAGiaHandClaw">
+        <autotag group="Weapon" tag="MegaDamage"/>
+        <assignval field="wpSpecial" value="Reach 2"/>
+        <assignval field="wpDamage" value="Str+2d6"/>
+        <assignval field="livename" value="Giant Hand"/>
+        <assignval field="wpLocation" value="Right Arm"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAGiaHandClaw">
+        <autotag group="Weapon" tag="MegaDamage"/>
+        <assignval field="wpLocation" value="Left Arm"/>
+        <assignval field="wpDamage" value="Str+3d6"/>
+        <assignval field="wpPiercing" value="10"/>
+        <assignval field="wpSpecial" value="Reach 2"/>
+        <assignval field="livename" value="Spinning Claw/Drill"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAMiniMissLau">
+        <autotag group="Weapon" tag="SmallBurst"/>
+        <assignval field="wpLocation" value="Left Shoulder (pop-up turret)"/>
+        <assignval field="wpFireRate" value="6"/>
+        <assignval field="wpShots" value="36"/>
+        <assignval field="wpDamage" value="5d6"/>
+        </bootstrap>
+      <bootstrap thing="wpSRADefFlareChaf"></bootstrap>
+      <bootstrap thing="modSRACargoSpace">
+        <assignval field="stackQty" value="2"/>
+        </bootstrap>
+      </child>
+    </thing>
+  <thing id="wpSRAGiaHandClaw" name="Giant Hand/Claw" compset="SpecWeapSRA">
+    <fieldval field="wpDamage" value="Str+2d6"/>
+    <fieldval field="wpBonus" value="-1"/>
+    <fieldval field="wpSpecial" value="Reach 1, -1 Fighting"/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <tag group="WeaponType" tag="SFVehMelee"/>
+    <tag group="Weapon" tag="MegaDamage"/>
+    <tag group="Hide" tag="Equipment"/>
+    </thing>
+  <thing id="modSRACargoSpace" name="Cargo Space" description="Space for Cargo or passengers" compset="Modificatn">
+    <fieldval field="grDupMax" value="Size"/>
+    <fieldval field="grModsUsed" value="1"/>
+    <fieldval field="grCost" value="1000"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="ModType" tag="Vehicle"/>
+    <tag group="User" tag="SizeCost"/>
+    <eval phase="Final" priority="5000"><![CDATA[var carry as number
+var newname as string
+var carrycap as string
+
+if (field[stackQty].value >= 2) then
+  carry = field[stackQty].value * 4
+else
+  carry = 4
+  endif
+
+carrycap = " (" & carry & " tons total)"
+newname = field[name].text & carrycap
+
+field[livename].text = newname]]></eval>
+    </thing>
+  <thing id="wpSRADefFlareChaf" name="Defensive Flare Chaff Launchers" compset="SpecWeapSRA">
+    <fieldval field="wpSpecial" value="when activated enemies must check Vigor (−2 on a raise), or be Stunned—counts as Anti-Missile Counter Measures and Heavy Cover (– 6) from Smoke in the LBT for 2d4 rounds"/>
+    <fieldval field="wpShort" value="18"/>
+    <fieldval field="wpMedium" value="36"/>
+    <fieldval field="wpLong" value="72"/>
+    <fieldval field="wpShots" value="16"/>
+    <fieldval field="wpDamage" value="-"/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <tag group="WeaponType" tag="SFVehCanno"/>
+    <tag group="Weapon" tag="LargeBurst"/>
+    <tag group="Hide" tag="Equipment"/>
+    </thing>
   <preclude id="wpSFSepSlu" source="srcRiftsTLPGAE"/>
   <preclude id="wpSFSepLas" source="srcRiftsTLPGAE"/>
   <preclude id="wpSFSepPML" source="srcRiftsTLPGAE"/>
@@ -12839,12 +13026,12 @@ field[livename].text = newname]]></eval>
   <preclude id="edgRich2SWADE" source="srcRiftsTLPGAE"/>
   <preclude id="armSFSepA" source="srcRiftsTLPGAE"/>
   <preclude id="racHuman" source="srcRiftsTLPGAE"/>
-  <extthing thing="powObjectRdSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powProtection" group="User" tag="MindMelter"/>
-  <extthing thing="powIllusionSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powMindWipeSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powMindReadSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powHavocSWADE" group="User" tag="MindMelter"/>
+  <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
+  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
   <extthing thing="powSlothSpedSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powInvisSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powSlumberSWADE" group="User" tag="MindMelter"/>
@@ -12896,4 +13083,10 @@ field[livename].text = newname]]></eval>
   <extthing thing="powMindLinkSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powHealingSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powIntangiSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powObjectRdSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powProtection" group="User" tag="MindMelter"/>
+  <extthing thing="powIllusionSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powMindWipeSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powMindReadSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powHavocSWADE" group="User" tag="MindMelter"/>
   </document>

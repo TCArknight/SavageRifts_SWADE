@@ -30,31 +30,19 @@
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
-    ~declare variables that are used internally
-    var v_name as string
-
-    ~get the item name; if this is a pick, amend the name with our gear quantity
-    v_name = field[name].text
-    if (ispick <> 0) then
-      ~if this is gear with a quantity of more than one, append it to the name
-      if (isgear <> 0) then
-        if (stackable <> 0) then
-          if (field[stackQty].value > 1) then
-            v_name &= " (x" & field[stackQty].text & ")"
-            endif
-          endif
-        endif
-      endif
-
-    ~start our info text with the centered name and switch to left-justified text
-    iteminfo = "{b}" & v_name & "{/b}{br}{br}{align left}"
+    ~get name and description
+    call InfoName
 
     ~report the vehicle size
     iteminfo &= "{b}Size:{/b} " & field[vhSize].value & "{br}"
 	
 	~report the toughness and armor
     if (tagis[VehType.PowerAr] <> 0) then
-      iteminfo &= "{b}Armor{/b}: +" & field[vhArmor].text  & "{br}"
+      iteminfo &= "{b}Armor{/b}: +" & field[vhArmor].text
+	  if (tagis[Vehicle.MDCArmor] <> 0) then
+	    iteminfo &= " MDC"
+		endif
+	  iteminfo &= "{br}"
       iteminfo &= "{b}Toughness{/b}: +" & field[vhTough].text & "{br}"
     else
       iteminfo &= "{b}Toughness(Armor){/b}: " & field[vhTough].text & "(" & field[vhArmor].text & "){br}"
@@ -83,40 +71,127 @@
       endif
 
     ~finish with generic special traits
-    ~report any special details about the weapon (omitting if there are none)
-    var special as string
-	var vehspec as string
-	
-    special = tagnames[Vehicle.?,", "]
-	vehspec = field[vhSpecial].text
-	
-    if (!empty(vehspec) + !empty(special) > 0) then
-      iteminfo &= "{b}Special:{/b} "
-      if (empty(special) = 0) then
-        iteminfo &= special
-        endif
-
-      if (empty(special) = 0) then
-        iteminfo &= ", "
-        endif
-		
-      if (empty(vehspec) = 0) then
-        iteminfo &= vehspec
-        endif	  
-
-	  iteminfo &= "{br}"
-      endif
-
-    iteminfo &= "{br}"
+    call InfoVehSpRifts
 	
     ~if there is no child entity/gizmo, then there's nothing more to do
     doneif (isentity = 0)
 	
+    ~ Weapons and Equipment
+	call InfoVehEqRifts
+	
+    @text = iteminfo
+	
+    ]]></procedure>
+	
+  <!-- Procedure InfoVehSpRifts
+        Generate special abilities specific to all vehicles. This is separate from
+        the "InfoVeh" procedure so that it can always be performed last. The
+        text is placed into the "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoVehSpRifts" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~report any special details about the weapon (omitting if there are none)
+    var special as string
+    special = tagnames[Vehicle.?,", "]
+	
+	~ if this is a Power Armor, omit the Vehicle.MDCArmor tag aa it's accounted for.
+	if (tagis[VehType.PowerAr] <> 0) then
+	  special = replace(special, "MDC Armor,", "", 0)
+	  endif
+	
+    if (!field[vhSpecial].isempty + !empty(special) > 0) then
+      iteminfo &= "{b}Special:{/b} "
+      if (empty(special) = 0) then
+        iteminfo &= special
+        endif
+      if (field[vhSpecial].isempty = 0) then
+        if (empty(special) = 0) then
+          iteminfo &= ", "
+          endif
+        iteminfo &= field[vhSpecial].text
+        endif
+      iteminfo &= "{br}"
+      endif
+	  
+    ]]></procedure>
+	
+  <!-- Procedure InfoName
+        Generate the Name header for the item
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoName" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~declare variables that are used internally
+    var v_name as string
+
+    ~get the item name; if this is a pick, amend the name with our gear quantity
+    v_name = field[name].text
+    if (ispick <> 0) then
+      ~if this is gear with a quantity of more than one, append it to the name
+      if (isgear <> 0) then
+        if (stackable <> 0) then
+          if (field[stackQty].value > 1) then
+            v_name &= " (x" & field[stackQty].text & ")"
+            endif
+          endif
+        endif
+      endif
+
+    ~start our info text with the centered name and switch to left-justified text
+    iteminfo = "{b}" & v_name & "{/b}{br}{br}{align left}"
+	
+	if (ispick = 0) then
+      ~get the item description
+      call InfoDesc
+	  endif
+	
+    ]]></procedure>
+
+  <!-- Procedure InfoDesc
+        Generate the description for the item
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoDesc" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    if (field[descript].isempty <> 0) then
+      iteminfo &= chr(150) & " no description " & chr(150)
+    else
+      iteminfo &= field[descript].text
+      endif
+	  
+	iteminfo &= "{br}{br}"
+	
+    ]]></procedure>
+
+  <!-- Procedure InfoVehSpRifts
+        Generate special abilities specific to all vehicles. This is separate from
+        the "InfoVeh" procedure so that it can always be performed last. The
+        text is placed into the "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoVehEqRifts" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
     ~if this is a thing, report the basic load-out for the vehicle based on the field;
     ~otherwise, synthesize any load-out for the vehicle as a pick appropriately
     ~Note: We must differentiate between a thing and a pick when accessing the entity,
     ~       as we want summary details for a thing and complete details for a pick
     var loadout as string
+	var equipment as string
+	var weapons as string
+	
     if (ispick = 0) then
       loadout = field[vhLoadout].text & "{br}"
     else
@@ -125,6 +200,7 @@
       var dupcount as number
       var dupstack as number
       var prevmod as string
+	  var currmod as string
       var clipped as number
       var breakit as number
       var ending as number
@@ -141,9 +217,15 @@
       multiplier = ""
       ModList = ""
 
-      foreach pick in gizmo where "component.Modificatn"
+      foreach pick in gizmo
         if (eachpick.tagis[Modificatn.Modificatn] = 0) then
-          if (compare(prevmod,eachpick.idstring) = 0) then
+		  if (eachpick.field[livename].isempty = 0) then
+		    currmod = eachpick.idstring & eachpick.field[livename].text
+	      else 
+		    currmod = eachpick.idstring & eachpick.field[modValue].value
+			endif
+		  
+          if (compare(prevmod,currmod) = 0) then
             dupcount += 1
             if (eachpick.field[stackQty].value > 1) then 
               dupstack += eachpick.field[stackQty].value
@@ -166,34 +248,49 @@
               endif
           else
             if (empty(ModList) <> 0) then
+			  ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+			  
               if (eachpick.field[stackQty].value > 1) then 
-                ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
-              else
-                ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text 
+                ModList &= " (x" & eachpick.field[stackQty].value & ")"
                 endif
+				
+			  if (eachpick.tagis[component.WeaponBaseSRA] <> 0) then
+			    if (eachpick.field[wpLocation].isempty = 0) then
+				  ModList &= " (" & eachpick.field[wpLocation].text & ")"
+				  endif
+				endif
+				
 			  ModList &= " - " & eachpick.field[summary].text
             else
+			  ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+			  
               if (eachpick.field[stackQty].value > 1) then 
-                ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
-			    ModList &= " - " & eachpick.field[summary].text
-              else
-                ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+                ModList &= " (x" & eachpick.field[stackQty].value & ")"
                 endif
-				ModList &= " - " & eachpick.field[summary].text
+								
+			  if (eachpick.tagis[component.WeaponBaseSRA] <> 0) then
+			    if (eachpick.field[wpLocation].isempty = 0) then
+				  ModList &= " (" & eachpick.field[wpLocation].text & ")"
+				  endif
+				endif
+				
+		      ModList &= " - " & eachpick.field[summary].text
               endif
             
             if (eachpick.tagis[WeaponType.?] <> 0) then
-            	if (eachpick.tagis[WeaponType.FutMelee] + eachpick.tagis[WeaponType.SFVehMelee] <> 0) then
-                ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text
+              if (eachpick.tagis[WeaponType.FutMelee] + eachpick.tagis[WeaponType.SFVehMelee] <> 0) then
+                ModList &= "{br}{horz 30}" & chr(164) & " " & eachpick.field[wpShowDmg].text
               else
-                ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
-                endif
+                ModList &= "{br}{horz 30}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
+              endif
 
               if (eachpick.field[wpNotes].isempty = 0) then
-                ModList &= " (" & eachpick.field[wpNotes].text & ")"
-                endif
+                ModList &= " (" & eachpick.field[wpNotesAlt].text & ")"
               endif
-            prevmod = eachpick.idstring
+			  
+            endif
+			 
+            prevmod = eachpick.idstring & eachpick.field[modValue].value
             dupcount = 1
             dupstack = 1
             endif
@@ -201,16 +298,18 @@
         nexteach
       loadout &= ModList & "{br}"
       endif
- 
+
+    ~if there is any equipment for the vehicle, output it
+    if (empty(equipment) = 0) then
+      iteminfo &= "{b}Equipment:{/b}{br}" & equipment
+      endif
+	  
     ~if there is any load-out for the vehicle, output it
     if (empty(loadout) = 0) then
-      iteminfo &= "{b}Weapons/Equipment:{/b}{br}" & loadout
+      iteminfo &= "{b}Weapons/Equipment:{/b}" & loadout
       endif
 
-    @text = iteminfo
-	
-    ]]></procedure>
-
+    ]]></procedure>	  
 <!-- ##################
       The following procedures are used by the Dashboard and Tactical Console panels
      ##################

@@ -64,13 +64,13 @@
       descwidth="350">
       <list>component.Walker</list>
       <titlebar><![CDATA[
-        @text = "Select Robot Armor to Purchase from the List Below"
+        @text = "Select Robot Vehicle to Purchase from the List Below"
         ]]></titlebar>
       <headertitle><![CDATA[
-        @text = "Robot Armor"
+        @text = "Robot Vehicle"
         ]]></headertitle>
       <additem><![CDATA[
-        @text = "Add New Robot Armor"
+        @text = "Add New Robot Vehicle"
         ]]></additem>
       </table_dynamic>
     </portal>
@@ -260,15 +260,6 @@
         call InfoHolder
         ]]></mouseinfo>
       </portal>
-
-    <!-- <portal
-      id="info"
-      style="actInfo">
-      <action
-        action="info">
-        </action>
-      <mouseinfo/>
-      </portal> -->
 
     <portal
       id="info"

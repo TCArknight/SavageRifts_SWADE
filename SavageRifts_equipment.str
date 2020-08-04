@@ -46,6 +46,14 @@
       type="derived"
       maxlength="250">
       </field>
+
+    <!-- notes regarding the location of the weapon when equipped -->
+    <field
+      id="wpLocation"
+      name="Location"
+      type="derived"
+      maxlength="250">
+      </field>
 	  
     <!-- Final weapon damage for display -->
     <field
@@ -91,12 +99,12 @@
       var special as string
 
       ~report the armor piercing rating of the weapon (if any)
-      ~if (field[wpPiercing].value > 0) then
-      ~  if (empty(special) = 0) then
-      ~    special &= ", "
-      ~    endif
-      ~  special &= "AP " & field[wpPiercing].value
-      ~  endif
+      if (field[wpPiercing].value > 0) then
+        if (empty(special) = 0) then
+          special &= ", "
+          endif
+        special &= "AP " & field[wpPiercing].value
+        endif
 
       ~report the weapon as two-handed (if any)
       if (tagis[Equipment.TwoHand] <> 0) then
