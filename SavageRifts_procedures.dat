@@ -1,37 +1,732 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- This file contains the definitions of assorted procedures that are used
-      throughout the data files. Since procedures are typically called from multiple
-      places, it usually makes sense to put them all in one central location where
-      you can always find them instead of having them littered throughout the data
-      files and hard to locate when you need to refer to them.
-  -->
-
 <document signature="Hero Lab Data">
+  <procedure id="GiveBursterList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADeflectSelf]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powSRAFlySelf]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powSRAProtectSelf]
+    perform focus.delete[PowerDeny.powSRAReliefSelf]
+    perform focus.delete[PowerDeny.powSRASmiteSelf]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powSRAWarGiftSelf]
+	]]></procedure>
+	
+  <procedure id="GiveCrazyList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powSRAArcProSelf]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powSRADisguiseSel]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSRAWarGiftSelf]]]></procedure>
+  <procedure id="GiveCybKnightList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powSRAHealingSelf]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powSRAProtectSelf]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSRASmiteSelf]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powSRASpeedSelf]
+    perform focus.delete[PowerDeny.powSRAWarGiftSelf]
+	]]></procedure>
+	
+  <procedure id="GiveMindMeltList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powSRADamageFSelf]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADeflectSelf]
+    perform focus.delete[PowerDeny.powDisguisSWADE]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powElementSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+	perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powSRAFlySelf]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIllusionSWADE]
+    perform focus.delete[PowerDeny.powSRAIntangiSelf]
+    perform focus.delete[PowerDeny.powSRAInvisSelf]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powMindReadSWADE]
+    perform focus.delete[PowerDeny.powMindWipeSWADE]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powSRAProtectSelf]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSRASmiteSelf]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSRASpeakSelf]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
 
+	]]></procedure>
+	
+  <procedure id="GiveStdPsionicList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powSRAArcProSelf]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADisguiseSel]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powSRAFlySelf]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powSRAWarGiftSelf]
+	]]></procedure>
 
-<!-- ##################
-      The following procedures are generic and used in various places
-     ##################
--->
+  <procedure id="GiveStdArcaneList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBlastSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powDamageFSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDisguisSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDrainPPSWADE]
+    perform focus.delete[PowerDeny.powElementSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powFarsightSWADE]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powFlySWADE]
+    perform focus.delete[PowerDeny.powGrowShrSWADE]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIllusionSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powSumAllySWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powTeleporSWADE]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+	]]></procedure>
 
-<!-- ##################
-      The following procedures are used in conjuction with description and mouse-info scripts
-     ##################
--->
+  <procedure id="GiveMysticMirList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMiracleSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBeastFrSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDivinatSWADE] 
+    perform focus.delete[PowerDeny.powElementSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powFarsightSWADE]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powFlySWADE]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powReliefSWADE] 
+    perform focus.delete[PowerDeny.powSRAResurHeroic] 
+    perform focus.delete[PowerDeny.powShapeSWADE] 
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powSumAllySWADE]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+	]]></procedure>
 
-  <!-- Procedure InfoVeh
-        Generate details specific to vehicles. The text is placed into the
-        "iteminfo" variable for subsequent use by our caller.
+  <procedure id="GiveMysticPsiList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIllusionSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powMindReadSWADE]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
 
-        Outbound parameter: iteminfo
-  -->
-  <procedure id="InfoVehRifts" scripttype="mouseinfo"><![CDATA[
+	]]></procedure>
+
+  <procedure id="GiveTechWizList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcWeirdSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBlastSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powDamageFSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDrainPPSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powFarsightSWADE]
+    perform focus.delete[PowerDeny.powFlySWADE]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powTeleporSWADE]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+	]]></procedure>
+	
+  <procedure id="MouseInfoSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var mouseinfo as string
+
+    ~declare variables that are used internally
+    var v_name as string
+
+    ~get the item name; if this is a pick, amend the name with our gear quantity
+    v_name = field[name].text
+    if (ispick <> 0) then
+      ~if this is gear with a quantity of more than one, append it to the name
+      if (isgear <> 0) then
+        if (stackable <> 0) then
+          if (field[stackQty].value > 1) then
+            v_name &= " (x" & field[stackQty].text & ")"
+            endif
+          endif
+        endif
+      endif
+
+    ~start our info text with the centered name and switch to left-justified text
+    mouseinfo = "{b}" & v_name & "{/b}{br}{br}{align left}"
+
+    ~get the rest of the details for the item using the normal description procedure;
+    ~we call another procedure, so we must declare the variables it uses to pass in
+    ~our state and return the synthesized text, then pull the results out of the
+    ~variable for our use
+    var descript as string
+    call DescriptSRA
+    mouseinfo &= descript]]></procedure>
+  <procedure id="DescriptSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var descript as string
+    var isprereq as number
+    var skipprereq as number
+
+    ~declare variables that are used by called procedures
+    var iteminfo as string
+
+    ~if this is a show-only thing, just output any description text and we're done
+    if (tagis[thing.showonly] <> 0) then
+      descript = field[descript].text
+      done
+      endif
+
+    ~we start our details text with nothing
+    descript = ""
+
+    ~if requested or renderend for a thing, append any failed prereq details
+    if (skipprereq = 0) then
+      if (isprereq + !ispick <> 0) then
+        var prereqs as string
+        call Prereqs
+        descript &= prereqs
+        endif
+      endif
+
+    ~based on the nature of the item, synthesize the appropriate details that are
+    ~specific to the particular item type
+    iteminfo = ""
+    if (tagis[component.WeapRange] <> 0) then
+      call InfoRange
+    elseif (tagis[component.WeapMelee] <> 0) then
+      call InfoMelee
+    elseif (tagis[component.Defense] <> 0) then
+      call InfoDef
+    elseif (tagis[component.Power] <> 0) then
+      call InfoPower
+    elseif (tagis[component.Advance] <> 0) then
+      call InfoAdv
+    elseif (tagis[component.Vehicle] <> 0) then
+      call InfoVehSRA
+    elseif (tagis[component.Hindrance] <> 0) then
+      call InfoHinder
+    elseif (tagis[component.Edge] <> 0) then
+      call InfoEdge
+    elseif (tagis[component.Race] <> 0) then
+      call InfoRace
+    elseif (tagis[component.Skill] <> 0) then
+      call InfoSkill
+    ~RDS SPC these next three are for the Super Powers Companion
+    elseif (tagis[component.SPCPower] <> 0) then
+      call InfoSPower
+    elseif (tagis[component.SPCModify] <> 0) then
+      call InfoPwrMod
+    elseif (tagis[component.PowerLevel] <> 0) then
+      call InfoPwrLvl
+    ~RDS FC This is for magic items
+    elseif (tagis[component.miPower] <> 0) then
+      call InfoMPower
+    elseif (tagis[component.miSkill] <> 0) then
+      call InfoMSkill
+    elseif (tagis[component.miEdge] <> 0) then
+      call InfoMEdge
+      endif
+
+    ~RDS This provides the description of the magical properties of an item under construction
+    if (tagis[component.miDetail] <> 0) then
+      call InfoMagItD
+      endif
+
+    ~RDS This provides the description of the magical properties of an item
+    if (tagis[component.MagicItem] <> 0) then
+      call InfoMagItm
+      endif
+      
+    ~RDS SFC This provides the description of the modification properties of an item
+    if (tagis[component.Modificatn] + tagis[ItemMod.ItemModHelper] <> 0) then
+      call InfoModsSRA
+      endif
+    
+    ~RDS SFC This provides the description of the cyberware properties of an item
+    if (tagis[component.Cyberware] <> 0) then
+      call InfoCyber
+      endif
+      
+    ~RDS SFC This provides the description of the cyberware properties of an item
+    if (tagis[component.Robotics] <> 0) then
+      call InfoRobot
+      endif
+      
+    ~if this is a piece of gear, append proper info to the item-specific details
+    if (tagis[component.Gear] <> 0) then
+
+      ~if this is a thing, append the cost
+      if (ispick = 0) then
+        if (tagis[User.SizeCost] <> 0) then
+          var kdollars as number
+          kdollars = field[grCost].value / 1000
+          if (hero.tagis[Hero.CashBackwd] = 0) then
+            iteminfo &= "Cost: " & herofield[acCshSymbl].text & kdollars & "K * Size (" & container.parent.field[vhSize].text & "){br}"
+          else
+            iteminfo &= "Cost: " & kdollars & "K * Size (" & container.parent.field[vhSize].text & ")" & herofield[acCshSymbl].text & "{br}"
+            endif
+        else
+          if (hero.tagis[Hero.CashBackwd] = 0) then
+            iteminfo &= "Cost: " & herofield[acCshSymbl].text & field[grCost].text & "{br}"
+          else
+            iteminfo &= "Cost: " & field[grCost].text & herofield[acCshSymbl].text & "{br}"
+            endif
+          endif
+        endif
+
+      ~append the item's weight
+      if (ispick <> 0) then
+        iteminfo &= "{br}"
+        endif
+	  
+      iteminfo &= "Weight: "
+      if (field[gearWeight].value > 0) then
+        iteminfo &= field[gearWeight].value & " each"
+      else
+        iteminfo &= chr(150)
+        endif
+      iteminfo &= "{br}"
+
+      ~append the item's availability if applicable
+      if (hero.tagis[source.GearAvail] <> 0) then
+        if (tagis[GearAvail.?] > 0) then
+          iteminfo &= "Availability: "
+          iteminfo &= tagnames[GearAvail.?]
+          endif
+        iteminfo &= "{br}"
+        endif
+      endif
+
+    ~append our item-specific info to the synthesized details text
+    descript &= iteminfo
+
+    ~append the description of the item
+    if (empty(iteminfo) = 0) then
+      descript &= "{br}"
+      endif
+    if (field[descript].isempty <> 0) then
+      descript &= chr(150) & " no description " & chr(150)
+    else
+      descript &= field[descript].text
+      endif
+
+    ~RDS SPC2 If this is a Super Power from the Super Powers Companion, list it's non-generic modifers after the description.
+    if (tagis[component.SPCPower] <> 0) then
+      var header as number
+      header = 0
+      foreach thing in SPCModify where "!Helper.GenPwrMod"
+        if (eachthing.tagmatch[SPCPwrMod,SPCPwrMod,current] <> 0) then 
+          if (header = 0) then
+            descript &= "{br}{br}{b}Modifiers:{/b} "
+            header = 1
+            endif
+
+          descript &= "{br}" & chr(149) & " {b}" & eachthing.field[name].text & " ("
+         
+          var operator as string
+  
+          if     ( eachthing.tagis[MathOps.Add] = 1 ) then
+              operator = "+"
+          elseif ( eachthing.tagis[MathOps.Subtract] = 1 ) then
+              operator = "-"
+          elseif ( eachthing.tagis[MathOps.SubAllow0] = 1 ) then
+              operator = "-"
+          elseif ( eachthing.tagis[MathOps.Multiply] = 1 ) then
+              operator = "x"
+          elseif ( eachthing.tagis[MathOps.Divide] = 1 ) then
+              operator = "/"
+          endif
+      
+          descript &= operator & eachthing.field[spmModVal].text & "): {/b}"
+          descript &= eachthing.field[descript].text & "{br}"
+          endif
+        nexteach
+        descript &= "{br}"
+      endif
+
+    ~if this is gear, output any container/containee details
+    if (isgear <> 0) then
+
+      ~if we're held somewhere, append our path
+      if (isgearheld <> 0) then
+        descript &= "{br}{br}{b}Container{/b}: " & gearpath["->"]
+        endif
+
+      ~if we're a gear holder, append our contents
+      if (isgearlist <> 0) then
+        iteminfo = gearlist[", ", TRUE]
+        if (empty(iteminfo) <> 0) then
+          iteminfo = "None"
+          endif
+        descript &= "{br}{br}{b}Carries{/b}: " & iteminfo
+        endif
+
+      endif]]></procedure>
+  <procedure id="InfoModsSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+    if (field[grDupMax].isempty = 0) then 
+      iteminfo &= "Max # Allowed: " & field[grDupMax].text & "{br}"
+      endif
+	  
+    if (compare(field[grModsOrig].text,field[grModsUsed].text) <> 0) then
+      if (field[lotsize].value > 1) then
+        var total as number
+        total = field[grModsUsed].text * field[lotsize].value
+        if (total > 0) then
+          iteminfo &= "Slot Cost: " & total & "{br}"
+          endif
+      elseif (stackable = 1) then
+        if (field[stackQty].value > 1) then 
+          var total as number
+          total = field[grModsUsed].text * field[stackQty].value
+          if (total > 0) then
+            iteminfo &= "Slot Cost: " & total & "{br}"
+            endif
+          endif
+      elseif (field[grModsOrig].isempty = 0) then 
+        iteminfo &= "Slot Cost: " & field[grModsOrig].text & ", actual cost is " & field[grModsUsed].text & "{br}"
+      else
+        if (field[grModsUsed].isempty = 0) then 
+          iteminfo &= "Slot Cost: " & field[grModsUsed].text & "{br}"
+          endif
+      endif
+    else
+      if (field[grModsUsed].isempty = 0) then 
+        iteminfo &= "Slot Cost: " & field[grModsUsed].text & "{br}"
+        endif
+      endif
+
+	~if there is no child entity/gizmo, then there's nothing more to do
+    if (isentity <> 0) then
+	  var manTags as string
+	  var itmTags as string
+	  
+	  ~ ItemMods gizmo
+	  if (tagis[ItemMod.ItemModHelper] <> 0) then
+		
+	    ~ Manufacturer 
+	    foreach pick in gizmo from ItemMod where "ItemModType.Manufact"
+	      manTags = splice(manTags,eachpick.field[name].text,", ")
+	      nexteach
+
+        if (empty(manTags) = 0) then
+	      iteminfo &= "{br}" & "Manufacturer: " & manTags & "{br}"
+          endif
+		  
+	    ~ Item Modifications
+		~iteminfo &= "Item Mods: " & tagnames[ItemMod.?,", "]  & "{br}" 
+		
+	    foreach pick in gizmo from ItemMod where "ItemMod.? & !ItemModType.Manufact"
+	      itmTags = splice(itmTags,eachpick.field[name].text,", ")
+	      nexteach
+
+        if (empty(itmTags) = 0) then
+	      iteminfo &= "Modifications: " & itmTags & "{br}"
+          endif		
+		
+	    endif
+	  endif
+	
+    iteminfo &= "{br}"]]></procedure>
+  <procedure id="InfoVehSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
     ~get name and description
-    call InfoName
+    ~call InfoNameSRA
 
     ~report the vehicle size
     iteminfo &= "{b}Size:{/b} " & field[vhSize].value & "{br}"
@@ -71,7 +766,7 @@
       endif
 
     ~finish with generic special traits
-    call InfoVehSpRifts
+    call InfoVehSpSRA
 	
     ~if there is no child entity/gizmo, then there's nothing more to do
     doneif (isentity = 0)
@@ -79,18 +774,8 @@
     ~ Weapons and Equipment
 	call InfoVehEqRifts
 	
-    @text = iteminfo
-	
-    ]]></procedure>
-	
-  <!-- Procedure InfoVehSpRifts
-        Generate special abilities specific to all vehicles. This is separate from
-        the "InfoVeh" procedure so that it can always be performed last. The
-        text is placed into the "iteminfo" variable for subsequent use by our caller.
-
-        Outbound parameter: iteminfo
-  -->
-  <procedure id="InfoVehSpRifts" context="info"><![CDATA[
+    ~ @text = iteminfo]]></procedure>
+  <procedure id="InfoVehSpSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -115,16 +800,8 @@
         iteminfo &= field[vhSpecial].text
         endif
       iteminfo &= "{br}"
-      endif
-	  
-    ]]></procedure>
-	
-  <!-- Procedure InfoName
-        Generate the Name header for the item
-
-        Outbound parameter: iteminfo
-  -->
-  <procedure id="InfoName" context="info"><![CDATA[
+      endif]]></procedure>
+  <procedure id="InfoNameSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -149,17 +826,9 @@
 	
 	if (ispick = 0) then
       ~get the item description
-      call InfoDesc
-	  endif
-	
-    ]]></procedure>
-
-  <!-- Procedure InfoDesc
-        Generate the description for the item
-
-        Outbound parameter: iteminfo
-  -->
-  <procedure id="InfoDesc" context="info"><![CDATA[
+      call InfoDescSRA
+	  endif]]></procedure>
+  <procedure id="InfoDescSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -169,17 +838,7 @@
       iteminfo &= field[descript].text
       endif
 	  
-	iteminfo &= "{br}{br}"
-	
-    ]]></procedure>
-
-  <!-- Procedure InfoVehSpRifts
-        Generate special abilities specific to all vehicles. This is separate from
-        the "InfoVeh" procedure so that it can always be performed last. The
-        text is placed into the "iteminfo" variable for subsequent use by our caller.
-
-        Outbound parameter: iteminfo
-  -->
+	iteminfo &= "{br}{br}"]]></procedure>
   <procedure id="InfoVehEqRifts" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -248,7 +907,7 @@
               endif
           else
             if (empty(ModList) <> 0) then
-			  ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+			  ModList = "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
 			  
               if (eachpick.field[stackQty].value > 1) then 
                 ModList &= " (x" & eachpick.field[stackQty].value & ")"
@@ -307,22 +966,25 @@
     ~if there is any load-out for the vehicle, output it
     if (empty(loadout) = 0) then
       iteminfo &= "{b}Weapons/Equipment:{/b}" & loadout
-      endif
+      endif]]></procedure>
+  <procedure id="SizeWounds" scripttype="none"><![CDATA[
+~declare variables that are used to communicate with our caller
+var sizebonus as number
 
-    ]]></procedure>	  
-<!-- ##################
-      The following procedures are used by the Dashboard and Tactical Console panels
-     ##################
--->
+~bound our final die type appropriately
+var herosize as number
+   
+herosize = #trait[trSize]
 
-<!-- ##################
-      The following procedures are used in conjunction with printed output
-     ##################
--->
+if (herosize <= 3) then
+  sizebonus = 0
+elseif (herosize <= 7) then
+  sizebonus = 1
+elseif (herosize <= 11) then
+  sizebonus = 2
+elseif (herosize >= 12) then
+  sizebonus = 3
+  endif]]></procedure>
 
-<!-- ##################
-      The following procedures are used for miscellaneous purposes
-     ##################
--->
-
+ 
   </document>

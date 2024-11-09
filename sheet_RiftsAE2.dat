@@ -458,13 +458,13 @@
 			special = tagnames[Vehicle.?,", "]
 			
 			if (!field[vhSpecial].isempty + !empty(special) > 0) then
-			  @text &= "{b}Special:{/b} "
+			  @text &= "{b}Notes:{/b} "
 			  if (empty(special) = 0) then
 				@text &= special
 				endif
 			  if (field[vhSpecial].isempty = 0) then
 				if (empty(special) = 0) then
-				  @text &= "{br}{br}{b}Notes: {/b}"
+				  @text &= "{br}{br}{b}Special: {/b}"
 				  endif
 				@text &= field[vhSpecial].text
 				endif
@@ -479,11 +479,13 @@
           ~Note: We must differentiate between a thing and a pick when accessing the entity,
           ~       as we want summary details for a thing and complete details for a pick
           var loadout as string
+		  var specmods as string
           if (ispick = 0) then
             loadout = field[vhLoadout].text & "{br}"
           else
             loadout = ""
-
+            specmods = ""
+			
             var dupcount as number
             var dupstack as number
             var prevmod as string
@@ -503,7 +505,8 @@
             multiplier = ""
             ModList = ""
 
-            foreach pick in gizmo
+			~ Output Special Modifications first
+			foreach pick in gizmo where "Helper.SpecMod"
               if (eachpick.tagis[Modificatn.Modificatn] = 0) then
                 if (compare(prevmod,eachpick.idstring) = 0) then
                   dupcount += 1
@@ -533,27 +536,32 @@
                     else
                       ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text
                       endif
-                    if (eachpick.field[summary].isempty = 0) then
-                      ModList &= " (" & eachpick.field[summary].text & ")"
-                      endif					
                   else
                     if (eachpick.field[stackQty].value > 1) then
                       ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
                     else
                       ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
                       endif
-                    if (eachpick.field[summary].isempty = 0) then
-                      ModList &= " (" & eachpick.field[summary].text & ")" 
-                      endif
                     endif
-
+					
+                  if (eachpick.tagis[component.WeaponBase] <> 0) then
+				    if (eachpick.field[wpLocation].isempty = 0) then
+                      ModList &= " [" & eachpick.field[wpLocation].text & "]" 
+                      endif
+					endif
+					
+                  if (eachpick.field[summary].isempty = 0) then
+                    ModList &= " (" & eachpick.field[summary].text & ")" 
+                    endif
+					
                   if (eachpick.tagis[WeaponType.?] <> 0) then
                     if (eachpick.tagis[WeaponType.FutMelee] + eachpick.tagis[WeaponType.SFVehMelee] <> 0) then
                       ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text
                     else
                       ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
                       endif
-
+					
+					
                     if (eachpick.field[wpNotes].isempty = 0) then
                       ModList &= ", " & eachpick.field[wpNotes].text
                       endif
@@ -564,12 +572,94 @@
                   endif
                 endif
               nexteach
-            loadout &= ModList & "{br}"
+            specmods &= ModList
+
+			~ Output Weapons
+			ModList = ""
+            foreach pick in gizmo where "!Helper.SpecMod"
+              if (eachpick.tagis[Modificatn.Modificatn] = 0) then
+                if (compare(prevmod,eachpick.idstring) = 0) then
+                  dupcount += 1
+                  if (eachpick.field[stackQty].value > 1) then
+                    dupstack += eachpick.field[stackQty].value
+                  else
+                    dupstack += 1
+                    endif
+                  if (dupcount = 2) then
+                    breakit = lastpos(ModList," - ")
+                    ending = length(ModList)
+                    firstpart = mid(ModList,0,breakit)
+                    lastpart = mid(ModList,breakit,ending)
+                    ModList =  firstpart & " (x" & dupstack & ")" & lastpart
+                  elseif (dupcount > 2) then
+                    breakit = lastpos(ModList," - ")
+                    clipped = breakit -5
+                    ending = length(ModList)
+                    firstpart = mid(ModList,0,clipped)
+                    lastpart = mid(ModList,breakit,ending)
+                    ModList =  firstpart & " (x" & dupstack & ")" & lastpart
+                    endif
+                else
+                  if (empty(ModList) <> 0) then
+                    if (eachpick.field[stackQty].value > 1) then
+                      ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
+                    else
+                      ModList = "{horz 10}" & chr(149) & " " & eachpick.field[name].text
+                      endif
+                  else
+                    if (eachpick.field[stackQty].value > 1) then
+                      ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text & " (x" & eachpick.field[stackQty].value & ")"
+                    else
+                      ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+                      endif
+                    endif
+					
+                  if (eachpick.tagis[component.WeaponBase] <> 0) then
+				    if (eachpick.field[wpLocation].isempty = 0) then
+                      ModList &= " [" & eachpick.field[wpLocation].text & "]" 
+                      endif
+					endif
+					
+                  if (eachpick.field[summary].isempty = 0) then
+                    ModList &= " (" & eachpick.field[summary].text & ")" 
+                    endif
+					
+                  if (eachpick.tagis[WeaponType.?] <> 0) then
+                    if (eachpick.tagis[WeaponType.FutMelee] + eachpick.tagis[WeaponType.SFVehMelee] <> 0) then
+                      ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text
+                    else
+                      ModList &= "{br}{horz 60}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
+                      endif
+					
+					
+                    if (eachpick.field[wpNotes].isempty = 0) then
+                      ModList &= ", " & eachpick.field[wpNotes].text
+                      endif
+                    endif
+                  prevmod = eachpick.idstring
+                  dupcount = 1
+                  dupstack = 1
+                  endif
+                endif
+              nexteach
+            loadout &= ModList
+			if (empty(loadout) <> 0) then
+			  loadout = field[vhLoadout].text & "{br}"
+			  endif
             endif
 
-          ~if there is any load-out for the vehicle, output it
+          ~if there is any Special Mods for the vehicle, output it
+          if (empty(specmods) = 0) then
+            @text &= "{br}{b}Special:{/b}{br}" & specmods & "{br}"
+            endif
+			
           if (empty(loadout) = 0) then
-            @text &= "{br}{b}Weapons/Equipment:{/b}{br}" & loadout
+		    ~report any special traits of the Power Armor
+            if (tagis[VehType.PowerAr] <> 0) then
+              @text &= "{br}{b}Weapons:{/b}{br}" & loadout & "{br}"
+			else
+              @text &= "{br}{b}Weapons/Equipment:{/b}{br}" & loadout & "{br}"
+			  endif
             endif
 
 		]]></labeltext>

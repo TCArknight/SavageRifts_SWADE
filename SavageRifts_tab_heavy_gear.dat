@@ -58,7 +58,7 @@
       component="Gear"
       showtemplate="WaPickRIFTS"
       choosetemplate="HGThingRIFTS"
-      choosesortset="GenVehicle"
+      choosesortset="VehicleType"
       buytemplate="BuyCash"
       selltemplate="SellCash"
       descwidth="350">
@@ -169,7 +169,9 @@
         action="info">
         </action>
       <mouseinfo><![CDATA[
-        call InfoVehRifts
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
         ]]></mouseinfo>
       </portal>
 
@@ -211,13 +213,13 @@
       ~position the info portal to the left of the delete button
       perform portal[info].alignrel[rtol,delete,-8]
 
-      ~position the edit portal to the left of the info button
-	  portal[edit].visible = 0
-      ~perform portal[edit].alignrel[rtol,info,-8]
-
       ~show the 'container' icon to the left of the edit button
       perform portal[container].alignrel[rtol,info,-8]
-
+	  
+      ~position the edit portal to the left of the container button
+	  ~portal[edit].visible = 0
+      perform portal[edit].alignrel[rtol,container,-8]
+	  
       ~position the name on the left and position the user-fillable name field next to it
       var limit as number
       portal[name].left = 0
@@ -268,7 +270,7 @@
         action="info">
         </action>
       <mouseinfo><![CDATA[
-        call InfoVehRifts
+        call InfoVehSRA
         ]]></mouseinfo>
       </portal>
 	  

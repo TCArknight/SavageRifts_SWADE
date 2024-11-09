@@ -259,7 +259,7 @@
       component="FraAbility"
       showtemplate="sraAbilPick"
 	  varyheight="yes">
-      <list>!Print.NoPrint</list>
+      <list>!Print.NoPrint &amp; Helper.FirstCopy</list>
       <headertitle><![CDATA[
         @text = "Framework Abilities"
         ]]></headertitle>
@@ -276,7 +276,7 @@
       component="FraComp"
       showtemplate="sraAbilPick"
 	  varyheight="yes">
-      <list>!Print.NoPrint</list>
+      <list>!Print.NoPrint &amp; Helper.FirstCopy</list>
       <headertitle><![CDATA[
         @text = "Framework Complications"
         ]]></headertitle>
@@ -864,14 +864,22 @@
       style="outMedLt">
       <output_label>
         <labeltext><![CDATA[
-          var major as string
-          if (tagis[component.Hindrance] <> 0) then
-            if (field[hinMajor].value <> 0) then
-              major = " {font Wingdings}" & chr(181) & "{revert}"
-              endif
-            endif
-          ~@text = field[shortname].text & major & "{/b}  {size 32}" & field[descript].text & "{br}{br}"
-		  @text = field[shortname].text & major & "{/b}  {size 32}" & field[summary].text & "{br}{br}"
+		  @text = "{b}" & field[shortname].text 
+		  
+		  if (tagis[component.FraCommon] <> 0) then
+		    if (field[frNameAppend].isempty = 0) then
+		      @text &= field[frNameAppend].text
+			  endif
+		  
+		    if (tagis[Helper.NoAppendCount] = 0) then
+			  if (field[frNumCopies].value > 1) then
+				@text &= " (x" & field[frNumCopies].value & ")"
+				endif
+			  endif
+			endif
+			
+          ~@text =  "{/b}  {size 32}" & field[descript].text & "{br}{br}"
+		  @text &= "{/b}  {size 32}" & field[summary].text & "{br}{br}"
 		  
           ]]></labeltext>
         </output_label>
@@ -1192,21 +1200,32 @@
       <output_label>
         <labeltext><![CDATA[
           var arcname as string
-         	var abname as string
-         	var trkpoints as number
+          var abname as string
+		  var abpointtype as string
+          var trkpoints as number
 			
-         	arcname = left(tagnames[Arcane.?],pos(tagnames[Arcane.?],","))
+          arcname = left(tagnames[Arcane.?],pos(tagnames[Arcane.?],","))
 			
           foreach pick in hero where "component.Arcane"
             abname = left(eachpick.tagnames[Arcane.?],pos(eachpick.tagnames[Arcane.?],","))
 			
             if (compare(abname,arcname) = 0) then
               trkpoints = eachpick.field[trkMax].value
+			  
+			  if (eachpick.tagis[Helper.UsesPPE] <> 0) then
+		        abpointtype =  " PPE)"
+		      elseif (eachpick.tagis[Helper.UsesISP] <> 0) then
+		        abpointtype =  " ISP)"
+			  else
+		        abpointtype = " Points)"
+			    endif
+				
               endif
             nexteach
-          @text = arcname 
+			
+          @text = arcname
 		  if (trkpoints <> 0) then
-		    @text &= " (" & trkpoints & " Points)"
+		    @text &= " (" & trkpoints & abpointtype
 			endif
 			
           ]]></labeltext>
@@ -1220,7 +1239,7 @@
       isheader="yes">
       <output_label>
         <labeltext><![CDATA[
-          @text = "Arcane Powers (" & #trkmax[trkPower] & " Points)"
+          @text = "Arcane Powers (" & #trkmax[trkPower] & " Test Points)"
           ]]></labeltext>
         </output_label>
       </portal>
@@ -3298,13 +3317,16 @@
         of gear. As much gear as will fit is output, with any excess being truncated
         on this sheet and being included on the spillover sheet.
   -->
-  <!-- RDS SPC portal sraSPPower is for the Super Powers Companion -->
+  <!-- RDS SPC portal sraSPPower is for the Super Powers Companion '
+  
+  
+    
+    <portalref portal="sraDrawback"/>
+	<portalref portal="sraPower"/> -->
   <layout
     id="zRightSide">
     <portalref portal="sraEdge"/>
     <portalref portal="sraCreature"/>
-    <portalref portal="sraDrawback"/>
-    <portalref portal="sraPower"/>
     <portalref portal="sraSPAttack"/>
     <portalref portal="sraSPPower"/>
     <templateref template="sraPortrait" thing="actor"/>
@@ -3320,8 +3342,8 @@
       perform template[sraPortrait].autoplace
       perform portal[sraEdge].autoplace
       perform portal[sraCreature].autoplace
-      perform portal[sraDrawback].autoplace
-      perform portal[sraPower].autoplace
+      ~ perform portal[sraDrawback].autoplace
+      ~ perform portal[sraPower].autoplace
       perform portal[sraSPAttack].autoplace
       perform portal[sraSPPower].autoplace
 

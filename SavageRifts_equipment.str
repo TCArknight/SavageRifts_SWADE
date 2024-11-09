@@ -6,6 +6,47 @@
 
 <document signature="Hero Lab Structure">
 
+  <!-- Custom component
+        Can be added to any other component to allow creation of a "custom
+        thing" with a user-definable name, for example with Custom Gear.
+  -->
+  <component
+    id="Custom"
+    name="Custom"
+	autocompset="yes">
+
+    <!-- Manage an optional user-assigned name for custom things -->
+    <field
+      id="UserName"
+      name="User Name"
+      maxlength="100"
+      type="user">
+      </field>
+
+    <!-- Manage an optional user-assigned description for custom things -->
+    <field
+      id="UserDesc"
+      name="User Desc"
+      maxlength="300"
+      type="user">
+      </field>
+	  
+    <creation><![CDATA[
+      ~custom items need to pick a name
+      ~if (tagis[Helper.CustomItem] <> 0) then
+      ~  field[UserName].text = "Enter Name"
+      ~  endif
+      ]]></creation>
+	  
+    <!-- If we have a user-assigned name, copy that into the live name -->
+    <eval index="1" phase="Setup" priority="10000"><![CDATA[
+      if (field[UserName].isempty = 0) then
+        field[livename].text = field[UserName].text
+        endif
+      ]]></eval>
+	  
+    </component>
+	
   <!-- WeaponBase component
         All weapons derive from this component. Weapons track a bonus value and damage
         rating, as well as a strength requirement. The net attack value for the weapon
@@ -319,6 +360,231 @@
 	  
     </component>
 	
+  <!-- ItemMod component -->
+  <component
+    id="ItemMod"
+    name="Item Modifications"
+    autocompset="no">
+
+    <field
+      id="grItmModCost"
+      name="Total Cost of the Item"
+      type="derived">
+      </field>
+
+    <field
+      id="grItmModPaid"
+      name="Amount Paid for the Item"
+      type="user">
+      </field>
+
+    <!-- Manage an optional user-assigned name for custom equipment -->
+    <field
+      id="imodUserNm"
+      name="User Name"
+      maxlength="100"
+      type="user">
+      </field>
+
+    <!-- This is to place a value for Crew Reduction -->
+    <field
+      id="imodValue"
+      name="Value"
+      type="user">
+      </field>
+
+    <!-- Manage an optional notes for custom equipment -->
+    <field
+      id="imodNotes"
+      name="Notes"
+      maxlength="250"
+      type="user">
+      </field>
+
+    <!-- Manage an optional notes for custom equipment -->
+    <field
+      id="imodExpr"
+      name="Mod Expression"
+      maxlength="500"
+      type="derived">
+      </field>
+	  
+    <!-- Damage bonus -->
+    <field
+      id="imodDmgBoTx"
+      name="Damage Bonus Text"
+      type="derived"
+      maxlength="5">
+      </field>
+
+    <identity group="ItemMod"/>
+
+    <!-- RDS SFC Add the exclusion for Standard Modifications -->
+    <containerreq phase="Initialize" priority="2000">
+      <match>Equipment.StdMod</match>
+      !hero#Hero.NoStdMods
+      </containerreq>
+      
+    <eval index="1" phase="Initialize" priority="2100"><![CDATA[
+
+	  perform forward[ItemMod.?]
+	  perform forward[ItemModType.?]
+	  perform forward[Weapon.?]
+      perform forward[Vehicle.?]
+	  
+      ]]></eval>
+	  
+    <!-- Set the actual slot cost and max duplicates for the item where it is based on the vehicle size -->
+    <eval index="2" phase="Setup" priority="5000" name="Modify slot cost and dups for Size"><![CDATA[
+   	  var VehSize   as number
+   	  var HalfSize  as number
+   	  var QuartSize as number
+   	  var TwiceSize as number
+   	  var NegHalfSz as number
+   	  var VehTough  as number
+   	  var HalfTough as number
+
+      if (ispick = 1) then
+        if (tagis[component.WeaponBase] = 0) then 
+          if (container.parent.tagis[component.Vehicle] <> 0) then 
+            VehSize = container.parent.field[vhSize].value
+            VehTough = container.parent.field[vhTough].text
+            field[grModsOrig].text = field[grModsUsed].text
+            field[grDupMaxOg].text = field[grDupMax].text
+          
+            TwiceSize = VehSize * 2
+            HalfSize  = VehSize / 2
+            HalfSize  = round(HalfSize,0,1)
+            QuartSize  = VehSize / 4
+            QuartSize  = round(QuartSize,0,1)
+            NegHalfSz = HalfSize * -1
+     	      HalfTough = VehTough / 2
+     	      HalfTough = round(VehTough,0,1)
+     	      
+            if (compare(lowercase(field[grModsUsed].text),"size") = 0) then
+              field[grModsUsed].text = VehSize
+            elseif (compare(lowercase(field[grModsUsed].text),"half size") = 0) then
+              field[grModsUsed].text = HalfSize
+            elseif (compare(lowercase(field[grModsUsed].text),"quarter size") = 0) then
+              field[grModsUsed].text = QuartSize
+            elseif (compare(lowercase(field[grModsUsed].text),"-half size") = 0) then
+              field[grModsUsed].text = NegHalfSz
+            elseif (compare(lowercase(field[grModsUsed].text),"-half tough") = 0) then
+              field[grModsUsed].text = NegHalfSz
+              endif
+          
+            if (compare(lowercase(field[grDupMax].text),"size") = 0) then
+              field[grDupMax].text = VehSize
+            elseif (compare(lowercase(field[grDupMax].text),"twice size") = 0) then
+              field[grDupMax].text = TwiceSize
+            elseif (compare(lowercase(field[grDupMax].text),"half size") = 0) then
+              field[grDupMax].text = HalfSize
+            elseif (compare(lowercase(field[grDupMax].text),"half tough") = 0) then
+              field[grDupMax].text = HalfTough
+              endif
+            endif
+          endif
+        endif
+      ]]></eval>  
+
+    <!-- Set the cost for use in the display header -->
+    <eval index="3" phase="Traits" name="Set Mod Cost" priority="6000"><![CDATA[
+      if (isgizmo = 1) then
+        if (field[grItmModCost].value <> container.parent.field[grCost].value) then
+          field[grItmModCost].value = container.parent.field[grCost].value
+          endif
+        endif
+      ]]></eval>
+
+    <!-- Track the modification on the parent -->
+    <eval index="4" phase="Initialize" priority="5000"><![CDATA[
+
+      var x as number
+      if (field[stackQty].value > 1) then 
+        for x = 1 to field[stackQty].value
+          perform forward[ItemMod.?]
+          next
+      else
+        perform forward[ItemMod.?]
+        endif
+      ]]></eval>
+
+  <!-- RDS FC This initializes and manages the user-generated name field,
+              the Notes field, the Trappings field, and sets up the item type text fields. -->
+    <eval index="5" phase="Initialize" name="Set SF User Name" priority="5000"><![CDATA[
+      if (field[imodUserNm].isempty = 0) then
+        trustme
+        container.parent.field[grUserName].text = field[imodUserNm].text
+        endif
+
+      ~notes
+      if (field[imodNotes].isempty = 0) then
+        trustme
+        container.parent.field[grNotes].text = field[imodNotes].text
+        endif
+
+      ]]></eval>
+
+    <evalrule index="1" phase="Validate" priority="9000" message="Modification exceeds limit on number of uses per item."><![CDATA[
+      var totaluses as number
+
+      if (empty(field[grDupMax].text) = 1) then
+        @valid = 1
+        endif
+
+      totaluses = container.intersect[ItemMod,ItemMod,counttarget]
+
+      if (totaluses <= field[grDupMax].text) then
+        @valid = 1
+        endif
+      ]]></evalrule>
+    </component>
+	
+  <component
+    id="ItemModHelper"
+    name="Item Mod Helper"
+	autocompset="yes">
+	
+    <field
+      id="imhExpr"
+      name="Expression"
+      maxlength="500"
+      type="derived">
+      </field>
+      
+    <eval index="1" phase="Initialize" priority="2100"><![CDATA[
+	  perform forward[ItemMod.ItemModHelper]
+      ]]></eval>
+	  
+    <eval index="2" phase="Final" priority="1000"><![CDATA[
+	  ~ compile all item mod notes and transfer to parent
+	  var itmNotes as string
+	  var manNotes as string
+      trustme	
+	  
+	  ~ check if any manufacturer tags
+	  foreach pick in container from ItemMod where "ItemMod.? & ItemModType.Manufact"
+	    manNotes = splice(manNotes,eachpick.field[name].text,", ")
+	    nexteach
+
+      if (empty(manNotes) = 0) then
+	    parent.field[grNotes].text = "Manufacturer: " & manNotes & "{br}"
+        endif
+		
+	  foreach pick in container from ItemMod where "ItemMod.?  & !ItemModType.Manufact"
+	    itmNotes = splice(itmNotes,eachpick.field[name].text,", ")
+	    nexteach
+      
+	  doneif (empty(itmNotes) <> 0)
+
+	  parent.field[grNotes].text = "Modifications: " & itmNotes 
+	  
+	  ~ notify parent.field[name].text & " - " & itmNotes
+	  
+      ]]></eval>
+	  
+    </component>
+		
   <!-- Define various component sets associated with the components defined above. -->
 
   <!-- No compsets are auto-defined for the component -->
@@ -331,8 +597,8 @@
     <compref component="WeaponBaseSRA"/>
     <compref component="WeapRange"/>
     <compref component="Equippable"/>
-    <compref component="Modificatn"/>
     <compref component="Gear"/>
+    <compref component="Custom"/>
     </compset>
 
   <!-- Special - special weapons (which are very similar to ranged weapons) -->
@@ -344,9 +610,10 @@
     <compref component="WeaponBaseSRA"/>
     <compref component="WeapRange"/>
     <compref component="WeapSpec"/>
-    <compref component="Equippable"/>
     <compref component="Modificatn"/>
+    <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="Custom"/>
     </compset>
 
   <!-- Melee - melee weapons -->
@@ -358,6 +625,7 @@
     <compref component="WeapMelee"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="Custom"/>
     </compset>
 
   <!-- Weapon - all weapons (above) must include these fields -->
@@ -368,6 +636,7 @@
     <compref component="WeaponBaseSRA"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="Custom"/>
     </compset>
 	
   <!-- Armor -->
@@ -413,5 +682,20 @@
     <compref component="Vehicle"/>
     <compref component="Gear"/>
     </compset>
+
+  <compset
+    id="ItemMod"
+    stackable="yes">
+    <compref component="ItemMod"/>
+    <compref component="Gear"/>
+    </compset>	
 	
+  <!-- Define any entities associated with the components defined above. -->
+
+  <!-- form="itemmodgiz"> -->
+  <entity
+    id="ItemMods"
+    form="itemmodgiz">
+      <bootstrap thing="ItemModHelper"/>
+    </entity>	
   </document>

@@ -46,7 +46,7 @@
 	
 	<eval phase="PreTraits" priority="10000" index="1"><![CDATA[
 	~if there are no selections on the Framework tab choosers required, then we're done.
-	doneif ((#resmax[resFraEdges] + #resmax[resFraSel1] + #resmax[resFraSel2] ) = 0)
+	doneif ((#resmax[resFraEdges] + #resmax[resFraHindrance] + #resmax[resFraSel1] + #resmax[resFraSel2] ) = 0)
 
 	~consume additional resource slots when 
 
@@ -55,6 +55,12 @@
 	  field[ehFrameEdgeCst].value += 1
 	  nexteach
     perform #resspent[resFraEdges,+,field[ehFrameEdgeCst].value,"Framework"]
+
+	~Count Hindrances with HelperRiftsAE.FrameHind tag
+    foreach pick in hero from Hindrance where "HelperRiftsAE.FrameHind"
+	  field[ehFrameHindCst].value += 1
+	  nexteach
+    perform #resspent[resFraHindrance,+,field[ehFrameHindCst].value,"Framework"]
 	
 	~Count items with HelperRiftsAE.FrameSel1 tag
     foreach pick in hero where "HelperRiftsAE.FrameSel1"
@@ -67,6 +73,30 @@
 	  field[ehFrameCst2].value += 1
 	  nexteach
     perform #resspent[resFraSel2,+,field[ehFrameCst2].value,"Framework"]
+
+		]]></eval>
+
+    </thing>
+	
+  <thing
+    id="ConstructHelper"
+    name="Construct Helper"
+    compset="ConstructHelper">
+	
+    <!-- Automatically add the helper to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+	<eval phase="PreTraits" priority="10000" index="1"><![CDATA[
+	~if there are no selections on the Construct tab choosers required, then we're done.
+	doneif (#resmax[resICMelee] = 0)
+
+	~consume additional resource slots when 
+
+	~Count Weapons with HelperRiftsAE.ICMelee tag
+    foreach pick in hero from WeapMelee where "HelperRiftsAE.ICMelee"
+	  field[chMeleeCst].value += 1
+	  nexteach
+    perform #resspent[resICMelee,+,field[chMeleeCst].value,"Integral Melee Weapon"]
 
 		]]></eval>
     </thing>
@@ -82,7 +112,178 @@
     <tag group="Helper" tag="Bootstrap"/>
 	
     </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICPoints"
+    name="Intelligent Construct Points"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[intelconstruct] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[intelconstruct] = 0
+
+      ]]></evalrule>
+    </thing>
+
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICMindSel"
+    name="IC Mind Type"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICTechSel"
+    name="IC Tech Base"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICFrameSel"
+    name="IC Frame"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICLocoSel"
+    name="IC Locomotion"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICSenseSel"
+    name="IC Senses"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICAppearSel"
+    name="IC Appearance"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!-- Racial - Intelligent Construct points resource  -->
+  <thing
+    id="resICVocalSel"
+    name="IC Appearance"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    </thing>
+	
+  <!--   -->
+  <thing
+    id="resICMelee"
+    name="Int. Const. Int. Mel. Wpns."
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>	
+	
+  <!--   -->
+  <thing
+    id="resICRanged"
+    name="Int. Const. Int. Rng. Wpns."
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>	
+	
   <!-- Iconic Frameworks - Edges resource  -->
   <thing
     id="resFraEdges"
@@ -120,6 +321,42 @@
       ]]></evalrule>	
     </thing>
 	
+  <!-- Iconic Frameworks - Edges resource  -->
+  <thing
+    id="resFraHindrance"
+    name="Iconic Framework Hindrances"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[framework] = 0
+
+      ]]></evalrule>	
+    </thing>	
   <!-- Iconic Frameworks - Bonus Abilities resource  -->
   <thing
     id="resFraSel1"
@@ -167,6 +404,7 @@
     <tag group="Helper" tag="Bootstrap"/>
 	
     </thing>
+	
   <!-- Hero's Journey - Bonus Abilities resource  -->
   <thing
     id="resHJSel"
@@ -206,7 +444,7 @@
 	
   <thing 
     id="resFortune" 
-	name="Fortune and Glory Points" 
+	name="Fortune &amp; Glory" 
 	compset="Resource" 
 	panellink="framework">
     <fieldval field="resObject" value="Fortune"/>
@@ -276,7 +514,35 @@
       ]]></evalrule>
     </thing>
 
-  <!-- Burn tracker for Juicer -->
+  <!-- Burn resource, tracker for Juicer -->
+  <thing
+    id="resBurn"
+    name="Burn"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+    <tag group="Helper" tag="Status"/>
+
+	<eval phase="Final" priority="999" index="1"><![CDATA[
+	doneif (#trkmax[trkBurn] = 0)
+
+	~consume additional resource slots when 
+    field[resMax].value = #trkmax[trkBurn]
+	field[resSpent].value = hero.childfound[trkBurn].field[trkUser].value
+
+		]]></eval>
+		
+	<eval phase="Initialize" priority="300" index="2"><![CDATA[
+	doneif (#trkmax[trkBurn] <> 0)
+	
+	perform delete[Helper.Status]
+
+		]]></eval>
+		
+    </thing>
+	
   <thing
     id="trkBurn"
     name="Burn"

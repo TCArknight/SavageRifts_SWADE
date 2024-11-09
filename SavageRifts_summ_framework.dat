@@ -19,7 +19,9 @@
     <table_fixed
       component="FraAbility"
       showtemplate="frAbility"
-      scrollable="no">
+      scrollable="no"
+	  alwaysupdate="yes">
+	  <list>Helper.FirstCopy</list>
       </table_fixed>
     </portal>
 
@@ -49,8 +51,20 @@
     <portal
       id="name"
       style="lblSummary">
-      <label
-        field="shortname">
+	  <label>
+        <labeltext><![CDATA[
+		  @text = field[shortname].text
+		  
+		  if (field[frNameAppend].isempty = 0) then
+		    @text &= field[frNameAppend].text
+			endif
+		  
+		  doneif (tagis[Helper.NoAppendCount] <> 0)
+		  
+          if (field[frNumCopies].value > 1) then
+            @text &= " (x" & field[frNumCopies].value & ")"
+            endif
+          ]]></labeltext>
         </label>
       <mouseinfo/>
       </portal>
@@ -75,8 +89,14 @@
     <portal
       id="name"
       style="lblSummary">
-      <label
-        field="shortname">
+	  <label>
+        <labeltext><![CDATA[
+		  @text = field[shortname].text
+		  
+          if (field[frNumCopies].value > 1) then
+            @text &= " (x" & field[frNumCopies].value & ")"
+            endif
+          ]]></labeltext>
         </label>
       <mouseinfo/>
       </portal>

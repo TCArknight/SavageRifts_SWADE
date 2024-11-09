@@ -10,11 +10,11 @@
 <document signature="Hero Lab Data">
 
   <portal
-    id="arSRAMelee"
+    id="arMeleeSRA"
     style="tblNormal">
     <table_dynamic
       component="Gear"
-      showtemplate="arSRAWpnPick"
+      showtemplate="arWpnPickSRA"
       choosetemplate="arWpnThing"
       choosesortset="Weapon"
       buytemplate="BuyCash"
@@ -40,7 +40,7 @@
     style="tblNormal">
     <table_dynamic
       component="Gear"
-      showtemplate="arSRAWpnPick"
+      showtemplate="arWpnPickSRA"
       choosetemplate="arWpnThing"
       choosesortset="Weapon"
       buytemplate="BuyCash"
@@ -104,7 +104,7 @@
     style="tblNormal">
     <table_dynamic
       component="Gear"
-      showtemplate="arSRAWpnPick"
+      showtemplate="arWpnPickSRA"
       choosetemplate="arWpnThing"
       choosesortset="Weapon"
       buytemplate="BuyCash"
@@ -133,7 +133,7 @@
         For more details, please see the "arWpnThing" template above.
   -->
   <template
-    id="arSRAWpnPick"
+    id="arWpnPickSRA"
     name="Weapon Pick"
     compset="WeaponSRA"
     marginhorz="3"
@@ -150,7 +150,6 @@
         </checkbox>
       </portal>
 
-
     <portal
       id="name"
       style="lblLeft"
@@ -162,6 +161,14 @@
         </label>
       </portal>
 
+    <portal
+      id="username"
+      style="editNormal">
+      <edit
+        field="username">
+        </edit>
+      </portal>
+	  
     <portal
       id="heldby"
       style="imgNormal">
@@ -323,7 +330,11 @@
       <action
         action="info">
         </action>
-      <mouseinfo/>
+      <mouseinfo><![CDATA[
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
+        ]]></mouseinfo>
       </portal>
 
     <portal
@@ -339,6 +350,7 @@
       ~center the portals vertically
       perform portal[info].centervert
       perform portal[name].centervert
+      perform portal[username].centervert
       perform portal[namecheck].centervert
       perform portal[attack].centervert
       perform portal[damage].centervert
@@ -357,12 +369,24 @@
 	  var top1 as number
 	  var top2 as number
 
+      ~if this is a custom item, show our name edit control - otherwise just
+      ~show a label
+      portal[username].visible = tagis[Helper.CustomItem]
+	  
       ~position the name on the left and let it use all available space
       portal[name].left = 0
 	  portal[name].top = 0
       portal[name].width = 250
 	  
 	  top1 = portal[name].top
+	  if (portal[username].visible = 0) then
+	    portal[name].visible = 1
+		endif
+
+      ~position the name on the left and let it use all available space
+      portal[username].left = 0
+	  portal[username].top = 0
+      portal[username].width = 250
 	  
 	  ~ top row - name, namecheck, strreq, attack, damage, piercing, range, special, 
 	  ~           gearmanage, info, delete
@@ -426,14 +450,16 @@
       perform portal[special].alignrel[rtol,gearmanage,-6]
 
       if (hero.tagis[Hero.UseMods] <> 0) then
-        if (tagis[Modificatn.Modificatn] <> 0) then
+        if (tagis[ItemMod.ItemModHelper] <> 0) then
           portal[edit].visible = 1
+          ~position the edit portal to the left of the gear button
+          perform portal[edit].alignrel[rtol,delete,10]
           endif
         endif
 
       ~position the range portal to the left of the delete button; we want the
       ~damage to be centered in its own column relative to a centerpoint position
-      perform portal[range].centerpoint[horz,420]
+      perform portal[range].centerpoint[horz,400]
 
       ~position the AP portal to the left of the range column; we want the AP to
       ~be centered in its own column relative to a centerpoint position
@@ -482,15 +508,6 @@
         endif
       portal[heldby].visible = isgearheld
 	  
-      ~if (portal[attack].visible <> 0) then
-      ~  ~portal[namecheck].width = minimum(portal[name].width,limit)
-      ~  portal[namecheck].width = portal[name].width
-      ~  perform portal[namecheck].sizetofit[15]
-	~	
-	~    portal[namecheck].top = top1
-    ~    perform portal[namecheck].centervert
-    ~    endif
-
       ~center the name if this is a show-only thing
       if (tagis[thing.showonly] <> 0) then
         perform portal[name].centerhorz
@@ -503,7 +520,7 @@
       portal[special].visible = 1 - field[wpNotes].isempty
 	  
 	  ~ shrink the bottom of the portal if not needing to show edit or active
-	  height = portal[edit].bottom
+	  height = portal[edit].bottom + 5
 
       ]]></position>
 
@@ -688,7 +705,7 @@
   -->
   <layout
     id="armorySRA">
-    <portalref portal="arSRAMelee" taborder="10"/>
+    <portalref portal="arMeleeSRA" taborder="10"/>
     <portalref portal="arSRARange" taborder="20"/>
     <portalref portal="arSRAArmor" taborder="30"/>
     <portalref portal="arSRASpecial" taborder="40"/>
@@ -700,7 +717,7 @@
       gap = 10
 
       ~set the width of all tables to the full width of the layout
-      portal[arSRAMelee].width = width
+      portal[arMeleeSRA].width = width
       portal[arSRARange].width = width
       portal[arSRAArmor].width = width
       portal[arSRASpecial].width = width
@@ -719,10 +736,10 @@
       portal[arSRAArmor].top = ht - portal[arSRAArmor].height
 
       ~position the melee table at the top
-      portal[arSRAMelee].top = 0
+      portal[arMeleeSRA].top = 0
 
       ~set the heights of the two weapon tables to use all the space available
-      portal[arSRAMelee].height = ht
+      portal[arMeleeSRA].height = ht
       portal[arSRARange].height = ht
 
       ~determine how much space we have left for the two tables; be sure to exclude
@@ -735,22 +752,22 @@
       ~represent the dead space inbetween, which is a span of 9 pixels. We have to
       ~factor this detail in when adjusting the space remaining by our gaps.
       var remain as number
-      remain = portal[arSRAArmor].top - portal[arSRAMelee].top
+      remain = portal[arSRAArmor].top - portal[arMeleeSRA].top
       remain -= (gap - 1) * 2
 
       ~if the height of both tables exceeds what we have left, we need to divvy up
       ~that space between the two tables
-      if (portal[arSRAMelee].height + portal[arSRARange].height > remain) then
+      if (portal[arMeleeSRA].height + portal[arSRARange].height > remain) then
 
         ~if the melee table is less than half the space, limit the ranged table
         ~to whatever space is leftover
-        if (portal[arSRAMelee].height < remain / 2) then
-          portal[arSRARange].height = remain - portal[arSRAMelee].height
+        if (portal[arMeleeSRA].height < remain / 2) then
+          portal[arSRARange].height = remain - portal[arMeleeSRA].height
 
         ~if the ranged table is less than half the space, limit the melee table
         ~to whatever space is leftover
         elseif (portal[arSRARange].height < remain / 2) then
-          portal[arSRAMelee].height = remain - portal[arSRARange].height
+          portal[arMeleeSRA].height = remain - portal[arSRARange].height
 
         ~otherwise, both tables are larger than half the space, so we need to limit
         ~the height of both of them
@@ -762,12 +779,12 @@
         ~space, and finally set that as the height for the second table.
         else
           portal[arSRARange].height = remain / 2
-          portal[arSRAMelee].height = remain - portal[arSRARange].height
+          portal[arMeleeSRA].height = remain - portal[arSRARange].height
           endif
         endif
 
       ~position the ranged weapons table beneath the melee table
-      portal[arSRARange].top = portal[arSRAMelee].bottom + gap
+      portal[arSRARange].top = portal[arMeleeSRA].bottom + gap
 
       ~position the armor/shields table beneath the ranged weapons table
       ~NOTE! we already positioned this table, but the above logic could result in

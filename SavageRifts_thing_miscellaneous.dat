@@ -44,4 +44,24 @@
     <tag group="Hide" tag="Tracker"/>
 	
     </thing>
+
+  <thing
+    id="ItemModHelper"
+    name="Item Mod helper fields"
+    compset="ItemModHelper">	  
+	<tag group="ItemMod" tag="ItemModHelper"/>
+	      
+    <eval index="1" phase="Initialize" priority="2100"><![CDATA[
+	  var expr as string
+	  
+	  expr = "ItemModCat.Gear" 
+	  
+	  if (parent.tagis[component.WeaponBase] <> 0) then
+	    expr &= " | ItemModCat.Weapon"
+	    endif
+      
+	  field[imhExpr].text = expr
+	  
+      ]]></eval>
+    </thing>
   </document>

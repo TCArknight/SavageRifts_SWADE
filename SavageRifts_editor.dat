@@ -18,6 +18,34 @@
     description="Languages"
     summary="Defines a language that can be added to a character.">
     </editthing>
+
+  <!-- ItemMods editthing -->
+  <editthing
+    group="Rifts"
+    compset="ItemMod"
+    name="Item Modifications"
+    prefix="imod"
+    description="Abilities defined as Item Modifications."
+    summary="Defines Item Modifications that can be selected through the item mod gizmo.">
+
+    <inputthing
+      name="Mod Category"
+      helptext="Specify what type of Item Mod this is for.">
+      <it_tagpick group="ItemModCat" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Mod Category"
+      helptext="Specify what type of Item Mod this is for.">
+      <it_tagpick group="ItemModType" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Weapon Effect?"
+      helptext="Specify what effect this is mod adds to a weapon.">
+      <it_taglist group="Weapon" tag="?"/>
+      </inputthing>
+	  
+    </editthing>
+	
   <!-- Melee editthing - for melee weapons -->
   <editthing
     group="Rifts"
@@ -417,6 +445,7 @@
       <it_tagcheck group="Equipment" tag="Standard"/>
       </inputthing>
     </editthing>
+	
   <!-- Framework Ability editthing -->
   <editthing
     group="Rifts"
@@ -428,7 +457,12 @@
     <inputthing
       name="Framework Ability Point Cost"
       helptext="Specify cost in Racial Edge Points of the Racial Property.">
-      <it_field field="frabCstVal"/>
+      <it_field field="frCostValue"/>
+      </inputthing>
+    <inputthing
+      name="Max # times allowed"
+      helptext="Specify maximum number of times Ability may be added.">
+      <it_field field="frDupMax"/>
       </inputthing>
     <inputthing
       name="Activated by User?"
@@ -473,7 +507,22 @@
     <inputthing
       name="Focus for Knowledge Skill"
       helptext="Specify a Focus if this is a Knowledge Skill.">
-      <it_field field="frabDomain"/>
+      <it_field field="frDomain"/>
+      </inputthing>
+    <inputthing
+      name="Disable Auto-Naming?"
+      helptext="Specify whether the automatic synthesis of names for this edge should be disabled.">
+      <it_tagcheck group="User" tag="NoAutoName"/>
+      </inputthing>
+    <inputthing
+      name="Require Domain Specification?"
+      helptext="Specify whether the edge requires the user to specify a domain.">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    <inputthing
+      name="Domain Term"
+      helptext="Specify the term to use as a label for the domain. If empty, the term 'Domain' is used.">
+      <it_tagpick group="DomainTerm" tag="?" dynamic="yes"/>
       </inputthing>
     <inputthing
       name="Menu #1 Source"
@@ -498,7 +547,7 @@
     <inputthing
       name="Framework Ability Point Cost"
       helptext="Specify cost in Racial Edge Points of the Racial Property.">
-      <it_field field="frcoCstVal"/>
+      <it_field field="frCostValue"/>
       </inputthing>
     <inputthing
       name="Activated by User?"
@@ -532,7 +581,22 @@
     <inputthing
       name="Focus for Knowledge Skill"
       helptext="Specify a Focus if this is a Knowledge Skill.">
-      <it_field field="frcoDomain"/>
+      <it_field field="frDomain"/>
+      </inputthing>
+    <inputthing
+      name="Disable Auto-Naming?"
+      helptext="Specify whether the automatic synthesis of names for this edge should be disabled.">
+      <it_tagcheck group="User" tag="NoAutoName"/>
+      </inputthing>
+    <inputthing
+      name="Require Domain Specification?"
+      helptext="Specify whether the edge requires the user to specify a domain.">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    <inputthing
+      name="Domain Term"
+      helptext="Specify the term to use as a label for the domain. If empty, the term 'Domain' is used.">
+      <it_tagpick group="DomainTerm" tag="?" dynamic="yes"/>
       </inputthing>
   </editthing> 
 
@@ -725,6 +789,11 @@
       helptext="Specify the tag expression used to identify choices for display in the first menu. If empty, no first menu is shown.">
       <it_field field="usrCandid1"/>
       </inputthing>
+    <inputthing
+      name="Hide from Special Tab?"
+      helptext="Specify whether this should be omitted from display on the Special tab.">
+      <it_tagcheck group="Hide" tag="Special" default="yes"/>
+      </inputthing>
     </editthing> 
 	
   <!-- Fortune and Glory editthing -->
@@ -779,7 +848,7 @@
     <inputthing
       name="Strength"
       helptext="Strength rating of the Power Armor.">
-      <it_taglist group="vhArmorStrRiftsAE" tag="?" deftag="7" />
+      <it_tagpick group="vhArmorStrRiftsAE" tag="?" deftag="7" />
       </inputthing>
     <inputthing
       name="Acceleration"

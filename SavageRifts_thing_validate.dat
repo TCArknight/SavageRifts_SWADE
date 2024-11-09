@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains an assortment of things used solely for validation reporting.
+      Each thing has one or more "evalrule" scripts that verify facets of each actor
+      and report appropriate error messages if not satisfied.
+
+     If you prefer, you could instead have a small number of things with numerous
+     "evalrule" scripts associated with each. The approach used below is to have lots
+     of things with scripts targeted at a narrow purpose, but there is no reason you
+     couldn't have a few things with lots of scripts targeted as a wide range of
+     purposes. By having lots of separate things, the name of each can be leveraged
+     for use within the validation error report, which can often improve the clarity
+     and usefulness of the validation messages.
+-->
+
+<document signature="Hero Lab Data">
+
+  <!-- Validate facets of the race -->
+  <thing
+    id="valICHardSkill"
+    name="IC: Hardwired Skills"
+    compset="Simple">
+
+    <!-- Make sure that we have a race selected -->
+    <evalrule index="1" phase="Validate" priority="8000" message="Limit of 10 Hardwired Skill selections"><![CDATA[var hsCount as number
+
+foreach pick in hero from FraAbility where "Helper.HardSkill"
+  hsCount += 1
+  nexteach
+
+if (hsCount <= 10) then
+  @valid = 1
+  endif
+      ]]></evalrule>
+
+    </thing>
+
+
+    </document>

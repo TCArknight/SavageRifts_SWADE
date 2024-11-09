@@ -1,0 +1,1169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definition of the "talents" tab panel. This tab is where
+      the user selects the special talents for the character.
+
+      All public visual elements used with this tab panel start with the prefix "ab"
+      to associate them with the tab.
+-->
+
+<document signature="Hero Lab Data">
+
+  <portal 
+    id="hdrConstruct" 
+    style="lblTitle">
+    <label>
+      <labeltext>
+        @text = "Intelligent Construct (Construct Points: " &amp; hero.child[resICPoints].field[resSummary].text &amp; ")"
+        </labeltext>
+      </label>
+    </portal>
+ 	
+  <portal
+    id="icMind"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructMind</list>
+	  <candidate>Helper.ConstructMind</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Mind Type for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Mind Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICMindSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Talents Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICMindSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICMindSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Mind Type"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icTechBase"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructTechBase</list>
+	  <candidate>Helper.ConstructTechBase</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Tech Base for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Tech Base Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICTechSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICTechSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICTechSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Tech Base"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icFrame"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructFrame</list>
+	  <candidate>Helper.ConstructFrame</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Frame for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Frame Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICFrameSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICFrameSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICFrameSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Frame"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icLoco"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructLoco</list>
+	  <candidate>Helper.ConstructLoco</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Locomotion for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Locomotion Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICLocoSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICLocoSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICLocoSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Locomotion"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icSense"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructSense</list>
+	  <candidate>Helper.ConstructSense</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Senses for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Senses Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICSenseSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICSenseSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICSenseSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Sense"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icAppear"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructApp</list>
+	  <candidate>Helper.ConstructApp</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Appearance for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Appearance Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICAppearSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICAppearSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICAppearSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Appearance"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icVocal"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="RacialProp"
+	  showtemplate="icConstructPick"
+      choosetemplate="icConstructThg"
+	  choosesortset="ICSelectRP"
+	  scrollable="no">
+	  <list>Helper.ConstructVocal</list>
+	  <candidate>Helper.ConstructVocal</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose the Vocal Unit for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Vocal Choices"
+        if (hero.tagis[Hero.Creature] = 0) then
+          @text &= "  -  " & hero.child[resICVocalSel].field[resSummary].text
+          endif
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        ~set the color based on whether the proper number of slots are allocated
+        if (hero.childfound[resICVocalSel].field[resLeft].value = 0) then
+          @text = "{text clrgrey}"
+        elseif (hero.childfound[resICVocalSel].field[resLeft].value < 0) then
+          @text = "{text clrwarning}"
+          endif
+        @text &= "Add New Vocal Unit"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icComplication"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="FraComp"
+	  showtemplate="icConsCompPick"
+      choosetemplate="icConsCompThg"
+	  choosesortset="ICSelectFrame"
+	  scrollable="yes">
+	  <list>Helper.ConstructComp</list>
+	  <candidate>Helper.ConstructComp</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose Complications for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Optional Complication Choices"
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        @text &= "Add New Complication"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>
+
+  <portal
+    id="icFeatures"
+    style="tblNormal"
+    width="110">
+	<table_dynamic
+      component="FraAbility"
+	  showtemplate="icConsFeaturePick"
+      choosetemplate="icConsFeatThg"
+	  choosesortset="ICSelectFrame"
+	  scrollable="yes">
+	  <list>Helper.ConstructFeature</list>
+	  <candidate>Helper.ConstructFeature</candidate>
+	  <titlebar><![CDATA[
+        @text = "Choose Features for your construct."
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Feature Choices"
+        ]]></headertitle>
+	  <additem><![CDATA[
+        ~if we're in advancement mode, we've been frozen, so display accordingly
+        if (state.iscreate = 0) then
+          @text = "{text clrgrey}Add Selection Via Advances Tab"
+          done
+          endif
+
+        @text &= "Add New Feature"
+        ]]></additem>
+	  </table_dynamic>
+    </portal>	
+	
+  <portal
+    id="icChsIntWpnM"
+    style="tblNormal">
+    <table_dynamic
+      component="WeapMelee"
+      showtemplate="icChsMeleePick"
+      choosetemplate="SimpleItem"
+      choosesortset="Weapon"
+	  candidatepick="ConstructHelper"
+	  candidatefield="chMeleeExp"
+	  headertemplate="icChsMeleePick"
+	  addpick="resICMelee">
+      <list>HelperRiftsAE.ICMelee</list>
+      <autotag group="HelperRiftsAE" tag="ICMelee"/>
+      <description/>
+      <additem><![CDATA[      
+        @text &= hero.child[ConstructHelper].field[chMeleeAdd].text
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+  <portal
+    id="icChsIntWpnR"
+    style="tblNormal">
+    <table_dynamic
+      component="WeapRange"
+      showtemplate="icChsRangePick"
+      choosetemplate="SimpleItem"
+      choosesortset="Weapon"
+	  candidatepick="ConstructHelper"
+	  candidatefield="chRangeExp"
+	  headertemplate="icChsRangePick"
+	  addpick="resICRanged">
+      <list>HelperRiftsAE.ICRanged</list>
+      <autotag group="HelperRiftsAE" tag="ICRanged"/>
+      <description/>
+      <additem><![CDATA[      
+        @text &= hero.child[ConstructHelper].field[chRangeAdd].text
+        ]]></additem>
+      </table_dynamic>
+    </portal>	
+	
+  <template
+    id="icChsRangePick"
+    name="Chooser Ranged Pick"
+    compset="Simple"
+    marginhorz="3"
+    marginvert="2">
+
+	<portal
+      id="hdrText"
+      style="lblTitle"
+	  isheader="yes">
+      <label>
+      	<labeltext><![CDATA[
+  	       @text = hero.child[ConstructHelper].field[chRangeHdr].text
+      	   ]]></labeltext>
+        </label>
+      </portal>
+	  
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label
+        field="name">
+        </label>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if we've been assigned a non-default width for use when showing things, adopt
+      ~that width now
+      if (ispick = 0) then
+        var size as number
+        size = tagvalue[SimpleItem.width?]
+        if (size > 0) then
+          width = size
+          endif
+        endif
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~center the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~if we're showing a thing, the info and delete buttons are irrelevant, since
+      ~we should be showing within a chooser, in which case there's nothing to
+      ~delete and we have the description already visible
+      var edge as number
+      if (ispick = 0) then
+        portal[info].visible = 0
+        portal[delete].visible = 0
+        edge = width
+      else
+        edge = portal[info].left - 5
+        endif
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,edge)
+
+      ~center the name if requested or this is a show-only thing
+      if (tagis[SimpleItem.CenterName] + tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+
+      ~if this is an auto-added pick, change its font to indicate that fact
+      if (ispick + !candelete >= 2) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+	  <header><![CDATA[
+		~our header height is the height of our labels
+		height = portal[name].height
+
+		~each of our header labels has the same width as the corresponding data beneath
+		portal[hdrText].width = width
+
+		~align all header labels at the bottom of the header region
+		perform portal[hdrText].alignedge[bottom,0]
+
+		]]></header>
+		</template>	
+  <template
+    id="icChsMeleePick"
+    name="Chooser Melee Pick"
+    compset="Simple"
+    marginhorz="3"
+    marginvert="2">
+
+	<portal
+      id="hdrText"
+      style="lblTitle"
+	  isheader="yes">
+      <label>
+      	<labeltext><![CDATA[
+  	       @text = hero.child[ConstructHelper].field[chMeleeHdr].text
+      	   ]]></labeltext>
+        </label>
+      </portal>
+	  
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label
+        field="name">
+        </label>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if we've been assigned a non-default width for use when showing things, adopt
+      ~that width now
+      if (ispick = 0) then
+        var size as number
+        size = tagvalue[SimpleItem.width?]
+        if (size > 0) then
+          width = size
+          endif
+        endif
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~center the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~if we're showing a thing, the info and delete buttons are irrelevant, since
+      ~we should be showing within a chooser, in which case there's nothing to
+      ~delete and we have the description already visible
+      var edge as number
+      if (ispick = 0) then
+        portal[info].visible = 0
+        portal[delete].visible = 0
+        edge = width
+      else
+        edge = portal[info].left - 5
+        endif
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,edge)
+
+      ~center the name if requested or this is a show-only thing
+      if (tagis[SimpleItem.CenterName] + tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+
+      ~if this is an auto-added pick, change its font to indicate that fact
+      if (ispick + !candelete >= 2) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+	  <header><![CDATA[
+		~our header height is the height of our labels
+		height = portal[name].height
+
+		~each of our header labels has the same width as the corresponding data beneath
+		portal[hdrText].width = width
+
+		~align all header labels at the bottom of the header region
+		perform portal[hdrText].alignedge[bottom,0]
+
+		]]></header>
+		</template>
+  <!-- icConstructThg template
+        Displays the name of the thing and any non-standard cost indicator.
+  -->
+  <template
+    id="icConstructPick"
+    name="Construct Pick"
+    compset="RacialProp"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[raceCstVal].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+	  
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~position the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~position the name on the left and use availble space, with a gap for menus
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[info].left - portal[name].left - 10)
+
+      ~if the ability is auto-added, change its font to indicate that fact
+      if (candelete = 0) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+
+    </template>
+	
+  <!-- icConstructThg template
+        Displays the name of the thing and any non-standard cost indicator.
+  -->
+  <template
+    id="icConstructThg"
+    name="Const. Thing"
+    compset="RacialProp"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[raceCstVal].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our width and height based on our tallest portal
+      height = portal[name].height
+      width = 265
+      doneif (issizing <> 0)
+
+      ~position the name on the left
+      portal[name].left = 0
+
+      ~center the name if this is a show-only thing
+      if (tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+      ]]></position>
+
+    </template>
+  <!-- icConstructThg template
+        Displays the name of the thing and any non-standard cost indicator.
+  -->
+  <template
+    id="icConsCompThg"
+    name="Construct Pick"
+    compset="FraComp"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[frCostValue].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our width and height based on our tallest portal
+      height = portal[name].height
+      doneif (issizing <> 0)
+
+      ~position the name on the left
+      portal[name].left = 0
+
+      ~center the name if this is a show-only thing
+      if (tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+      ]]></position>
+
+    </template>
+	
+  <template
+    id="icConsCompPick"
+    name="Construct Pick"
+    compset="FraComp"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[frCostValue].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="menu1"
+      style="menuSmall">
+      <menu_things
+        field="usrChosen1"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource1"
+        candidatefield="usrCandid1">
+        </menu_things>
+      </portal>
+	  
+    <portal
+      id="lbldomain"
+      style="lblSecond">
+      <label>
+        <labeltext><![CDATA[
+          if (tagis[DomainTerm.?] <> 0) then
+            @text = tagnames[DomainTerm.?] & ":"
+          else
+            @text = "Domain:"
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="domain"
+      style="editNormal">
+      <edit
+        field="domDomain">
+        </edit>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+	  
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+	  
+     ~determine whether our menus are visible
+      ~Note: Remember that a non-empty tagexpr field indicates menu selection is used.
+      if (field[usrCandid1].isempty = 1) then
+        portal[menu1].visible = 0
+        endif
+		
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~position the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+      perform portal[domain].centervert
+      perform portal[lbldomain].alignrel[btob,domain,0]
+      perform portal[menu1].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+	  ~position the name on the left
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[info].left - portal[name].left - 10)
+
+      ~position the menus to the right of the name in the available space
+      perform portal[menu1].alignrel[ltor,name,10]
+      portal[menu1].width = (portal[info].left - portal[menu1].left - 20) / 2
+	  
+	  ~if we don't need a domain, hide the portals
+      if (tagis[User.NeedDomain] = 0) then
+        portal[lbldomain].visible = 0
+        portal[domain].visible = 0
+		
+      ~otherwise, position the domain portals next to the name, making sure the
+      ~domain edit portal doesn't run beyond the available space
+      else
+        perform portal[lbldomain].alignrel[ltor,name,10]
+        perform portal[domain].alignrel[ltor,lbldomain,5]
+        portal[domain].width = minimum(150,portal[info].left - portal[domain].left - 10)
+        endif
+
+      ~center the name if this is a show-only thing
+      if (tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+      ]]></position>
+
+    </template>
+
+  <template
+    id="icConsFeaturePick"
+    name="Construct Feature Pick"
+    compset="FraAbility"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[frCostValue].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="menu1"
+      style="menuSmall">
+      <menu_things
+        field="usrChosen1"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource1"
+        candidatefield="usrCandid1">
+        </menu_things>
+      </portal>
+	  
+    <portal
+      id="lbldomain"
+      style="lblSecond">
+      <label>
+        <labeltext><![CDATA[
+          if (tagis[DomainTerm.?] <> 0) then
+            @text = tagnames[DomainTerm.?] & ":"
+          else
+            @text = "Domain:"
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="domain"
+      style="editNormal">
+      <edit
+        field="domDomain">
+        </edit>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+	  
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+	  
+	  ~ portal[menu1].visible = 1
+	  
+      ~determine whether our menus are visible
+      ~Note: Remember that a non-empty tagexpr field indicates menu selection is used.
+      if (field[usrCandid1].isempty = 1) then
+        portal[menu1].visible = 0
+        endif
+		
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~position the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+      perform portal[domain].centervert
+      perform portal[lbldomain].alignrel[btob,domain,0]
+      perform portal[menu1].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+	  ~position the name on the left
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[info].left - portal[name].left - 10)
+
+      ~position the menus to the right of the name in the available space
+      perform portal[menu1].alignrel[ltor,name,10]
+      portal[menu1].width = (portal[info].left - portal[menu1].left - 20) / 2
+	  
+	  ~if we don't need a domain, hide the portals
+      if (tagis[User.NeedDomain] = 0) then
+        portal[lbldomain].visible = 0
+        portal[domain].visible = 0
+		
+      ~otherwise, position the domain portals next to the name, making sure the
+      ~domain edit portal doesn't run beyond the available space
+      else
+        perform portal[lbldomain].alignrel[ltor,name,10]
+        perform portal[domain].alignrel[ltor,lbldomain,5]
+        portal[domain].width = minimum(150,portal[info].left - portal[domain].left - 10)
+        endif
+
+      ~center the name if this is a show-only thing
+      if (tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+      ]]></position>
+
+    </template>
+	
+  <template
+    id="icConsFeatThg"
+    name="Construct Feature Thing"
+    compset="FraAbility"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text & " (" & field[frCostValue].value & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our width and height based on our tallest portal
+      height = portal[name].height
+      doneif (issizing <> 0)
+
+      ~position the name on the left
+      portal[name].left = 0
+
+      ~center the name if this is a show-only thing
+      if (tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+      ]]></position>
+
+    </template>	
+	
+  <layout
+    id="construct">
+    <portalref portal="hdrConstruct" />
+    <portalref portal="icMind" taborder="10"/>
+    <portalref portal="icTechBase" taborder="20"/>
+    <portalref portal="icFrame" taborder="30"/>
+    <portalref portal="icLoco" taborder="40"/>
+    <portalref portal="icSense" taborder="50"/>
+    <portalref portal="icAppear" taborder="60"/>
+    <portalref portal="icVocal" taborder="70"/>
+    <portalref portal="icComplication" taborder="80"/>
+    <portalref portal="icFeatures" taborder="90"/>
+    <portalref portal="icChsIntWpnM" taborder="91"/>
+    <portalref portal="icChsIntWpnR" taborder="92"/>
+
+    <!-- This script sizes and positions the layout and its child visual elements. 
+	    <portalref portal="hoSpecies" taborder="10"/>
+ -->
+    <position><![CDATA[
+      ~freeze our table in advancement mode to disable adding new choices
+      ~Note: All freezing must be done *before* any positioning is performed.
+      if (state.iscreate = 0) then
+        portal[hdrConstruct].freeze = 1
+        portal[icMind].freeze = 1
+        portal[icTechBase].freeze = 1
+        endif
+
+      ~position and size the table to span the full layout; it will only use the
+      ~vertical space that it actually needs
+      portal[hdrConstruct].top = 0
+      portal[hdrConstruct].height = 20
+      portal[hdrConstruct].width = width
+      
+      portal[icMind].top = portal[hdrConstruct].bottom + 5
+      portal[icMind].left = 0
+      portal[icMind].height = 20
+      portal[icMind].width = (width / 2) - 2
+
+      portal[icTechBase].top = portal[icMind].top
+	  ~ perform portal[icTechBase].alignedge[right,0]
+      portal[icTechBase].left = portal[icMind].right + 4
+      portal[icTechBase].height = 20
+      portal[icTechBase].width = portal[icMind].width
+	  
+      portal[icFrame].top = portal[icMind].bottom + 10
+      portal[icFrame].left = portal[icMind].left
+      portal[icFrame].height = 20
+      portal[icFrame].width = portal[icMind].width
+
+      portal[icLoco].top = portal[icFrame].top
+      portal[icLoco].left = portal[icTechBase].left
+      portal[icLoco].height = 20
+      portal[icLoco].width = portal[icTechBase].width
+	  
+      portal[icSense].top = portal[icFrame].bottom + 10
+      portal[icSense].left = portal[icMind].left
+      portal[icSense].height = 20
+      portal[icSense].width = portal[icMind].width
+
+      portal[icAppear].top = portal[icSense].top
+      portal[icAppear].left = portal[icTechBase].left
+      portal[icAppear].height = 20
+      portal[icAppear].width = portal[icTechBase].width
+	  
+      portal[icVocal].top = portal[icSense].bottom + 10
+      portal[icVocal].left = portal[icMind].left
+      portal[icVocal].height = 20
+      portal[icVocal].width = portal[icMind].width
+	  
+      ~size remaining tables to span the full layout width
+      portal[icComplication].width = width
+      portal[icFeatures].width = width
+      portal[icChsIntWpnM].width = width / 2
+	  portal[icChsIntWpnM].visible = #resmax[resICMelee]
+      portal[icChsIntWpnR].width = width / 2
+	  portal[icChsIntWpnR].visible = #resmax[resICRanged]
+      portal[icFeatures].maxrows = 5
+
+      ~position the complications table below the Vocal table	  
+      portal[icComplication].top = portal[icVocal].bottom + 10
+      portal[icComplication].left = portal[icMind].left
+	  
+      portal[icFeatures].top = portal[icComplication].bottom + 10
+      portal[icFeatures].left = portal[icMind].left
+	  
+      portal[icChsIntWpnM].top = portal[icFeatures].bottom + 10
+      portal[icChsIntWpnM].left = portal[icMind].left
+	  
+      portal[icChsIntWpnR].top = portal[icFeatures].bottom + 10
+      portal[icChsIntWpnR].left = portal[icTechBase].left
+	  
+	  height = maximum(portal[icChsIntWpnM].bottom,portal[icChsIntWpnR].bottom)
+	  
+      ]]></position>
+
+    </layout>
+
+  <panel
+    id="intelconstruct"
+    name="Intelligent Construct"
+    marginhorz="5"
+    marginvert="5"
+    order="120">
+	<live>Race.racSRAIntelConstr</live>
+    <layoutref layout="construct"/>
+    <position><![CDATA[
+      ]]></position>
+    </panel>
+	
+  </document>

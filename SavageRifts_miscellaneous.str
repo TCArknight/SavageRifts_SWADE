@@ -160,5 +160,6 @@
 	<compref component="Ability"/>
 	<compref component="Domain"/>
 	<compref component="UserSelect"/>
+	<compref component="SpecialTab"/>
     </compset>
   </document>

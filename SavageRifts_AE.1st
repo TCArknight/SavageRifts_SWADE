@@ -51,7 +51,10 @@
     <value id="BonusRaceHind"/>  <!-- Bonus Racial Hindrance -->     
     <value id="FrameSel1"/>           <!-- Framework Ability selected through Helper 1--> 
     <value id="FrameSel2"/>           <!-- Framework Ability selected through Helper 2--> 
-    <value id="FrameEdge"/>           <!-- Framework Edge selected through Helper 1-->    
+    <value id="FrameEdge"/>           <!-- Framework Edge selected through Helper 1-->   
+    <value id="FrameHind"/>           <!-- Framework Hindrance selected through Helper 1-->   
+    <value id="ICMelee"/>           <!-- Melee weapon selected through construct feature --> 
+    <value id="ICRanged"/>           <!-- Melee weapon selected through construct feature -->  
     <value id="HeroJourneySel"/> <!-- Hero's Journey option selected through Helper -->     
     <value id="TKnoSkill"/>           <!-- Tag for selected Tramadore Knowledge Skill -->     
     <value id="SpellSkill"/>          <!-- Tag the Hero's Spellcasting skill -->   
@@ -75,6 +78,7 @@
     <value id="CyberArmorActive"/>       <!-- cannot use Crazy or Juicer augmentation -->
     <value id="DoublePP"/>          <!-- double Power Points from the Power Points edge -->	
     <value id="DoublePPBase"/>          <!-- double base Power Points from the Arcane Background -->
+    <value id="TWCyberware"/>          <!-- indicates Cyberware is rare Techno-Wizard version -->
     </group>
 	
   <!-- Power Group tags - Used for tagging powers valid for selection in various choosers, etc. -->
@@ -142,6 +146,27 @@
     <value id="Personal" name="Personal Ranged" />
     <value id="Vehicle" name="Vehicular" />
     </group>
+
+  <!-- FraTypeSel group - tags helping identify the type of framework selected by the hero.
+  -->
+  <group
+    id="FraTypeSel"
+    dynamic="yes">
+    <value id="Arcane" />
+    <value id="Miracle" />
+    <value id="Psionic" />
+    <value id="WeirdSci" />
+    </group>
+	
+  <!-- FraChosen group - tags helping identify selections for First Copy process of Framework Abilities/Complications
+  -->
+  <group
+    id="FraChosen"
+    dynamic="yes">
+    <value id="Chosen" />
+    <value id="skAthletic" />
+    <value id="skFighting" />
+    </group>	
 	
   <!-- TCA: Power/Robot Armor Strength Tags  -->
   <group
@@ -195,6 +220,40 @@
     <value id="STD" name="Standard"/>
     </group>
 
+  <!-- TCA: Power Point Type  -->
+  <group
+    id="PowerLimit"
+    name="Power Limitation"
+    dynamic="yes">
+    <value id="Touch" name="Range (Touch)"/>
+    <value id="Self" name="Range (Self)"/>
+    <value id="Aspect" name="Aspect"/>
+    </group>
+
+  <!-- TCA: Item Mod  -->
+  <group
+    id="ItemMod"
+	dynamic="yes">
+    <value id="ItemModHelper" name="Item Mod Helper"/>
+    </group>	
+	
+  <!-- Item Mod Category tags -->
+  <group
+    id="ItemModCat"
+	dynamic="yes"
+    sequence="explicit">
+    <value id="Gear" name="Gear" order="20"/>
+    <value id="Weapon" name="Weapon (Any)" order="60"/>
+    <value id="Melee" name="Weapon (Melee)" order="61"/>
+    <value id="Ranged" name="Weapon (Ranged)" order="62"/>
+    </group>
+  <!-- Item Mod Category tags -->
+  <group
+    id="ItemModType"
+	dynamic="yes"
+    sequence="explicit">
+    <value id="Manufact" name="Manufacturer" order="20"/>
+    </group>
 	
   <!-- TCA: Savage Rifts Sources -->
   <source
@@ -248,7 +307,7 @@
     id="srcRiftsArcMysAE"
     name="Arcana and Mysticism"
     parent="sepRiftsSuppAE"
-    selectable="no"
+    selectable="yes"
     reportable="yes"
 	sortorder="2"
     description="Material from the supplement.">
@@ -268,11 +327,12 @@
     id="srcRiftsEmpHumAE"
     name="Empires of Humanity"
     parent="sepRiftsSuppAE"
-    selectable="no"
+    selectable="yes"
     reportable="yes"
 	sortorder="4"
     description="Material from the supplement.">
-    </source>   
+    </source> 
+	
   <!-- TCA: Various sortsets for Savage Rifts -->
   <sortset
     id="LangSortChoose"
@@ -305,7 +365,6 @@
     <sortkey isfield="no" id="_Name_"/>
     </sortset>
 
-	
   <sortset
     id="FortuneRoll"
     name="Fortune and Glory (Roll)">
@@ -315,7 +374,21 @@
     <sortkey isfield="no" id="_Name_"/>
     </sortset>
 	
-  <!-- Define a sortset that lists activated abilities, then temporary in-play adjustments. -->
+  <sortset
+    id="ICSelectRP"
+    name="Intelligent Construct Selections">
+    <sortkey isfield="yes" id="raceCstVal"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
+  <sortset
+    id="ICSelectFrame"
+    name="IC Framework Selections">
+    <sortkey isfield="no" id="_Name_"/>
+    <sortkey isfield="yes" id="frCostValue"/>
+    </sortset>
+
+	
   <sortset
     id="CyberwareSRA"
     name="Cyberware sort">
@@ -330,6 +403,14 @@
     <sortkey isfield="yes" id="vhSize"/>
     <sortkey isfield="no" id="_Name_"/>
     </sortset>
+
+  <!-- Define a sortset that lists vehicles by type, era, and then name. -->
+  <sortset
+    id="VehicleType"
+    name="Vehicles By Type and Name">
+    <sortkey isfield="no" id="VehType"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
 	
   <!-- Define a sortset that lists Advances in chronological order. -->
   <sortset
@@ -337,5 +418,21 @@
     name="Advances in Order">
     <sortkey isfield="yes" id="advOrder" isascend="yes"/>
     </sortset>
-    	
+
+  <!-- Define a sortset that lists by usrChosen and Name -->
+  <sortset
+    id="FraChosen"
+    name="Selections by Selection and Name">
+    <sortkey isfield="no" id="FraChosen"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+
+  <!-- Define a sortset that lists activated abilities, then temporary in-play adjustments. -->
+  <sortset
+    id="ItemModCat"
+    name="Item Modifier Category sort">
+    <sortkey isfield="no" id="ItemModCat"/>
+    <sortkey isfield="no" id="ItemModType"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>	
 </document>

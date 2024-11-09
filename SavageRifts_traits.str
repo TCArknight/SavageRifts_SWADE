@@ -7,32 +7,36 @@
 <document signature="Hero Lab Structure">
 
 
-<!-- TCA - This component provides for the Abilities of the Iconic Frameworks -->
-<!-- FraAbility component
-        Each Framework Ability is based upon this component
-  -->
   <component
-    id="FraAbility"
-    name="Framework Ability"
+    id="FraCommon"
+    name="Framework Common"
     autocompset="no">
 
     <!-- Extra value associated with the property -->
     <field
-      id="frabValue"
+      id="frValue"
       name="Value 1"
       type="derived">
       </field>
 
     <!-- Extra value associated with the property -->
     <field
-      id="frabValue2"
+      id="frValue2"
       name="Value 2"
       type="derived">
       </field>
 	  
     <!-- Extra text associated with the property -->
     <field
-      id="frabText"
+      id="frNameAppend"
+      name="Extra Text"
+      type="derived"
+      maxlength="25">
+      </field>
+	  
+    <!-- Extra text associated with the property -->
+    <field
+      id="frText"
       name="Extra Text"
       type="derived"
       maxlength="25">
@@ -40,21 +44,21 @@
 
     <!-- Cost value associated with the property -->
     <field
-      id="frabCstVal"
+      id="frCostValue"
       name="Cost Value"
       type="static">
       </field>
 
     <!-- User value associated with the property -->
     <field
-      id="frabUsrVal"
+      id="frUserValue"
       name="User Value"
       type="user">
       </field>
 
     <!-- User text associated with the property -->
     <field
-      id="frabUsrTxt"
+      id="frUserText"
       name="User Text"
       type="user"
       maxlength="25">
@@ -62,7 +66,7 @@
 
     <!-- Domain details for something that has a particular focus (e.g. knowledge skills) -->
     <field
-      id="frabDomain"
+      id="frDomain"
       name="Domain"
       maxlength="50"
       type="user">
@@ -72,7 +76,7 @@
           NOTE! If this field is empty, it means NO checkbox is shown for the pick.
     -->
     <field
-      id="frabChkText"
+      id="frChkText"
       name="Checkbox Text"
       type="derived"
       maxlength="100">
@@ -80,37 +84,148 @@
 
     <!-- Indicates whether the checkbox is selected is not -->
     <field
-      id="frabIsCheck"
+      id="frIsChecked"
       name="Checked?"
       type="user"
       minvalue="0"
       maxvalue="1">
       </field>
 	  
-    <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
-    <identity group="FraAbility"/>
-
-    <!-- All Frame Ability get the same tag for sorting purposes -->
+    <field
+      id="frNumCopies"
+      name="Number of Copies of pick"
+      type="derived">
+      </field>
+	  
+    <field
+      id="frDupMax"
+      name="Max # times allowed"
+      type="derived"
+      maxlength="10">
+      </field>
+	  
+    <!-- Each Frame Complication needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="Framework"/>	
+	
+    <!-- All Frameworks get the same tag for sorting purposes -->
     <tag group="SpecialTab" tag="RacialProp"/>
 
     <!-- Track the Frame Ability on the actor -->
     <eval index="1" phase="Setup" priority="5000"><![CDATA[
-      perform forward[FraAbility.?]
+      perform forward[Framework.?]
+      ]]></eval>
+
+    <!-- If we have a user field, map it into the derived field -->
+    <eval index="2" phase="Render" priority="1000"><![CDATA[
+	  var firstcopy as number
+	  var myid as string
+	  var mychoice as string
+	  var eachchoice as string
+	  var mycount as number
+	  
+      ~ see if a quickfind has been created by another copy of this ability
+      perform quickfind.setfocus
+
+      ~ if we didn't find a redirection, we're the first copy of this ability to run this script. 
+      ~ (if we also have a selection to make with usrChosen1 field, and it isn't made, we're independant )	  
+	  ~ so we'll make ourselves the FirstCopy.
+      if (state.isfocus = 0) then
+		
+		if (field[usrChosen1].ischosen <> 0) then
+		  mychoice = "FraChosen." & field[usrChosen1].chosen.idstring
+		  perform assignstr[mychoice]
+          perform assign[Helper.FirstChosenCopy]
+          perform assign[Helper.FirstCopy]
+		else
+          perform assign[Helper.FirstCopy]
+		  endif
+
+        ~add +1 to our value
+        field[frNumCopies].value += 1
+
+        ~ add to the quickfind list
+        perform quickadd
+		
+      ~otherwise, redirect hero.child[] to the FirstCopy, and make us an upgrade
+      else
+	    ~ if we have a selection to make and it's not made, keep as a FirstCopy. 
+		if (field[usrCandid1].isempty = 0) then
+		  if (field[usrChosen1].ischosen <> 0) then
+		    notify this.idstring & " " & field[usrChosen1].chosen.idstring
+			endif
+		  
+		  perform assign[Helper.FirstCopy]
+			
+		  ~add +1 to our value
+          field[frNumCopies].value += 1
+		else
+          perform focus.redirect
+		
+		  perform assign[Helper.SpecUp]
+		
+          ~add +1 to the focus's value
+          focus.field[frNumCopies].value += 1
+		  endif
+        endif
+	  
       ]]></eval>
 	  
     <!-- If we have a user field, map it into the derived field -->
-    <eval index="2" phase="Setup" priority="5000"><![CDATA[
+    <eval index="3" phase="Render" priority="1100"><![CDATA[
+	  if (tagis[Helper.FirstCopy] <> 0) then
+	    field[spcName].text = field[shortname].text 
+		if (field[frNumCopies].value > 1) then
+		  field[spcName].text &= " (x" & field[frNumCopies].value & ")"
+		  endif
+	    endif
+      ]]></eval>
+	  
+    <!-- If we have a user field, map it into the derived field -->
+    <eval index="4" phase="Setup" priority="5000"><![CDATA[
       ~if this pick was NOT user-added, no user fields can be accessed
       doneif (isuser = 0)
 
       ~if we have a user value, put it into the derived field
       if (tagis[User.NeedValue] <> 0) then
-        field[frabValue].value = field[frabUsrVal].value
+        field[frValue].value = field[frUserValue].value
 
       ~if we have user text, put it into the derived field
       elseif (tagis[User.NeedText] <> 0) then
-        field[frabText].text = field[frabUsrTxt].text
+        field[frText].text = field[frUserText].text
         endif
+      ]]></eval>
+	  
+    <evalrule index="1" phase="Validate" priority="9000" message="Framework Ability exceeds limit on number allowed."><![CDATA[
+      var totaluses as number
+
+      if (empty(field[frDupMax].text) = 1) then
+        @valid = 1
+        endif
+
+      totaluses = container.intersect[FraAbility,FraAbility,counttarget]
+
+      if (totaluses <= field[frDupMax].text) then
+        @valid = 1
+        endif
+      ]]></evalrule>
+	  
+    </component>
+	
+<!-- TCA - This component provides for the Abilities of the Iconic Frameworks -->
+<!-- FraAbility component
+        Each Framework Ability is based upon this component
+  -->
+  <component
+    id="FraAbility"
+    name="Framework Ability"
+    autocompset="no">
+	  
+    <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="FraAbility"/>
+
+    <!-- Track the Frame Ability on the actor -->
+    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+      perform forward[FraAbility.?]
       ]]></eval>
 
     </component>
@@ -122,76 +237,13 @@
     id="FraComp"
     name="Framework Complication"
     autocompset="no">
-
-    <!-- Extra value associated with the property -->
-    <field
-      id="frcoValue"
-      name="Extra Value"
-      type="derived">
-      </field>
-
-    <!-- Extra text associated with the property -->
-    <field
-      id="frcoText"
-      name="Extra Text"
-      type="derived"
-      maxlength="25">
-      </field>
-
-    <!-- Cost value associated with the property -->
-    <field
-      id="frcoCstVal"
-      name="Cost Value"
-      type="static">
-      </field>
-
-    <!-- User value associated with the property -->
-    <field
-      id="frcoUsrVal"
-      name="User Value"
-      type="user">
-      </field>
-
-    <!-- User text associated with the property -->
-    <field
-      id="frcoUsrTxt"
-      name="User Text"
-      type="user"
-      maxlength="25">
-      </field>
-
-    <!-- Domain details for something that has a particular focus (e.g. knowledge skills) -->
-    <field
-      id="frcoDomain"
-      name="Domain"
-      maxlength="50"
-      type="user">
-      </field>
-
+	  
     <!-- Each Frame Complication needs its own identity tag to detect cascading dependencies via prereqs -->
     <identity group="FraComp"/>
-
-    <!-- All Frame Complication get the same tag for sorting purposes -->
-    <tag group="SpecialTab" tag="RacialProp"/>
 
     <!-- Track the Frame Complication on the actor -->
     <eval index="1" phase="Setup" priority="5000"><![CDATA[
       perform forward[FraComp.?]
-      ]]></eval>
-
-    <!-- If we have a user field, map it into the derived field -->
-    <eval index="3" phase="Setup" priority="5000"><![CDATA[
-      ~if this pick was NOT user-added, no user fields can be accessed
-      doneif (isuser = 0)
-
-      ~if we have a user value, put it into the derived field
-      if (tagis[User.NeedValue] <> 0) then
-        field[frcoValue].value = field[frcoUsrVal].value
-
-      ~if we have user text, put it into the derived field
-      elseif (tagis[User.NeedText] <> 0) then
-        field[frcoText].text = field[frcoUsrTxt].text
-        endif
       ]]></eval>
 
     </component>
@@ -275,7 +327,35 @@
       type="derived"
 	  maxlength="500">
 	  </field>
-	  	  
+	  
+    <field
+      id="ehFrameHindAdd"
+      name="Framework AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameHindHdr"
+      name="Framework Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameHindCst"
+      name="Framework Expression Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehFrameHindExp"
+      name="Framework Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
     <field
       id="ehFrameAdd"
       name="Framework AddItem Header"
@@ -335,6 +415,60 @@
     </component>
 	
   <component
+    id="ConstructHelper"
+    name="Construct Helper">
+
+    <field
+      id="chMeleeAdd"
+      name="Melee AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="chMeleeHdr"
+      name="Racial Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="chMeleeExp"
+      name="Melee Weapon Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>
+
+    <field
+      id="chMeleeCst"
+      name="Melee Weapon Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="chRangeAdd"
+      name="Melee AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="chRangeHdr"
+      name="Racial Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="chRangeExp"
+      name="Racial Property Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>	  
+    </component>
+	
+  <component
     id="ExprHelpRace"
     name="Expression Helper">
 
@@ -387,13 +521,17 @@
 	  </field>
 	  
     </component>	
+	
+	  
 <!-- TCA - This component set enables the use of Iconic Framework Abilities
            as defined in the Savage Rifts sourcebooks -->
   <!-- FraAbility - all Framework Abilities derive from this compset -->
   <compset
     id="FraAbility">
     <compref component="FraAbility"/>
+    <compref component="FraCommon"/>
     <compref component="Ability"/>
+    <compref component="Domain"/>
     <compref component="UserSelect"/>
     <compref component="SpecialTab"/>
     </compset>
@@ -402,7 +540,9 @@
   <compset
     id="FraComp">
     <compref component="FraComp"/>
+    <compref component="FraCommon"/>
     <compref component="Ability"/>
+    <compref component="Domain"/>
     <compref component="UserSelect"/>
     <compref component="SpecialTab"/>
     </compset>

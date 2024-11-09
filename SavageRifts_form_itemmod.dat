@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definition of the "static" form for the game system.
+      The "static" form represents the region at the top of the main window that
+      is always visible for every actor (hence the term "static"). It's an area of
+      limited vertical height that spans the entire width of the main window, less
+      the region needed for the validation button and the dashboard (if visible).
+
+      In general, the "static" form should contain the character's name and core
+      aspects of the character that the user will often want to refer to. However,
+      there are no hard requirements for what is placed in the "static" form.
+
+      NOTE! The unique id of the "static" form is specially recognized by Hero Lab
+      as the form to be used across the top of the main window. A form with the
+      id "static" is required within your data files.
+-->
+
+<document signature="Hero Lab Data">
+	
+  <!-- Item Mod portal -->
+  <portal
+    id="imItemMods"
+    style="tblNormal">
+    <table_dynamic
+      component="ItemMod"
+      showtemplate="SimpleItem"
+      choosetemplate="SimpleItem"
+	  choosesortset="ItemModCat"
+      alwaysupdate="yes"
+      scrollable="yes"
+      candidatepick="ItemModHelper"
+      candidatefield="imhExpr"
+      addpick="ItemModHelper"
+      headerpick="ItemModHelper">
+      <headertitle><![CDATA[
+		@text = parent.field[name].text
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Select Mod"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+  <!--   <template
+    id="lpSpecialtyGain"
+    name="Specialty Gained"
+    compset="Lifepath"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="lblGained"
+      style="lblRight">
+      <label>
+        <labeltext><![CDATA[
+          @text = "Specialty Gained/Promotion ?"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="gained"
+      style="chkNormal"
+      tiptext="Click to indicate hero gains a Specialty / Promotion for this tour.">
+      <checkbox
+        field="lpSpecGained">
+        </checkbox>
+      </portal>
+
+    <position><![CDATA[
+	  height = portal[gained].height + 5
+	  
+      ~position our tallest portal at the top
+      portal[gained].top = 0
+	  
+      ~position the gained portal on the far right
+      perform portal[lblGained].alignedge[left,0]
+	  
+	  ~position the aging portal to the left of the years button
+	  portal[lblGained].left = 0
+	  portal[lblGained].width = 250
+	  
+      perform portal[gained].alignrel[ltor,lblGained,10]
+
+      ]]></position>
+
+    </template>	
+	
+  <template
+    id="lpPromotion"
+    name="Promotion Gained"
+    compset="Lifepath"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="lblPromoted"
+      style="lblRight">
+      <label>
+        <labeltext><![CDATA[
+          @text = "Promotion?"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="promoted"
+      style="chkNormal"
+      tiptext="Click to indicate hero gains a Promotion for this tour.">
+      <checkbox
+        field="lpSpecGained">
+        </checkbox>
+      </portal>
+
+    <position><![CDATA[
+	  height = portal[promoted].height + 5
+	  
+      ~position our tallest portal at the top
+      portal[promoted].top = 0
+	  
+      ~position the gained portal on the far right
+      perform portal[lblPromoted].alignedge[left,0]
+	  
+	  ~position the aging portal to the left of the years button
+	  portal[lblPromoted].left = 0
+	  portal[lblPromoted].width = 75
+	  
+      perform portal[promoted].alignrel[ltor,lblPromoted,10]
+	  
+	  portal[lblPromoted].visible = tagis[CareerType.Military]
+	  portal[promoted].visible = portal[lblPromoted].visible
+
+      ]]></position>
+
+    </template>   -->
+	
+  <!-- static layout
+        This layout consists of the character's name, race, and status info, which
+        are laid out in a ribbon across the top.
+  -->
+  <layout
+    id="itemmodule">
+    <portalref portal="imItemMods" taborder="10"/>
+	<!-- <templateref template="lpPromotion" dynamic="yes" taborder="30"/>  -->
+
+    <!-- This script sizes and positions the layout and its child visual elements. -->
+    <position><![CDATA[
+      perform portal[imItemMods].autoplace[0]
+	  
+	  height = portal[imItemMods].bottom
+      ]]></position>
+
+    </layout>
+
+
+  <!-- static form
+        This is the "static" form shown at the top of the main window within Hero
+        Lab.
+
+        NOTE! The unique id of this form is specially recognized by Hero Lab as
+        the form to be used across the top of the main window. A form with this
+        id is required within your data files.
+
+        NOTE! By default, this form is 40 pixels in height, and it must always be
+        set to be at least 40 pixels in height.
+  -->
+  <form
+    id="itemmodgiz"
+    name="Item Mod">
+    <layoutref layout="itemmodule"/>
+    <position><![CDATA[
+      layout[itemmodule].width = 350
+      perform layout[itemmodule].render
+      width = layout[itemmodule].width
+      height = layout[itemmodule].height
+      ]]></position>
+    </form>
+
+  </document>
