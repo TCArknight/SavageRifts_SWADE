@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document signature="Hero Lab Data">
+  <procedure id="ClearPwrLstGifted" scripttype="eval"><![CDATA[
+	~ other variables
+    var myTag as string
+
+	~ set up available Powers
+	perform hero.childfound[arcGifted].setfocus
+	doneif (state.isfocus = 0)
+	
+	foreach thing in Power
+	  myTag = "PowerDeny." & eachthing.idstring
+	  perform focus.assignstr[myTag]
+	  nexteach
+	  
+	]]></procedure>
+	
   <procedure id="GiveBursterList" scripttype="eval"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var clearPwrs as number
@@ -73,6 +88,7 @@
     perform focus.delete[PowerDeny.powMindLinkSWADE]
     perform focus.delete[PowerDeny.powReliefSWADE]
     perform focus.delete[PowerDeny.powSRAWarGiftSelf]]]></procedure>
+
   <procedure id="GiveCybKnightList" scripttype="eval"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var clearPwrs as number
@@ -168,49 +184,7 @@
 
 	]]></procedure>
 	
-  <procedure id="GiveStdPsionicList" scripttype="eval"><![CDATA[
-    ~declare variables that are used to communicate with our caller
-    var clearPwrs as number
-	
-	~ other variables
-    var myTag as string
-	
-	~ set up available Powers
-	perform hero.childfound[arcPsionicSWADE].setfocus
-	doneif (state.isfocus = 0)
-    
-    ~ all powers are denied if clearTags = 1
-	if (clearPwrs = 1) then
-	  foreach thing in Power
-	    myTag = "PowerDeny." & eachthing.idstring
-	    perform focus.assignstr[myTag]
-	    nexteach
-	  endif
-	  
-    perform focus.delete[PowerDeny.powSRAArcProSelf]
-    perform focus.delete[PowerDeny.powBoltSWADE]
-    perform focus.delete[PowerDeny.powSRABoostSelf]
-    perform focus.delete[PowerDeny.powSRADetectSelf]
-    perform focus.delete[PowerDeny.powConfusiSWADE]
-    perform focus.delete[PowerDeny.powSRADarksightSe]
-    perform focus.delete[PowerDeny.powSRADisguiseSel]
-    perform focus.delete[PowerDeny.powDivinatSWADE]
-    perform focus.delete[PowerDeny.powEmpathySWADE]
-    perform focus.delete[PowerDeny.powEntangSWADE]
-    perform focus.delete[PowerDeny.powSRAEnvProSelf]
-    perform focus.delete[PowerDeny.powSRAFarsightSel]
-    perform focus.delete[PowerDeny.powFearSWADE]
-    perform focus.delete[PowerDeny.powSRAFlySelf]
-    perform focus.delete[PowerDeny.powHavocSWADE]
-    perform focus.delete[PowerDeny.powHealingSWADE]
-    perform focus.delete[PowerDeny.powMindLinkSWADE]
-    perform focus.delete[PowerDeny.powObjectRdSWADE]
-    perform focus.delete[PowerDeny.powReliefSWADE]
-    perform focus.delete[PowerDeny.powTelekinSWADE]
-    perform focus.delete[PowerDeny.powSRAWarGiftSelf]
-	]]></procedure>
-
-  <procedure id="GiveStdArcaneList" scripttype="eval"><![CDATA[
+  <procedure id="GiveLLWalkerList" scripttype="eval"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var clearPwrs as number
 	
@@ -422,6 +396,180 @@
     perform focus.delete[PowerDeny.powWallWlkSWADE]
     perform focus.delete[PowerDeny.powWarriorSWADE]
 	]]></procedure>
+
+  <procedure id="GiveStdPsionicList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powSRAArcProSelf]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRADisguiseSel]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powSRAFlySelf]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powSRAWarGiftSelf]
+	]]></procedure>
+
+  <procedure id="GiveStdArcaneList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBlastSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powDamageFSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDisguisSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDrainPPSWADE]
+    perform focus.delete[PowerDeny.powElementSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powFarsightSWADE]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powFlySWADE]
+    perform focus.delete[PowerDeny.powGrowShrSWADE]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIllusionSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powSumAllySWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powTeleporSWADE]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+	]]></procedure>
+	
+  <procedure id="GiveNegaPsychList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powSRAArcProSelf]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powSRADarksightSe]
+    perform focus.delete[PowerDeny.powSRAEnvProSelf]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powSRASmiteSelf]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+	]]></procedure>
+	
+  <procedure id="GiveZapperList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+	perform focus.delete[PowerDeny.powArcaneProtect]  
+	perform focus.delete[PowerDeny.powSRABoostSelf]
+	perform focus.delete[PowerDeny.powBurstSWADE]
+	perform focus.delete[PowerDeny.powConfusiSWADE]
+	perform focus.delete[PowerDeny.powSRADarksightSe]
+	perform focus.delete[PowerDeny.powSRADeflectSelf]
+	perform focus.delete[PowerDeny.powSRADetectSelf]
+	perform focus.delete[PowerDeny.powEmpathySWADE]
+	perform focus.delete[PowerDeny.powSRAFarsightSel]
+	perform focus.delete[PowerDeny.powFearSWADE]
+	perform focus.delete[PowerDeny.powSRAFlySelf]
+	perform focus.delete[PowerDeny.powLightDarkSWADE]
+	perform focus.delete[PowerDeny.powMindLinkSWADE]
+	perform focus.delete[PowerDeny.powSRAProtectSelf]
+	perform focus.delete[PowerDeny.powSRAReliefSelf]
+	perform focus.delete[PowerDeny.powSRASmiteSelf]
+	perform focus.delete[PowerDeny.powTelekinSWADE]
+	perform focus.delete[PowerDeny.powSRAWarGiftSelf]
+	]]></procedure>
 	
   <procedure id="MouseInfoSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
@@ -453,6 +601,7 @@
     var descript as string
     call DescriptSRA
     mouseinfo &= descript]]></procedure>
+	
   <procedure id="DescriptSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var descript as string
@@ -484,11 +633,11 @@
     ~specific to the particular item type
     iteminfo = ""
     if (tagis[component.WeapRange] <> 0) then
-      call InfoRange
+      call InfoRangeSRA
     elseif (tagis[component.WeapMelee] <> 0) then
-      call InfoMelee
+      call InfoMeleeSRA
     elseif (tagis[component.Defense] <> 0) then
-      call InfoDef
+      call InfoDefSRA
     elseif (tagis[component.Power] <> 0) then
       call InfoPower
     elseif (tagis[component.Advance] <> 0) then
@@ -567,16 +716,20 @@
         endif
 
       ~append the item's weight
-      if (ispick <> 0) then
-        iteminfo &= "{br}"
-        endif
+      ~ if (ispick <> 0) then
+        ~ iteminfo &= "{br}"
+        ~ endif
 	  
-      iteminfo &= "Weight: "
-      if (field[gearWeight].value > 0) then
-        iteminfo &= field[gearWeight].value & " each"
-      else
-        iteminfo &= chr(150)
-        endif
+	  if (tagis[Equipment.Natural] = 0) then
+        iteminfo &= "Weight: "
+		
+        if (field[gearWeight].value > 0) then
+          iteminfo &= field[gearWeight].value & " each"
+        else
+          iteminfo &= chr(150)
+          endif
+		endif
+		
       iteminfo &= "{br}"
 
       ~append the item's availability if applicable
@@ -596,11 +749,8 @@
     if (empty(iteminfo) = 0) then
       descript &= "{br}"
       endif
-    if (field[descript].isempty <> 0) then
-      descript &= chr(150) & " no description " & chr(150)
-    else
-      descript &= field[descript].text
-      endif
+	
+	call GetDescription
 
     ~RDS SPC2 If this is a Super Power from the Super Powers Companion, list it's non-generic modifers after the description.
     if (tagis[component.SPCPower] <> 0) then
@@ -653,7 +803,253 @@
         descript &= "{br}{br}{b}Carries{/b}: " & iteminfo
         endif
 
-      endif]]></procedure>
+      endif
+	  ]]></procedure>
+
+  <procedure id="GetDescription" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var descript as string
+  
+	if (tagis[component.CustomDesc] <> 0) then
+	
+      if (field[CustDesc].isempty <> 0) then
+        descript &= chr(150) & " no description " & chr(150)
+      else
+        descript &= field[CustDesc].text
+        endif
+		
+	else
+      if (field[descript].isempty <> 0) then
+        descript &= chr(150) & " no description " & chr(150)
+      else
+        descript &= field[descript].text
+        endif
+		
+	  endif
+	  
+	  
+	]]></procedure>
+  
+  <!-- Procedure InfoDef
+        Generate details specific to defensive gear, including armor and shields.
+        The text is placed into the "iteminfo" variable for subsequent use by our
+        caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoDefSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~if this is armor, output the appropriate details
+    if (tagis[component.Armor] <> 0) then
+
+      ~add the armor rating
+      iteminfo &= "Armor: " & field[defDefense].text & "{br}"
+	  
+      if (field[defToughness].value <> 0) then
+	    ~add the toughness rating
+	    iteminfo &= "Toughness: " & signed(field[defToughness].value) & "{br}"
+		endif
+
+      ~identify the areas covered by the armor
+      iteminfo &= "Coverage: " & field[defCoverage].text & "{br}"
+
+    ~otherwise, this is a shield, so output the appropriate details
+    else
+
+      ~add the parry bonus
+      iteminfo &= "Parry Bonus: " & signed(field[defParry].value) & "{br}"
+
+      ~add the cover adjustment
+      iteminfo &= "Cover Modifier: " & signed(field[defCover].value) & "{br}"
+
+      ~add the ranged attack defense (if any)
+      if (field[defDefense].value > 0) then
+        iteminfo &= "Ranged Defense: " & field[defDefense].text & "{br}"
+        endif
+      endif
+
+    ~report the minimum strength requirement (omitting if there is none)
+    if (hero.tagis[source.AdventureEd] <> 0) then
+      if (tagis[ArmorStrReqDie.?] <> 0) then
+        iteminfo &= "Minimum Strength: " & tagnames[ArmorStrReqDie.?] & "{br}"
+        endif
+
+      ~report the Hardness (omitting if there is none)
+      if (field[grHardness].value > 0) then
+        iteminfo &= "Hardness: " & field[grHardness].value & "{br}"
+        endif
+
+      ~report any special notes (omitting if there is none)
+      if (field[defSpecDisp].isempty = 0) then
+        iteminfo &= "Special: " & field[defSpecDisp].text & "{br}"
+        endif
+	  
+    elseif (field[defStrReq].value > 0) then
+      iteminfo &= "Minimum Strength: " & field[defStrReq].text & "{br}"
+      endif
+
+
+    ]]></procedure>
+	
+  <!-- Procedure InfoWeapon
+        Generate details specific to all weapons. The text is placed into the
+        "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoWeaponSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~report the weapon bonus (omitting if there is none)
+    iteminfo = ""
+    if (field[wpBonus].value <> 0) then
+      iteminfo &= "Weapon Bonus/Penalty: "
+      if (field[wpBonus].value > 0) then
+        iteminfo &= "+"
+        endif
+      iteminfo &= field[wpBonus].text & "{br}"
+      endif
+
+    ~report the net attack rating of the weapon
+    iteminfo &= "Net Attack: " & field[wpNetAtk].text & "{br}"
+
+    ~report the damage rating of the weapon
+    iteminfo &= "Damage Rating: " 
+	
+    if (tagis[component.WeaponBaseSRA] = 0) then
+      iteminfo &= field[wpShowDmg].text & "{br}"
+    else
+      iteminfo &= field[wpShowDmgAlt].text & "{br}"
+      endif
+			
+    ~report the armor piercing rating of the weapon (if any)
+    if (field[wpPiercing].value > 0) then
+      iteminfo &= "Armor Piercing: " & field[wpPiercing].text & "{br}"
+      endif
+
+    ~report the minimum strength requirement (omitting if there is none)
+    if (tagis[StrReqDie.?] <> 0) then
+      var minstr as number
+      minstr = tagvalue[StrReqDie.?] * 2
+      iteminfo &= "Minimum Strength: d" & minstr & "{br}"
+      endif
+
+    ~report the Modification Slots taken up by the weapon (if any)
+    if (field[grModsUsed].isempty = 0) then
+      iteminfo &= "Mod Slots: " & field[grModsUsed].text & "{br}"
+      endif
+    ]]></procedure>
+
+
+  <!-- Procedure InfoWeapSp
+        Generate special abilities specific to all weapons. This is separate from
+        the "InfoWeapon" procedure so that it can always be performed last. The
+        text is placed into the "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoWeapSpSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~report any special details about the weapon (omitting if there are none)
+    var special as string
+    special = tagnames[Weapon.?,", "]
+    if (!field[wpSpecial].isempty + !empty(special) > 0) then
+      iteminfo &= "Special: "
+      if (empty(special) = 0) then
+        iteminfo &= special
+        endif
+      if (field[wpSpecial].isempty = 0) then
+        if (empty(special) = 0) then
+          iteminfo &= ", "
+          endif
+        iteminfo &= field[wpSpecial].text
+        endif
+      iteminfo &= "{br}"
+      endif
+    ]]></procedure>
+
+
+  <!-- Procedure InfoMelee
+        Generate details specific to a melee weapon. The text is placed into the
+        "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoMeleeSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~start with generic details for all weapons
+    call InfoWeaponSRA
+
+    ~if the weapon fails its strength requirement, change color and style
+    if (tagis[Helper.BadStrReq] <> 0) then
+      iteminfo &= "{text clrbadreq}{i}"
+      endif
+
+    ~report the parry adjustment of the weapon (if any)
+    if (field[wpParry].value <> 0) then
+      iteminfo &= "Parry Adjustment: " & signed(field[wpParry].value) & "{br}"
+      endif
+
+    ~report the reach of the weapon (if any)
+    if (field[wpReach].value > 0) then
+      iteminfo &= "Reach: " & field[wpReach].text & "{br}"
+      endif
+
+    ~if the weapon fails its strength requirement, restore color and style
+    if (tagis[Helper.BadStrReq] <> 0) then
+      iteminfo &= "{/i}{text clrreset}"
+      endif
+
+    ~finish with generic special abilities for all weapons
+    call InfoWeapSp
+    ]]></procedure>
+
+
+  <!-- Procedure InfoRange
+        Generate details specific to a ranged weapon. The text is placed into the
+        "iteminfo" variable for subsequent use by our caller.
+
+        Outbound parameter: iteminfo
+  -->
+  <procedure id="InfoRangeSRA" context="info"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var iteminfo as string
+
+    ~start with generic details for all weapons
+    call InfoWeaponSRA
+
+    ~add the range details for the weapon
+    iteminfo &= "Range: " & field[wpRange].text & "{br}"
+
+    ~report the fire rate of the weapon
+    iteminfo &= "Rate of Fire: " & field[wpFireRate].text & "{br}"
+
+    ~report the number of shots for the weapon (if any)
+    if (field[wpShots].value > 0) then
+      iteminfo &= "# Shots: " & field[wpShots].text & "{br}"
+      endif
+
+    ~report the number of actions to reload the weapon (if any)
+    if (field[wpReload].value > 0) then
+      iteminfo &= "Actions to Reload: " & field[wpReload].text & "{br}"
+      endif
+
+    ~report the ammunition for the weapon (if any)
+    if (field[wpAmmo].isempty = 0) then
+      iteminfo &= "Ammunition: " & field[wpAmmo].text & "{br}"
+      endif
+
+    ~finish with generic special abilities for all weapons
+    call InfoWeapSp
+    ]]></procedure>
+	
   <procedure id="InfoModsSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -721,6 +1117,7 @@
 	  endif
 	
     iteminfo &= "{br}"]]></procedure>
+	
   <procedure id="InfoVehSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -775,6 +1172,7 @@
 	call InfoVehEqRifts
 	
     ~ @text = iteminfo]]></procedure>
+	
   <procedure id="InfoVehSpSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -801,6 +1199,7 @@
         endif
       iteminfo &= "{br}"
       endif]]></procedure>
+	  
   <procedure id="InfoNameSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -828,6 +1227,7 @@
       ~get the item description
       call InfoDescSRA
 	  endif]]></procedure>
+	  
   <procedure id="InfoDescSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -839,6 +1239,7 @@
       endif
 	  
 	iteminfo &= "{br}{br}"]]></procedure>
+	
   <procedure id="InfoVehEqRifts" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
@@ -967,6 +1368,7 @@
     if (empty(loadout) = 0) then
       iteminfo &= "{b}Weapons/Equipment:{/b}" & loadout
       endif]]></procedure>
+	  
   <procedure id="SizeWounds" scripttype="none"><![CDATA[
 ~declare variables that are used to communicate with our caller
 var sizebonus as number
@@ -986,5 +1388,26 @@ elseif (herosize >= 12) then
   sizebonus = 3
   endif]]></procedure>
 
- 
+  <procedure id="SizeCategory" scripttype="none"><![CDATA[
+~declare variables that are used to communicate with our caller
+var sizeVal as number
+var sizeCat as string
+
+if (sizeVal = -4) then
+  sizeCat = "Tiny"   
+elseif (sizeVal = -3) then
+  sizeCat = "Very Small"
+elseif (sizeVal = -2) then
+  sizeCat = "Small"
+elseif (sizeVal <= 3) then
+  sizeCat = "Normal"
+elseif (sizeVal <= 7) then
+  sizeCat = "Large"
+elseif (sizeVal <= 11) then
+  sizeCat = "Huge"
+elseif (sizeVal >= 12) then
+  sizeCat = "Gargantuan"
+  endif
+  
+  ]]></procedure> 
   </document>

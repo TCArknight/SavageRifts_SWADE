@@ -220,6 +220,75 @@
     append listoff & @newline
 	
     ]]></procedure>
+	
+  <!-- Procedure sblisttraits
+        Output all of the traits that satisfy the provided tag expression, reporting
+        the name and final value for each. The "tagexpr" text variable specifies the
+        constraints that must be satisfied for the list of traits.
+
+        Inbound parameter:  tagexpr
+  -->
+  <procedure id="sbarcanesimple" scripttype="synthesize"><![CDATA[
+    var tagexpr as string
+    append @boldon & "Powers: " & @boldoff 
+	
+	~ currAB is the identity string of the current 
+	~ arcane Background
+	var currAB as string
+	var ismore as number
+	var numAB as number
+	
+	~ if we just have one Arcane Background, we can just make a simple list of the 
+	~ powers followed by the appropriate tracker
+	
+	numAB = hero.tagcount[Arcane.arc?]
+	
+	if (numAB = 1) then 
+	  perform hero.findchild[Arcane].setfocus
+	  
+	  ~ get identity
+	  currAB = "Arcane." & focus.idstring
+	  
+	  ~ powers for that AB
+	  ismore = 0
+	  foreach pick in hero from Power where currAB
+		if (ismore <> 0) then
+          append ", "
+          endif
+			
+		append eachpick.field[name].text
+		ismore = 1
+	    nexteach
+		
+	  append "; " & @boldon & focus.field[arcTrackerName].text & ": " & @boldoff &  focus.field[trkMax].value
+	else
+      foreach pick in hero from Arcane 
+	    ~ get identity
+	    currAB = "Arcane." & eachpick.idstring
+		
+		append @newline & @indent & @boldon & eachpick.field[name].text & @boldoff & ": " 
+		
+	    ~ powers for that AB
+	    ismore = 0
+	    foreach pick in hero from Power where currAB
+		  if (ismore <> 0) then
+            append ", "
+            endif
+			
+		  append eachpick.field[name].text
+		  ismore = 1
+	      nexteach
+		
+	    append "; " & @boldon & eachpick.field[arcTrackerName].text & ": " & @boldoff &  eachpick.field[trkMax].value
+		
+	  nexteach
+	  
+	  endif  
+	  
+    append @newline
+	
+    ]]></procedure>
+	
   <!-- Procedure sblisttraits
         Output all of the traits that satisfy the provided tag expression, reporting
         the name and final value for each. The "tagexpr" text variable specifies the
@@ -248,9 +317,9 @@
 	var mySecRec as string
 	var mySecPwrRank as string
 		  
-	if (hero.tagis[Helper.UsesPPE] <> 0) then
+	if (hero.tagis[Hero.UsesPPE] <> 0) then
 	  myPPType = "PPE: "
-	elseif (hero.tagis[Helper.UsesISP] + hero.tagis[Edge.edgArcPsi] <> 0) then
+	elseif (hero.tagis[Hero.UsesISP] + hero.tagis[Edge.edgArcPsi] <> 0) then
 	  myPPType = "ISP: "
 	  endif
 			
@@ -279,7 +348,7 @@
 	append @boldon & " - Recovery: " & @boldoff & "1/" & myRec & @newline
 
 	~output Primary AB powers
-    foreach pick in hero from Power where "!HelperRiftsAE.SecondaryPower"
+    foreach pick in hero from Power where "!Helper.SecondaryPower"
       append @boldon & eachpick.field[name].text & @boldoff & " (Cost: " & eachpick.field[powPoints].text & ") " 
 	  myPwrRank = eachpick.tagnames[MinRank.?,";"]
 	  append "[" & myPwrRank & "]" & @newline
@@ -292,9 +361,9 @@
       nexteach
 			
 	~output Secondary AB powers
-	if (hero.tagis[HelperRiftsAE.HasSecondaryAB] <> 0) then
+	if (hero.tagis[Helper.HasSecondaryAB] <> 0) then
       append @boldon & "Secondary Arcane Powers:" & @boldoff & @newline
-    ~  foreach pick in hero from Power where "HelperRiftsAE.SecondaryPower"
+    ~  foreach pick in hero from Power where "Helper.SecondaryPower"
     ~    append chr(149) & eachpick.field[name].text & ": "
     ~    append eachpick.field[summary].text & @newline
     ~    nexteach
@@ -385,6 +454,58 @@
       nexteach
 	  append listoff & @newline
     ]]></procedure>
+	  
+<!-- Procedure sbedgehind
+        Output all of the traits that satisfy the provided tag expression, reporting
+        the name and final value for each. The "tagexpr" text variable specifies the
+        constraints that must be satisfied for the list of traits.
+
+        Inbound parameter:  tagexpr
+  -->
+  <procedure id="sbedgehind" scripttype="synthesize"><![CDATA[
+    var tagexpr as string
+    var ismore as number
+    ismore = 0
+    foreach pick in hero where tagexpr
+      if (ismore <> 0) then
+        append ", "
+        endif
+	  
+	  if (eachpick.tagis[component.Hindrance] <> 0) then
+        append eachpick.field[thingname].text
+		if (eachpick.tagis[User.UserSelect] + eachpick.tagis[User.NeedDomain] <> 0) then
+		  append " ("
+		  endif
+		  
+        if (eachpick.tagis[User.UserSelect] <> 0) then
+          if (eachpick.field[hinMajor].value = 0) then
+            append "Minor"
+          else
+            append "Major"
+            endif
+		  
+		  if (eachpick.tagis[User.NeedDomain] <> 0) then
+		    append " - " & eachpick.field[domDomain].text
+		    endif
+		  
+		else
+		  if (eachpick.tagis[User.NeedDomain] <> 0) then
+		    append eachpick.field[domDomain].text
+		    endif
+          endif
+		
+		if (eachpick.tagis[User.UserSelect] + eachpick.tagis[User.NeedDomain] <> 0) then
+		  append ")"
+		  endif
+		  
+	  else
+        append eachpick.field[name].text
+	    endif
+		
+      ismore = 1
+      nexteach
+    append @newline
+    ]]></procedure>
 	
   <!-- Define the statblock as a text-based dossier. The "synthesize" script actually
         generates the output.
@@ -403,8 +524,12 @@
         var name as string
         call sbname
 
-        ~output our name
-        append @boldon & "Name: " & @boldoff & name & @newline
+        ~output our name (led by wildcard indicator)
+		if (herofield[acIsWild].value <> 0) then
+		  append @boldon & "WC - " & @boldoff 
+		  endif
+		  
+        append @boldon & name & @boldoff & @newline
 
         ~output any race or creature type (plus faction and group)
         if (!hero.tagis[Hero.NoRace] + hero.tagis[Hero.Creature] > 0) then
@@ -460,8 +585,32 @@
           if (ismore <> 0) then
             append @newline
             endif
-          endif
+          endif	
+		
+        append @boldon & "Hindrances: " & @boldoff
+        tagexpr = "component.Hindrance & !Hide.Hindrance"
+        call sbedgehind
+		
+		~output edges, hindrances
+        append @boldon & "Edges: " & @boldoff
+        tagexpr = "component.Edge & !Hide.Edge"
+        call sbedgehind	
 
+        ~output arcane powers
+		if (hero.haschild[Arcane] <> 0) then
+          call sbarcanesimple
+		  endif
+		
+		
+		
+        ~if (hero.haschild[Power] <> 0) then
+        ~  append @boldon & "Powers:" & @boldoff & @newline
+        ~  foreach pick in hero from Power
+        ~    append chr(149) & eachpick.field[name].text & ": "
+        ~    append eachpick.field[summary].text & @newline
+        ~    nexteach
+        ~  endif
+		  
         ~synthesize all gear
         var details as string
         details = ""
@@ -473,10 +622,10 @@
           endif
 
         ~output magic items
-        call sbmagitems
-        if (empty(details) = 0) then
-          append @boldon & "Magic Items: " & @boldoff & details & @newline
-          endif
+        ~ call sbmagitems
+        ~if (empty(details) = 0) then
+        ~  append @boldon & "Magic Items: " & @boldoff & details & @newline
+        ~  endif
 
         ~output Cybernetics
 		if (hero.tagis[Cyberware.?] <> 0) then
@@ -485,11 +634,11 @@
           tagexpr = "component.Cyberware"
           call sbcyber
 		  endif
-		  
+		
         ~output special abilities
-        if (hero.haschild[Ability] <> 0) then
+        if (hero.haschild[ExtRaceAbil] + hero.haschild[ExtRacialProp] <> 0) then
           append @boldon & "Special Abilities:" & @boldoff & @newline
-          foreach pick in hero from Ability where "!Print.NoPrint" sortas SpecialTab
+          foreach pick in hero from Ability where "!Print.NoPrint & (component.ExtRaceAbil|component.ExtRacialProp)" sortas SpecialTab
             if (eachpick.tagis[User.HindMajor] <> 0) then
               append chr(149) & " " & eachpick.field[shortname].text & "(*): "
             else
@@ -500,39 +649,39 @@
           endif
 
         ~output arcane powers
-        if (hero.haschild[Power] <> 0) then
-          append @boldon & "Arcane Powers:" & @boldoff & @newline
-          foreach pick in hero from Power where "!HelperRiftsAE.SecondaryPower"
-            append chr(149) & eachpick.field[name].text & ": "
-            append eachpick.field[summary].text & @newline
-            nexteach
-          append @boldon & "Secondary Arcane Powers:" & @boldoff & @newline
-          foreach pick in hero from Power where "HelperRiftsAE.SecondaryPower"
-            append chr(149) & eachpick.field[name].text & ": "
-            append eachpick.field[summary].text & @newline
-            nexteach
-          endif
+        ~ if (hero.haschild[Power] <> 0) then
+        ~  append @boldon & "Arcane Powers:" & @boldoff & @newline
+        ~  foreach pick in hero from Power where "!Helper.SecondaryPower"
+        ~    append chr(149) & eachpick.field[name].text & ": "
+        ~    append eachpick.field[summary].text & @newline
+        ~    nexteach
+        ~  append @boldon & "Secondary Arcane Powers:" & @boldoff & @newline
+        ~  foreach pick in hero from Power where "Helper.SecondaryPower"
+        ~    append chr(149) & eachpick.field[name].text & ": "
+        ~    append eachpick.field[summary].text & @newline
+        ~    nexteach
+        ~  endif
 
         ~output super powers
-        if (hero.haschild[SPCPower] <> 0) then
-          append @boldon & "Super Powers:" & @boldoff & @newline
-          foreach pick in hero from SPCPower
-            append chr(149) & eachpick.field[name].text 
-            if (eachpick.field[spcLevel].value > 0) then
-              append "(Lvl" & eachpick.field[spcLevel].text & ")"
-              endif
-            if (eachpick.field[spcNameExt].isempty = 1) then
-              append ""
-            elseif (eachpick.field[spcNameEx2].isempty = 1) then
-              append "[" & eachpick.field[spcNameExt].text & "]"
-            else
-              append "[" & eachpick.field[spcNameExt].text & "," & eachpick.field[spcNameEx2].text & "]"
-              endif
-            append chr(149) & eachpick.field[spcModList].text
-            append ": "
-            append eachpick.field[summary].text & @newline
-            nexteach
-          endif
+        ~if (hero.haschild[SPCPower] <> 0) then
+        ~  append @boldon & "Super Powers:" & @boldoff & @newline
+        ~  foreach pick in hero from SPCPower
+        ~    append chr(149) & eachpick.field[name].text 
+        ~    if (eachpick.field[spcLevel].value > 0) then
+        ~      append "(Lvl" & eachpick.field[spcLevel].text & ")"
+        ~      endif
+        ~    if (eachpick.field[spcNameExt].isempty = 1) then
+        ~      append ""
+        ~    elseif (eachpick.field[spcNameEx2].isempty = 1) then
+        ~      append "[" & eachpick.field[spcNameExt].text & "]"
+        ~    else
+        ~      append "[" & eachpick.field[spcNameExt].text & "," & eachpick.field[spcNameEx2].text & "]"
+        ~      endif
+        ~    append chr(149) & eachpick.field[spcModList].text
+        ~    append ": "
+        ~    append eachpick.field[summary].text & @newline
+        ~    nexteach
+        ~  endif
 
         ~output personal details
         if (hero.haschild[Personal] <> 0) then
@@ -556,7 +705,7 @@
         call sbtrackres
 
         ~output Fortune and Glory selections
-		if (hero.tagis[HelperRiftsAE.FortuneAndGlory] <> 0) then
+		if (hero.tagis[Helper.FortuneAndGlory] <> 0) then
 		  append @newline
           append @boldon & "Fortune and Glory: " & @boldoff & @newline
           tagexpr = "component.Fortune"
@@ -689,7 +838,7 @@
 		
 		append @boldon & "Toughness: " & @boldoff & hero.child[trTough].field[trtDisplay].text & "; "
 		
-		append @boldon & "Strain: " & @boldoff & hero.child[trStrainSRA].field[trtDisplay].text & " (Max: " & hero.child[trStrainMaxSRA].field[trtDisplay].text & ")" & @newline
+		append @boldon & "Strain: " & @boldoff & hero.child[trSRAStrain].field[trtDisplay].text & " (Max: " & hero.child[trSRAStrainMax].field[trtDisplay].text & ")" & @newline
 		 
         append @newline
 
@@ -739,7 +888,7 @@
           endif
 		  
         ~output Fortune and Glory selections
-		if (hero.tagis[HelperRiftsAE.FortuneAndGlory] <> 0) then
+		if (hero.tagis[Helper.FortuneAndGlory] <> 0) then
 		  append @newline
           append @boldon & "Fortune and Glory: " & @boldoff & @newline
           tagexpr = "component.Fortune"

@@ -11,7 +11,7 @@
 
   <!-- cyberware Strain  -->
   <thing
-    id="resStrainSRA"
+    id="resSRAStrain"
     name="Strain"
     compset="Resource">
     <fieldval field="resMax" value="0"/>

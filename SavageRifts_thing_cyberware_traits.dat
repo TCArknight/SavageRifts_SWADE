@@ -2,7 +2,7 @@
 <document signature="Hero Lab Data">
   <!-- Strain (Current) Trait -->
   <thing
-    id="trStrainSRA"
+    id="trSRAStrain"
     name="Current Strain"
     compset="Trait"
     isunique="yes"
@@ -18,10 +18,10 @@
 	  
     <!-- Calculate the trait as appropriate -->
     <eval index="2" phase="Final" priority="1000" name="Current Strain"><![CDATA[
-      ~Current Strain is the Spent of resStrainSRA resource
+      ~Current Strain is the Spent of resSRAStrain resource
 
       var bonus as number
-      bonus = hero.child[resStrainSRA].field[resSpent].value
+      bonus = hero.child[resSRAStrain].field[resSpent].value
 	  field[trtFinal].value = bonus
       ]]></eval>
 	  
@@ -29,7 +29,7 @@
 	
   <!-- Strain (Current) Trait -->
   <thing
-    id="trStrainMaxSRA"
+    id="trSRAStrainMax"
     name="Max Strain"
     compset="Trait"
     isunique="yes"
@@ -45,10 +45,10 @@
 	  
     <!-- Calculate the trait as appropriate -->
     <eval index="2" phase="Final" priority="1000" name="Max Strain"><![CDATA[
-      ~Max Strain is the max of the resStrainSRA resource
+      ~Max Strain is the max of the resSRAStrain resource
 
       var bonus as number
-      bonus = hero.child[resStrainSRA].field[resMax].value
+      bonus = hero.child[resSRAStrain].field[resMax].value
 	  field[trtFinal].value = bonus
 	  
       ]]></eval>

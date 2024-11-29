@@ -35,52 +35,6 @@
     <value id="Rifts" order="2"/> 
     </group>
 	
-  <group
-    id="HelperRiftsAE"
-    dynamic="yes">
-    <value id="SecondaryPower"/>       <!-- Hide Racial Tab -->  
-    <value id="HasSecondaryAB"/>       <!-- Hide Racial Tab -->   
-    <value id="ShowRacialTab"/>       <!-- Show Racial Tab -->     
-    <value id="HideRacialTab"/>       <!-- Hide Racial Tab -->  
-    <value id="HideRacialAbility"/>   <!-- Hide Racial Abilities -->   
-    <value id="HideRacialProp"/>      <!-- Hide Racial Properties -->     
-    <value id="FortuneAndGlory"/>     <!-- Allow Fortune and Glory selections -->
-	<value id="NoHerosJourney"/>      <!-- Disallow Hero's Journey selections -->
-    <value id="RaceSelect"/>          <!-- Racial Ability selected through Helper -->     
-    <value id="BonusRaceEdge"/>       <!-- Bonus Racial Edge -->     
-    <value id="BonusRaceHind"/>  <!-- Bonus Racial Hindrance -->     
-    <value id="FrameSel1"/>           <!-- Framework Ability selected through Helper 1--> 
-    <value id="FrameSel2"/>           <!-- Framework Ability selected through Helper 2--> 
-    <value id="FrameEdge"/>           <!-- Framework Edge selected through Helper 1-->   
-    <value id="FrameHind"/>           <!-- Framework Hindrance selected through Helper 1-->   
-    <value id="ICMelee"/>           <!-- Melee weapon selected through construct feature --> 
-    <value id="ICRanged"/>           <!-- Melee weapon selected through construct feature -->  
-    <value id="HeroJourneySel"/> <!-- Hero's Journey option selected through Helper -->     
-    <value id="TKnoSkill"/>           <!-- Tag for selected Tramadore Knowledge Skill -->     
-    <value id="SpellSkill"/>          <!-- Tag the Hero's Spellcasting skill -->   
-    <value id="MARS"/>                <!-- indicates a M.A.R.S framework -->   
-    <value id="HHEquip"/>             <!-- indicates a specific Edge for Headhunter (Mars Cyber Techno Warrior) equipment -->     
-    <value id="StartGear"/>           <!-- indicates starting gear framework ability -->  
-    <value id="SuperStrength"/>       <!-- indicates starting gear framework ability -->  
-    <value id="MegaPowerValid"/>      <!-- indicates access to the Mega Power version of powers -->
-    <value id="NoCostPower"/>         <!-- indicates power for free -->
-    <value id="DragonAbility"/>       <!-- indicates dragon hatchling ability upgrade -->	
-    <value id="Gain10PPE"/>       <!-- indicates a gain of 10 instead of 5 PPE for the Power Points edge -->
-    <value id="Gain10ISP"/>       <!-- indicates a gain of 10 instead of 5 ISP for the Power Points edge -->
-    <value id="ShowRiftsCyber"/>      <!-- show Rifts Cyberware iunsead of SciFi -->
-    <value id="ShowGenHvy"/>        <!-- show Generic Heavy Gear iunsead of SciFi -->
-    <value id="CyberNotValid"/>       <!--  -->	
-    <value id="PPENotValid"/>       <!-- cannot use PPE (magic) -->	
-    <value id="ISPNotValid"/>       <!-- cannot use ISP (psionic) -->	
-    <value id="ABMagicNotValid"/>       <!-- cannot use Arcane Background (Magic) -->
-    <value id="ABMiracleNotValid"/>       <!-- cannot use Arcane Background (Miracles) -->
-    <value id="AugmentInvalid"/>       <!-- cannot use Crazy or Juicer augmentation -->	
-    <value id="CyberArmorActive"/>       <!-- cannot use Crazy or Juicer augmentation -->
-    <value id="DoublePP"/>          <!-- double Power Points from the Power Points edge -->	
-    <value id="DoublePPBase"/>          <!-- double base Power Points from the Arcane Background -->
-    <value id="TWCyberware"/>          <!-- indicates Cyberware is rare Techno-Wizard version -->
-    </group>
-	
   <!-- Power Group tags - Used for tagging powers valid for selection in various choosers, etc. -->
   <group
     id="PwrGroupRiftsAE">
@@ -279,7 +233,7 @@
     name="Savage Foes of North America"
     parent="sepRiftsAE"
     reportable="yes"
-    selectable="no"
+    selectable="yes"
 	sortorder="2"
     description="Material from the supplement.">
     </source>

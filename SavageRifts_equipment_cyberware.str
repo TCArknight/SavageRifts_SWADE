@@ -157,10 +157,10 @@
       if (hero.tagis[Race.racSFConst] + hero.tagis[Creature.creSFR?] = 0) then
         if (tagis[Equipped.Equippable] <> 0) then
           if (tagis[Equipped.Equipped] <> 0) then
-		    perform #resspent[resStrainSRA,+,field[gcybStrain].value,field[name].text]
+		    perform #resspent[resSRAStrain,+,field[gcybStrain].value,field[name].text]
             endif
         else
-		  perform #resspent[resStrainSRA,+,field[gcybStrain].value,field[name].text]
+		  perform #resspent[resSRAStrain,+,field[gcybStrain].value,field[name].text]
           endif
         endif
       ]]></eval>

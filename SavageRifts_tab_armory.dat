@@ -15,7 +15,7 @@
     <table_dynamic
       component="Gear"
       showtemplate="arWpnPickSRA"
-      choosetemplate="arWpnThing"
+      choosetemplate="arWpnThingSRA"
       choosesortset="Weapon"
       buytemplate="BuyCash"
       selltemplate="SellCash"
@@ -41,7 +41,7 @@
     <table_dynamic
       component="Gear"
       showtemplate="arWpnPickSRA"
-      choosetemplate="arWpnThing"
+      choosetemplate="arWpnThingSRA"
       choosesortset="Weapon"
       buytemplate="BuyCash"
       selltemplate="SellCash"
@@ -105,7 +105,7 @@
     <table_dynamic
       component="Gear"
       showtemplate="arWpnPickSRA"
-      choosetemplate="arWpnThing"
+      choosetemplate="arWpnThingSRA"
       choosesortset="Weapon"
       buytemplate="BuyCash"
       selltemplate="SellCash"
@@ -123,6 +123,130 @@
         ]]></additem>
       </table_dynamic>
     </portal>
+
+
+  <!-- arWpnThing template
+        Derived from the SimpleItem template, this template includes the weapon
+        damage and purchase cost. It is specifically for showing things for the
+        user to select.
+
+        It would be reasonable to assume that we could designate the range as a
+        simple field-based label portal, but that won't work. If the weapon is a
+        melee weapon, it won't have the range field, so you'll get run-time errors
+        when Hero Lab tries to access the field associated with the portal. The
+        solution is to use a script-based label that properly checks whether the
+        weapon is ranged. If so, then the field can be safely accessed. If not,
+        then the text is left as empty.
+  -->
+  <template
+    id="arWpnThingSRA"
+    name="Weapon Thing"
+    compset="Weapon"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblLeft">
+      <label
+        field="name">
+        </label>
+      </portal>
+	  
+    <portal
+      id="damage"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+		  var dmg as string
+		  
+          if (tagis[component.WeaponBaseSRA] = 0) then
+            dmg = field[wpShowDmg].text
+          else
+            dmg = field[wpShowDmgAlt].text
+            endif
+			
+		  @text = dmg
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="range"
+      style="lblDisable">
+      <label>
+        <labeltext><![CDATA[
+          if (tagis[component.WeapRange] <> 0) then
+            @text = field[wpRange].text
+          else
+            @text = ""
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="cost"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[grCost].text
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our dimensions, with a width that we dictate; our width can vary
+      ~between weapon types, since ranged weapons require extra space for the range
+      height = portal[name].height
+      if (tagis[component.WeapRange] + tagis[component.WeapSpec] <> 0) then
+        width = 375
+      else
+        width = 275
+        endif
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~if this is a show-only thing, hide the damage/range/cost, then position the name
+      if (tagis[thing.showonly] <> 0) then
+        portal[damage].visible = 0
+        portal[range].visible = 0
+        portal[cost].visible = 0
+        portal[name].width = width
+        perform portal[name].setstyle[lblNormal]
+        done
+        endif
+
+      ~position the cost portal on the far right
+      perform portal[cost].alignedge[right,0]
+
+      ~position the damage portal to the left of the cost; we want the damage to
+      ~be centered in its own column relative to a centerpoint position
+
+      ~position the range portal to be centered in its own column relative to a
+      ~centerpoint position
+      perform portal[damage].centerpoint[horz,200]
+      perform portal[range].centerpoint[horz,280]
+
+      var rlimit as number
+      var setrlimit as number
+      rlimit = portal[cost].left - portal[range].left - 8
+      setrlimit = minimum(portal[range].width,rlimit)
+      portal[range].width = setrlimit
+      perform portal[range].sizetofit[32]
+      perform portal[range].centervert
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[damage].left - 10)
+      perform portal[name].sizetofit[32]
+      perform portal[name].centervert
+
+
+      ]]></position>
+
+    </template>
 
   <!-- arWpnPick template
         Derived from the SimpleItem template, this includes the weapon damage and
@@ -199,7 +323,7 @@
       id="active"
       style="chkNormal"
       showinvalid="yes"
-      tiptext="Click to equip this item">
+      tiptext="Click to activate this item">
       <checkbox
         field="wpActive"
         dynamicfield="wpActiveText">
@@ -227,11 +351,15 @@
       style="lblNormal">
       <label>
         <labeltext><![CDATA[
+		  var dmg as string
+		  
           if (tagis[component.WeaponBaseSRA] = 0) then
-            @text = field[wpShowDmg].text
+            dmg = field[wpShowDmg].text
           else
-            @text = field[wpShowDmgAlt].text
+            dmg = field[wpShowDmgAlt].text
             endif
+			
+		  @text = dmg
           ]]></labeltext>
         </label>
       </portal>
@@ -242,7 +370,7 @@
       <label>
         <labeltext><![CDATA[
           if (field[wpPiercing].value > 0) then
-            @text = "AP" & field[wpPiercing].text
+            @text = "AP: " & field[wpPiercing].text
           else
             @text = ""
             endif
@@ -595,6 +723,27 @@
       </portal>
 
     <portal
+      id="tough"
+      style="lblNormal">
+      <label
+        field="defToughness">
+        </label>
+      </portal>
+	  
+    <portal
+      id="special"
+      style="imgNormal">
+      <image_literal
+        image="special.bmp"
+        isbuiltin="yes"
+        istransparent="yes">
+        </image_literal>
+      <mouseinfo><![CDATA[
+        @text = "Special: " & field[defSpecDisp].text
+        ]]></mouseinfo>
+      </portal>
+	  
+    <portal
       id="gearmanage"
       style="actGear"
       tiptext="Click here to choose which container to place this equipment within.">
@@ -609,7 +758,11 @@
       <action
         action="info">
         </action>
-      <mouseinfo/>
+      <mouseinfo><![CDATA[
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
+        ]]></mouseinfo>
       </portal>
 
     <portal
@@ -633,6 +786,8 @@
       perform portal[name].centervert
       perform portal[active].centervert
       perform portal[defense].centervert
+      perform portal[special].centervert
+      perform portal[tough].centervert
       perform portal[gearmanage].centervert
       perform portal[delete].centervert
       perform portal[strreq].centervert
@@ -652,7 +807,11 @@
       ~perform portal[defense].centerpoint[horz,250]
 
       ~position the defense portal to the left of the gearmanage button
-      perform portal[defense].alignrel[rtol,gearmanage,-15]
+      perform portal[special].alignrel[rtol,gearmanage,-15]
+	  
+      perform portal[tough].alignrel[rtol,special,-15]
+	  
+      perform portal[defense].alignrel[rtol,tough,-15]
 	  
 	  ~show the Active checkbox to the left of the defense
       perform portal[active].alignrel[rtol,defense,-10]
@@ -818,7 +977,7 @@
   -->
   <panel
     id="armorySRA"
-    name="Armory (Rifts)"
+    name="Armory"
     marginhorz="5"
     marginvert="5"
     order="210">

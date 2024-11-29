@@ -364,8 +364,8 @@
 	  candidatefield="chMeleeExp"
 	  headertemplate="icChsMeleePick"
 	  addpick="resICMelee">
-      <list>HelperRiftsAE.ICMelee</list>
-      <autotag group="HelperRiftsAE" tag="ICMelee"/>
+      <list>Helper.ICMelee</list>
+      <autotag group="Helper" tag="ICMelee"/>
       <description/>
       <additem><![CDATA[      
         @text &= hero.child[ConstructHelper].field[chMeleeAdd].text
@@ -385,8 +385,8 @@
 	  candidatefield="chRangeExp"
 	  headertemplate="icChsRangePick"
 	  addpick="resICRanged">
-      <list>HelperRiftsAE.ICRanged</list>
-      <autotag group="HelperRiftsAE" tag="ICRanged"/>
+      <list>Helper.ICRanged</list>
+      <autotag group="Helper" tag="ICRanged"/>
       <description/>
       <additem><![CDATA[      
         @text &= hero.child[ConstructHelper].field[chRangeAdd].text

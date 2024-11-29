@@ -167,7 +167,7 @@
   -->
   <panel
     id="specialSRA"
-    name="Special (Rifts)"
+    name="Special"
     marginhorz="5"
     marginvert="5"
     order="420">

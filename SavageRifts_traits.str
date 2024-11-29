@@ -522,7 +522,86 @@
 	  
     </component>	
 	
+  <component
+    id="ExtRaceAbil"
+    name="Racial Ability"
+    autocompset="no">
+
+    <!-- Extra value associated with the ability -->
+    <field
+      id="abilValue2"
+      name="Extra Value 2"
+      type="derived">
+      </field>
 	  
+    <field
+      id="abilValue3"
+      name="Extra Value 3"
+      type="derived">
+      </field>
+	  
+    </component>
+	
+  <component
+    id="ExtRacialProp"
+    name="Racial Property (Extended)"
+    autocompset="no">
+
+    <!-- Extra value associated with the ability -->
+    <field
+      id="raceValue2"
+      name="Extra Value 2"
+      type="derived">
+      </field>
+	  
+    <field
+      id="raceValue3"
+      name="Extra Value 3"
+      type="derived">
+      </field>
+	  
+    </component>
+	
+  <!-- CustomDesc component
+        Can be added to any other component to allow for a derived
+		description to display for the component.
+  -->
+  <component
+    id="CustomDesc"
+    name="Custom Description"
+	autocompset="yes">
+
+    <!-- Manage an optional user-assigned description for custom things -->
+    <field
+      id="CustDesc"
+      name="descript (custom)"
+      maxlength="2500"
+      type="derived">
+      </field>
+	  
+    <field
+      id="CustSumm"
+      name="summary (custom)"
+      maxlength="250"
+      type="derived">
+      </field>
+	  
+    <!-- If we have a user-assigned name, copy that into the live name -->
+    <eval index="1" phase="Render" priority="10000"><![CDATA[
+	  ~ if we're empty, then we use the descript field.
+	  if (field[CustDesc].isempty <> 0) then
+	    ~ if we are empty, then we use the description
+        field[CustDesc].text = field[descript].text 
+		endif
+	  
+	  if (field[CustSumm].isempty <> 0) then
+	    ~ if we are empty, then we use the description
+        field[CustSumm].text = field[CustDesc].text
+		endif
+		
+      ]]></eval>
+	  
+    </component>	  
 <!-- TCA - This component set enables the use of Iconic Framework Abilities
            as defined in the Savage Rifts sourcebooks -->
   <!-- FraAbility - all Framework Abilities derive from this compset -->
@@ -534,6 +613,7 @@
     <compref component="Domain"/>
     <compref component="UserSelect"/>
     <compref component="SpecialTab"/>
+    <compref component="CustomDesc"/>
     </compset>
 	
   <!-- FraComp- all Framework Complications derive from this compset -->
@@ -545,6 +625,28 @@
     <compref component="Domain"/>
     <compref component="UserSelect"/>
     <compref component="SpecialTab"/>
+    <compref component="CustomDesc"/>
     </compset>
+	
+  <!-- FraComp- all Framework Complications derive from this compset -->
+  <compset
+    id="ExtRaceAbil">
+    <compref component="ExtRaceAbil"/>
+    <compref component="RaceAbil"/>
+    <compref component="Ability"/>
+    <compref component="SpecialTab"/>
+    <compref component="CustomDesc"/>
+    </compset>
+	
+ <compset
+    id="ExtRacialProp">
+    <compref component="ExtRacialProp"/>
+    <compref component="RacialProp"/>
+    <compref component="Ability"/>
+    <compref component="UserSelect"/>
+    <compref component="SpecialTab"/>
+    <compref component="CanAdvance"/>
+    <compref component="CustomDesc"/>
+    </compset>	
 	
   </document>

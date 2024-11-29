@@ -57,9 +57,9 @@
 	  candidatefield="ehHJExp"
 	  headertemplate="hjChsPick"
 	  addpick="resHJSel">
-      <list>HelperRiftsAE.HeroJourneySel</list>
+      <list>Helper.HeroJourneySel</list>
 	  <autotag group="Helper" tag="FreeEdge"/>
-      <autotag group="HelperRiftsAE" tag="HeroJourneySel"/>
+      <autotag group="Helper" tag="HeroJourneySel"/>
       <autotag group="thing" tag="skipprereq"/>
       <description/>
       <additem><![CDATA[      
@@ -448,8 +448,8 @@
     name="Hero's Journey"
     marginhorz="5"
     marginvert="5"
-    order="130">
-    <live>source.srcRiftsTLPGAE &amp; !HelperRiftsAE.NoHerosJourney</live>
+    order="5">
+    <live>source.srcRiftsTLPGAE &amp; !Helper.NoHerosJourney</live>
     <layoutref layout="herojourn"/>
     <position><![CDATA[
       ]]></position>

@@ -9,8 +9,108 @@
 
 <document signature="Hero Lab Data">
 
-  <!-- TCA - Framework Ability editor -->
-  <!-- Languages editthing -->
+  <!-- Inputthing groups -->
+  <inputthinggroup
+    id="SourceInfo">
+	<inputthing
+      name="Source Info"
+      helptext="Entries related to the source material are below.">
+      <it_separator/>
+      </inputthing>
+    </inputthinggroup>
+	
+  <inputthinggroup
+    id="WeaponAtkDmg">
+	<inputthing
+      name="Attack"
+      helptext="Entries related to Weapon Attacks are below.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Attack Bonus"
+      helptext="Specify the attack bonus of the weapon.">
+      <it_field field="wpBonus"/>
+      </inputthing>
+	<inputthing
+      name="Damage"
+      helptext="Entries related to Weapon Damage are below.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Weapon Die"
+      helptext="Specify the weapon die used by this weapon. If the weapon does basic damage of 'Str' or if a special damage is required, don't specify a weapon die.">
+      <it_tagpick group="WeaponDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Number of Weapon Dice"
+      helptext="Specify the number of weapon die used by this weapon. If the weapon does basic damage of 'Str' or if a special damage is required, don't specify a weapon die.">
+      <it_tagpick group="Helper" tag="DieMult?"/>
+      </inputthing>
+	  
+    <inputthing
+      name="Weapon Damage"
+      helptext="Specify the damage rating of the weapon.">
+      <it_field field="wpDamage"/>
+      </inputthing>
+    <inputthing
+      name="Damage Bonus"
+      helptext="Specify the damage bonus of the weapon (may be negative).">
+      <it_field field="wpDmgBonus"/>
+      </inputthing>
+    <inputthing
+      name="Damage Bonus Text"
+      helptext="Specify the damage bonus text of the weapon.">
+      <it_field field="wpDmgBoTxt"/>
+      </inputthing>
+	  
+    <inputthing
+      name="Armor Piercing"
+      helptext="Specify the armor piercing rating of the weapon.">
+      <it_field field="wpPiercing"/>
+      </inputthing>
+	  
+	<inputthing
+	  name="-">
+      <it_separator/>
+      </inputthing>
+    </inputthinggroup>
+	
+  <inputthinggroup
+    id="DefenseBasics">
+	<inputthing
+      name="Defense"
+      helptext="Entries related to defense ratings are below.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Defense Rating"
+      helptext="Specify the Defense rating of the armor against normal attacks.">
+      <it_field field="defDefense"/>
+      </inputthing>
+    <inputthing
+      name="Ballistic Defense Rating"
+      helptext="Specify the Defense rating of the armor against ballistic attacks (e.g. bullets).">
+      <it_field field="defBullets"/>
+      </inputthing>
+	<inputthing
+      name="Toughness"
+      helptext="Entries related to defense Toughness are below.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Toughness Modifier"
+      helptext="Specify the modifier to hero's toughness from the armor.">
+      <it_field field="defToughness"/>
+      </inputthing>
+	  
+	<inputthing
+	  name="Other">
+      <it_separator/>
+      </inputthing>
+    </inputthinggroup>
+	
+  <!-- Editthing entries -->	
+  <!-- Languages -->
   <editthing
     compset="Language"
     name="Languages"
@@ -59,35 +159,15 @@
       helptext="Specify the type for this weapon.">
       <it_tagpick group="WeaponType" tag="?" require="yes" deftag="MedBlades"/>
       </inputthing>
-    <inputthing
-      name="Weapon Die"
-      helptext="Specify the weapon die used by this weapon. If the weapon does basic damage of 'Str' or if a special damage is required, don't specify a weapon die.">
-      <it_tagpick group="WeaponDie" tag="?"/>
+
+    <inputthing>
+      <it_groupref id="WeaponAtkDmg"/>
       </inputthing>
-    <inputthing
-      name="Special Damage"
-      helptext="Specify the non-standard damage rating of the weapon. Leave blank unless the weapon has special damage that is not tied to a weapon die.">
-      <it_field field="wpDamage"/>
-      </inputthing>
-    <inputthing
-      name="Attack Bonus"
-      helptext="Specify the attack bonus of the weapon.">
-      <it_field field="wpBonus"/>
-      </inputthing>
-    <inputthing
-      name="Damage Bonus"
-      helptext="Specify the damage bonus of the weapon (may be negative).">
-      <it_field field="wpDmgBonus"/>
-      </inputthing>
+	  
     <inputthing
       name="Parry Bonus"
       helptext="Specify the parry bonus of the weapon (may be negative).">
       <it_field field="wpParry"/>
-      </inputthing>
-    <inputthing
-      name="Armor Piercing"
-      helptext="Specify the armor piercing rating of the weapon.">
-      <it_field field="wpPiercing"/>
       </inputthing>
     <inputthing
       name="Weapon Reach"
@@ -95,14 +175,14 @@
       <it_field field="wpReach"/>
       </inputthing>
     <inputthing
-      name="Weapon Damage Bonus Text"
-      helptext="Additional Damage Bonus Text to be placed between the base damage and any standard damage bonus.">
-      <it_field field="wpDmgBoTxt"/>
-      </inputthing>
-    <inputthing
       name="Strength Requirement Die"
       helptext="Specify the minimum strength required die type for this weapon. If the weapon uses a weapon die or has no strength requirement, do not specify.">
       <it_tagpick group="StrReqDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Special Traits"
+      helptext="Specify any number of special traits that apply to this Weapon.">
+      <it_taglist group="Weapon" tag="?" />
       </inputthing>
     <inputthing
       name="Activated by User?"
@@ -113,11 +193,6 @@
       name="Actvation Text"
       helptext="Specify text displayed with the activation checkbox.">
       <it_field field="wpActiveText"/>
-      </inputthing>
-    <inputthing
-      name="Special Traits"
-      helptext="Specify any number of special traits that apply to this Weapon.">
-      <it_taglist group="Weapon" tag="?" />
       </inputthing>	  
     <inputthing
       name="Cost"
@@ -179,21 +254,11 @@
       helptext="Specify the type for this weapon.">
       <it_tagpick group="WeaponType" tag="?" require="yes" deftag="MedRange"/>
       </inputthing>
-    <inputthing
-      name="Weapon Damage"
-      helptext="Specify the damage rating of the weapon.">
-      <it_field field="wpDamage"/>
+
+    <inputthing>
+      <it_groupref id="WeaponAtkDmg"/>
       </inputthing>
-    <inputthing
-      name="Attack Bonus"
-      helptext="Specify the attack bonus of the weapon.">
-      <it_field field="wpBonus"/>
-      </inputthing>
-    <inputthing
-      name="Damage Bonus"
-      helptext="Specify the damage bonus of the weapon (may be negative).">
-      <it_field field="wpDmgBonus"/>
-      </inputthing>
+	  
     <inputthing
       name="Strength Requirement Die"
       helptext="Specify the minimum strength required die type for this weapon. If the weapon has no strength requirement, do not specify.">
@@ -215,11 +280,6 @@
       <it_field field="wpLong"/>
       </inputthing>
     <inputthing
-      name="Armor Piercing"
-      helptext="Specify the armor piercing rating of the weapon.">
-      <it_field field="wpPiercing"/>
-      </inputthing>
-    <inputthing
       name="Actions to Reload"
       helptext="Specify the number of actions required to reload the weapon.">
       <it_field field="wpReload"/>
@@ -238,11 +298,6 @@
       name="Ammunition Size"
       helptext="Specify the ammunition size/type utilized by the weapon.">
       <it_field field="wpAmmo"/>
-      </inputthing>
-    <inputthing
-      name="Weapon Damage Bonus Text"
-      helptext="Additional Damage Bonus Text to be placed between the base damage and any standard damage bonus.">
-      <it_field field="wpDmgBoTxt"/>
       </inputthing>
     <inputthing
       name="Activated by User?"
@@ -319,21 +374,17 @@
       helptext="Specify the type for this weapon.">
       <it_tagpick group="WeaponType" tag="?" require="yes" deftag="SpecCannon"/>
       </inputthing>
-    <inputthing
-      name="Weapon Damage"
-      helptext="Specify the damage rating of the weapon.">
-      <it_field field="wpDamage"/>
+	  
+    <inputthing>
+      <it_groupref id="WeaponAtkDmg"/>
       </inputthing>
-    <inputthing
-      name="Attack Bonus"
-      helptext="Specify the attack bonus of the weapon.">
-      <it_field field="wpBonus"/>
-      </inputthing>
+	  
     <inputthing
       name="Strength Requirement Die"
       helptext="Specify the minimum strength required die type for this weapon. If the weapon has no strength requirement, do not specify.">
       <it_tagpick group="StrReqDie" tag="?" />
       </inputthing>
+	  
     <inputthing
       name="Short Range"
       helptext="Specify the short range distance of the weapon.">
@@ -349,11 +400,7 @@
       helptext="Specify the long range distance of the weapon.">
       <it_field field="wpLong"/>
       </inputthing>
-    <inputthing
-      name="Armor Piercing"
-      helptext="Specify the armor piercing rating of the weapon.">
-      <it_field field="wpPiercing"/>
-      </inputthing>
+	  
     <inputthing
       name="Actions to Relead"
       helptext="Specify the number of actions required to reload the weapon.">
@@ -613,21 +660,15 @@
       helptext="Specify the Armor Type.">
       <it_tagpick group="ArmorType" tag="?"/>
       </inputthing>
-    <inputthing
-      name="Defense Rating"
-      helptext="Specify the Defense rating of the armor against normal attacks.">
-      <it_field field="defDefense"/>
+	  
+    <inputthing>
+      <it_groupref id="DefenseBasics"/>
       </inputthing>
-    <inputthing
-      name="Ballistic Defense Rating"
-      helptext="Specify the Defense rating of the armor against ballistic attacks (e.g. bullets).">
-      <it_field field="defBullets"/>
-      </inputthing>
-    <inputthing
-      name="Toughness Modifier"
-      helptext="Specify the modifier to hero's toughness from the armor.">
-      <it_field field="arToughness"/>
-      </inputthing>
+
+	<inputthing
+	  name="Coverage">
+      <it_separator/>
+      </inputthing>	  
     <inputthing
       name="Covers Torso?"
       helptext="Specify whether this armor covers the torso.">
@@ -693,6 +734,10 @@
       helptext="Specify whether this item is designated as 'standard gear' that can be readily omitted from use with selected Savage Settings.">
       <it_tagcheck group="Equipment" tag="Standard"/>
       </inputthing>
+	  
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
+      </inputthing>
     </editthing> 
 
 
@@ -709,10 +754,8 @@
       helptext="Specify the Shield Type.">
       <it_tagpick group="ArmorType" tag="?"/>
       </inputthing>
-    <inputthing
-      name="Defense Rating"
-      helptext="Specify the Defense rating of the armor against attacks.">
-      <it_field field="defDefense"/>
+    <inputthing>
+      <it_groupref id="DefenseBasics"/>
       </inputthing>
     <inputthing
       name="Parry Bonus"
@@ -753,6 +796,10 @@
       name="Treat as Standard Gear"
       helptext="Specify whether this item is designated as 'standard gear' that can be readily omitted from use with selected Savage Settings.">
       <it_tagcheck group="Equipment" tag="Standard"/>
+      </inputthing>
+
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
       </inputthing>
     </editthing>
 	
@@ -937,5 +984,107 @@
       <it_field field="grMaxMods"/>
       </inputthing>
     </editthing>
-	
+
+  <!-- Racial Ability editthing -->
+  <editthing
+    compset="ExtRaceAbil"
+    name="Racial Ability (Ext)"
+    prefix="ab"
+    description="Racial abilities are typically bootstrapped by races and creature types, but some can be user-selected when customizing a creature.{br}When user-selectable, a value or text field can be user-entered for customization."
+    summary="Defines a racial ability that is added to a character via a race or creature selection.">
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this racial ability has an effect that can be activated by the user via the In-Play tab.">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Selectable for Creatures?"
+      helptext="Specify whether this racial ability is shown for selection when customizing a creature.">
+      <it_tagcheck group="User" tag="Creature"/>
+      </inputthing>
+    <inputthing
+      name="Text Info Needed?"
+      helptext="Specify whether this racial ability requires user-entered text information when customizing a creature.">
+      <it_tagcheck group="User" tag="NeedText"/>
+      </inputthing>
+    <inputthing
+      name="Value Info Needed?"
+      helptext="Specify whether this racial ability requires a user-entered value when customizing a creature.">
+      <it_tagcheck group="User" tag="NeedValue"/>
+      </inputthing>
+    <inputthing
+      name="Omit from Printouts?"
+      helptext="Specify whether this racial ability should be omitted from character sheet output.">
+      <it_tagcheck group="Print" tag="NoPrint"/>
+      </inputthing>
+    <inputthing
+      name="Ability Value 1"
+      helptext="Specify the base value of the field.">
+      <it_field field="abilValue"/>
+      </inputthing>
+    <inputthing
+      name="Ability Value 2"
+      helptext="Specify the base value of the field.">
+      <it_field field="abilValue2"/>
+      </inputthing>
+    <inputthing
+      name="Ability Value 3"
+      helptext="Specify the base value of the field.">
+      <it_field field="abilValue3"/>
+      </inputthing>
+    </editthing>
+           
+  <!-- Racial Property editthing -->
+  <editthing
+    compset="ExtRacialProp"
+    name="Racial Property (Ext)"
+    prefix="rp"
+    description="Racial Properties are typically bootstrapped by races."
+    summary="Defines a racial property that is added to a character via a race selection.">
+    <inputthing
+      name="Racial Property Point Cost"
+      helptext="Specify cost in Racial Property Points of the Racial Property.">
+      <it_field field="raceCstVal"/>
+      </inputthing>
+    <inputthing
+      name="Maximum Number Allowed"
+      helptext="Specify the maximum number of times this Racial Property may be chosen.">
+      <it_field field="raceDupMax"/>
+      </inputthing>
+    <inputthing
+      name="Activated by User?"
+      helptext="Specify whether this racial ability has an effect that can be activated by the user via the In-Play tab.">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Selectable for Creatures?"
+      helptext="Specify whether this racial ability is shown for selection when customizing a creature.">
+      <it_tagcheck group="User" tag="Creature"/>
+      </inputthing>
+    <inputthing
+      name="Omit from Printouts?"
+      helptext="Specify whether this racial ability should be omitted from character sheet output.">
+      <it_tagcheck group="Print" tag="NoPrint"/>
+      </inputthing>
+    <inputthing
+      name="Attribute"
+      helptext="Specify the Attribute this property applies to.">
+      <it_linkage compset="Attribute" linkage="Attribute"/>
+      </inputthing>
+    <inputthing
+      name="Skill"
+      helptext="Specify the Skill this property applies to.">
+      <it_linkage compset="Skill" linkage="Skill" >
+      <match>
+        !Arcane.SuperPower &amp; !Skill.skKnow
+      </match>
+      </it_linkage>
+      </inputthing>
+    <inputthing
+      name="Additional Details"
+      helptext="Specify any additional details, such as Focus for a Knowledge Skill, Environment for a Protection or a Weakness, a Dependency, a Racial Enemy, etc.">
+      <it_field field="raceDomain"/>
+      </inputthing>
+  </editthing>
+  
   </document>

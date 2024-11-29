@@ -29,7 +29,22 @@
         ]]></titlebar>
       <description/>
       <headertitle><![CDATA[
-          @text &= " Cyberware -  " & hero.child[resStrainSRA].field[resSummary].text
+        var maxstrain as number
+        var curstrain as number
+        var diff as number
+
+        maxstrain = #trait[trSRAStrainMax]
+        curstrain = #trait[trSRAStrain]
+
+        if (curstrain < maxstrain) then
+          diff = maxstrain - curstrain
+          @text = "{text clrprompt}Cyberware - " & #trait[trSRAStrain] & " of " & #trait[trSRAStrainMax] & " Strain used (" & diff & " left)"
+        elseif (curstrain > maxstrain) then
+          diff = curstrain - maxstrain
+          @text = "{text clrwarning}Cyberware - " & #trait[trSRAStrain] & " of " & #trait[trSRAStrainMax] & " Strain used (" & diff & " over)"
+        else
+          @text = "Cyberware - " & #trait[trSRAStrain] & " of " & #trait[trSRAStrainMax] & " Strain used"
+          endif
         ]]></headertitle>
       <additem><![CDATA[
         @text = "Add New Cyberware"
@@ -943,7 +958,7 @@
     marginhorz="5"
     marginvert="5"
     order="220">
-	<live>source.srcRiftsTLPGAE &amp; !HelperRiftsAE.CyberNotValid</live>
+	<live>source.srcRiftsTLPGAE &amp; !Helper.CyberNotValid</live>
     <layoutref layout="cyberSRA"/>
     <position><![CDATA[
       ]]></position>

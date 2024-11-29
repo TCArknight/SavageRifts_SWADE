@@ -410,7 +410,7 @@
       showtemplate="sraPowerPick"
       headertemplate="sraPowerPick"
       varyheight="yes">
-      <list>!HelperRiftsAE.SecondaryPower</list>
+      <list>!Helper.SecondaryPower</list>
       </output_table>
     </portal>
 
@@ -578,7 +578,7 @@
       component="CyberwareSRA"
       showtemplate="sraCyberPick">
       <headertitle><![CDATA[
-        @text = "Cyberware (Strain: " & hero.child[resStrainSRA].field[resSpent].value & " of " & hero.child[resStrainSRA].field[resMax].value & ")"
+        @text = "Cyberware (Strain: " & hero.child[resSRAStrain].field[resSpent].value & " of " & hero.child[resSRAStrain].field[resMax].value & ")"
         ]]></headertitle>
       </output_table>
     </portal>
@@ -1212,9 +1212,9 @@
             if (compare(abname,arcname) = 0) then
               trkpoints = eachpick.field[trkMax].value
 			  
-			  if (eachpick.tagis[Helper.UsesPPE] <> 0) then
+			  if (eachpick.tagis[Hero.UsesPPE] <> 0) then
 		        abpointtype =  " PPE)"
-		      elseif (eachpick.tagis[Helper.UsesISP] <> 0) then
+		      elseif (eachpick.tagis[Hero.UsesISP] <> 0) then
 		        abpointtype =  " ISP)"
 			  else
 		        abpointtype = " Points)"
@@ -1885,8 +1885,8 @@
               endif
 		  else
             ~if this armor has toughness, include the toughness adjustment (if non-zero)
-            if (field[arToughness].value <> 0) then
-              @text &= ", Toughness: " & signed(field[arToughness].value)
+            if (field[defToughness].value <> 0) then
+              @text &= ", Toughness: " & signed(field[defToughness].value)
               endif
             endif
 
@@ -1909,7 +1909,7 @@
           if (tagis[component.ArmorSpecial] <> 0) then
 		  
 		    ~ Coverage
-		    cover = field[arCoverage].text
+		    cover = field[defCoverage].text
             if (empty(cover) = 0) then
               temp &= cover
               endif

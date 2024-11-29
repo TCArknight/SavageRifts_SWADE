@@ -41,7 +41,7 @@
       choosetemplate="SimpleItem"
       addpick="resPowers2"
       descwidth="350">
-      <list>HelperRiftsAE.SecondaryPower</list>
+      <list>Helper.SecondaryPower</list>
       <denytag usehero="yes" container="PowerDeny" thing="Power"/>
       <titlebar><![CDATA[
         @text = "Add a Secondary  Arcane Power - " & hero.child[resPowers2].field[resSummary].text
@@ -455,7 +455,7 @@
     marginhorz="5"
     marginvert="5"
     order="140">
-    <live><![CDATA[HelperRiftsAE.HasSecondaryAB]]></live>
+    <live><![CDATA[Helper.HasSecondaryAB]]></live>
     <layoutref layout="arcane2"/>
     <position><![CDATA[
       ]]></position>
