@@ -22,7 +22,8 @@
       showsortset="CyberwareSRA"
       buytemplate="BuyCash"
       selltemplate="SellCash"
-      descwidth="350">
+      descwidth="350"
+	  showfrozenfixed="yes">
       <list>component.CyberwareSRA</list>
       <titlebar><![CDATA[
         @text = "Add Cyberware"
@@ -51,7 +52,7 @@
         ]]></additem>
       </table_dynamic>
     </portal>
-
+	
   <portal
     id="gcybSkillsChooser"
     style="tblNormal">
@@ -857,8 +858,8 @@
       ]]></position>
 
     </template>
-
-  <!-- gear layout
+ 
+ <!-- gear layout
         This layout orchestrates the display of the visual elements that comprise
         the Gear tab. This amounts to a title and a table that allow the user to
         add gear to the character.
@@ -889,9 +890,13 @@
       portal[gcybVeEdgesTable].width = width
       portal[gcybHeEdgesTable].width = width
       portal[gcybLeEdgesTable].width = width
+	  
+	  ~ if cyberware is not valid, freeze the table
+	  portal[tabGenCyberware].freeze = hero.tagis[Helper.CyberNotValid]
+	    
 
       perform portal[tabGenCyberware].batchadd
-
+		
       portal[gcybSkillsChooser].visible = 0
       if (hero.tagis[Cyberware.cybSkill] + portal[gcybSkillsChooser].itemsshown <> 0) then
         portal[gcybSkillsChooser].visible = 1
@@ -957,8 +962,8 @@
     name="Cyberware"
     marginhorz="5"
     marginvert="5"
-    order="220">
-	<live>source.srcRiftsTLPGAE &amp; !Helper.CyberNotValid</live>
+    order="210">
+	<live>source.srcRiftsTLPGAE</live>
     <layoutref layout="cyberSRA"/>
     <position><![CDATA[
       ]]></position>

@@ -46,7 +46,7 @@
 	
 	<eval phase="PreTraits" priority="10000" index="1"><![CDATA[
 	~if there are no selections on the Framework tab choosers required, then we're done.
-	doneif ((#resmax[resFraEdges] + #resmax[resFraHindrance] + #resmax[resFraSel1] + #resmax[resFraSel2] ) = 0)
+	doneif ((#resmax[resFraEdges] + #resmax[resFraHindrance] + #resmax[resFrameSelect1] + #resmax[resFrameSelect2] ) = 0)
 
 	~consume additional resource slots when 
 
@@ -60,19 +60,22 @@
     foreach pick in hero from Hindrance where "Helper.FrameHind"
 	  field[ehFrameHindCst].value += 1
 	  nexteach
+	  
     perform #resspent[resFraHindrance,+,field[ehFrameHindCst].value,"Framework"]
 	
 	~Count items with Helper.FrameSel1 tag
-    foreach pick in hero where "Helper.FrameSel1"
+    foreach pick in hero where "FrameworkSelect.Selection1"
 	  field[ehFrameCst].value += 1
 	  nexteach
-    perform #resspent[resFraSel1,+,field[ehFrameCst].value,"Framework"]
+	  
+    perform #resspent[resFrameSelect1,+,field[ehFrameCst].value,"Framework"]
    
 	~Count items with Helper.FrameSel1 tag
-    foreach pick in hero where "Helper.FrameSel2"
+    foreach pick in hero where "FrameworkSelect.Selection2"
 	  field[ehFrameCst2].value += 1
 	  nexteach
-    perform #resspent[resFraSel2,+,field[ehFrameCst2].value,"Framework"]
+	  
+    perform #resspent[resFrameSelect2,+,field[ehFrameCst2].value,"Framework"]
 
 		]]></eval>
 
@@ -272,6 +275,7 @@
  
     <!-- If the resource is overspent, report a validation error -->
     <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -296,6 +300,10 @@
 	
     <!-- If the resource is underspent, report a validation error -->
     <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -357,9 +365,10 @@
 
       ]]></evalrule>	
     </thing>	
+	
   <!-- Iconic Frameworks - Bonus Abilities resource  -->
   <thing
-    id="resFraSel1"
+    id="resFrameSelect1"
     name="Iconic Framework Selections"
     compset="Resource">
     <fieldval field="resMax" value="0"/>
@@ -369,33 +378,42 @@
 
     <!-- If the resource is underspent, report a validation error -->
     <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
+	  
       ~if we aren't underspent, we're valid
-      validif (field[resLeft].value <= 0)
+      validif (field[resLeft].value < 0)
 
       ~mark associated tabs as invalid
-      container.panelvalid[framework] = 0
+      container.panelvalid[frameworkchoices] = 0
 
       ]]></evalrule>
  
     <!-- If the resource is overspent, report a validation error -->
     <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
       ~if we aren't overspent, we're valid
-      validif (field[resLeft].value >= 0)
+      validif (field[resLeft].value > 0)
 
       ~mark associated tabs as invalid
-      container.panelvalid[framework] = 0
+      container.panelvalid[frameworkchoices] = 0
 
       ]]></evalrule>	
     </thing>
 	
   <thing
-    id="resFraSel2"
+    id="resFrameSelect2"
     name="Iconic Framework Selections 2"
     compset="Resource">
     <fieldval field="resMax" value="0"/>
@@ -403,7 +421,177 @@
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
 	
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>	
     </thing>
+	
+  <thing
+    id="resFrameSelect3"
+    name="Iconic Framework Selections 3"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
+  <thing
+    id="resFrameSelect4"
+    name="Iconic Framework Selections 4"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
+  <thing
+    id="resFrameSelect5"
+    name="Iconic Framework Selections 5"
+    compset="Resource">
+    <fieldval field="resMax" value="0"/>
+	
+    <!-- Automatically add the resource to every actor -->
+    <tag group="Helper" tag="Bootstrap"/>
+	
+
+    <!-- If the resource is underspent, report a validation error -->
+    <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't underspent, we're valid
+      validif (field[resLeft].value <= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>
+ 
+    <!-- If the resource is overspent, report a validation error -->
+    <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ Frameworks aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
+      ~if we have a non-PC and this resource is impacted, we're always valid
+      validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
+
+      ~if we aren't overspent, we're valid
+      validif (field[resLeft].value >= 0)
+
+      ~mark associated tabs as invalid
+      container.panelvalid[frameworkchoices] = 0
+
+      ]]></evalrule>	
+    </thing>
+	
 	
   <!-- Hero's Journey - Bonus Abilities resource  -->
   <thing
@@ -417,6 +605,10 @@
 
     <!-- If the resource is underspent, report a validation error -->
     <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -430,6 +622,10 @@
  
     <!-- If the resource is overspent, report a validation error -->
     <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -453,6 +649,10 @@
     <tag group="Helper" tag="NPCImpact"/>
     <!-- If the resource is underspent, report a validation error -->
     <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -466,6 +666,10 @@
  
     <!-- If the resource is overspent, report a validation error -->
     <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -489,6 +693,10 @@
     <tag group="Helper" tag="NPCImpact"/>
     <!-- If the resource is underspent, report a validation error -->
     <evalrule index="1" phase="Validate" priority="5000" message="Resource underspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 
@@ -502,6 +710,10 @@
  
     <!-- If the resource is overspent, report a validation error -->
     <evalrule index="2" phase="Validate" priority="5000" message="Resource overspent"><![CDATA[
+	  ~ These aren't needed for creatures, so if we area a creature, 
+	  ~ we're good.
+      validif (hero.tagis[Hero.Creature] <> 0)
+	  
       ~if we have a non-PC and this resource is impacted, we're always valid
       validif (tagis[Helper.NPCImpact] + !hero.tagis[Hero.PC] >= 2)
 

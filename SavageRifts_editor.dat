@@ -715,6 +715,11 @@
       <it_taglist group="ArmorSpecial" tag="?" />
       </inputthing>
     <inputthing
+      name="Special Behaviors"
+      helptext="Specify any special behaviors for the armor of which the user should be reminded.">
+      <it_field field="defSpecial"/>
+      </inputthing>
+    <inputthing
       name="Cost"
       helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
       <it_field field="grCost"/>
@@ -877,7 +882,7 @@
   <!-- Vehicle editthing -->
   <editthing
     group="Rifts"
-    compset="PowerArSRA"
+    compset="PowerArmorSRA"
     name="Power Armor (Rifts)"
     prefix="vh"
     description="Weapons, vehicles, and simple equipment all have their own tabs for creating objects of those types."

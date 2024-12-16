@@ -340,6 +340,274 @@
 
 	]]></procedure>
 
+  <procedure id="GiveKWRMirList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMiracleSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powDamageFSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+
+	]]></procedure>
+
+  <procedure id="GiveKWRPsiList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powMindReadSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+
+	]]></procedure>
+
+  <procedure id="GiveNecromanList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powBlindSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powDamageFSWADE]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powDrainPPSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powObjectRdSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powResurrectSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powZombieSWADE]
+
+	]]></procedure>
+
+  <procedure id="GiveShifterList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBeastFrSWADE]
+    perform focus.delete[PowerDeny.powBlastSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powBurstSWADE]
+    perform focus.delete[PowerDeny.powSRAConcealOnly]
+    perform focus.delete[PowerDeny.powDarksigSWADE]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powDisguisSWADE]
+    perform focus.delete[PowerDeny.powDispelSWADE]
+    perform focus.delete[PowerDeny.powDrainPPSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powFarsightSWADE]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powFlySWADE]
+    perform focus.delete[PowerDeny.powIllusionSWADE]
+    perform focus.delete[PowerDeny.powIntangiSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powSlothSpedSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSmiteSWADE]
+    perform focus.delete[PowerDeny.powSoundSilSWADE]
+    perform focus.delete[PowerDeny.powSpeakSWADE]
+    perform focus.delete[PowerDeny.powStunSWADE]
+    perform focus.delete[PowerDeny.powSumAllySWADE]
+    perform focus.delete[PowerDeny.powTelekinSWADE]
+    perform focus.delete[PowerDeny.powTeleporSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+
+	]]></procedure>
+
+  <procedure id="GiveHeroVampList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powBanishSWADE]
+    perform focus.delete[PowerDeny.powSRABoostSelf]
+    perform focus.delete[PowerDeny.powDeflectSWADE]
+    perform focus.delete[PowerDeny.powSRADetectSelf]
+    perform focus.delete[PowerDeny.powDivinatSWADE]
+    perform focus.delete[PowerDeny.powSRAFarsightSel]
+    perform focus.delete[PowerDeny.powFearSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powMindReadSWADE]
+    perform focus.delete[PowerDeny.powMindWipeSWADE]
+    perform focus.delete[PowerDeny.powPuppetSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSlumberSWADE]
+    perform focus.delete[PowerDeny.powSRASmiteSelf]
+    perform focus.delete[PowerDeny.powSRASpeakSelf]
+    perform focus.delete[PowerDeny.powSRASpeedSelf]
+    perform focus.delete[PowerDeny.powSRAWallWalkSel]
+
+	]]></procedure>
+
+  <procedure id="GiveWereMagList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powTraitSWADE]
+    perform focus.delete[PowerDeny.powDisguisSWADE]
+    perform focus.delete[PowerDeny.powHealingSWADE]
+    perform focus.delete[PowerDeny.powInvisSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powReliefSWADE]
+    perform focus.delete[PowerDeny.powSRASpeakSelf]
+
+	]]></procedure>
+
+  <procedure id="GiveWerePsiList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcPsionicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	
+    perform focus.delete[PowerDeny.powArcaneProtect]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powEmpathySWADE]
+    perform focus.delete[PowerDeny.powMindLinkSWADE]
+    perform focus.delete[PowerDeny.powMindReadSWADE]
+
+	]]></procedure>
+
+	
   <procedure id="GiveTechWizList" scripttype="eval"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var clearPwrs as number
@@ -643,7 +911,7 @@
     elseif (tagis[component.Advance] <> 0) then
       call InfoAdv
     elseif (tagis[component.Vehicle] <> 0) then
-      call InfoVehSRA
+      call InfoVehicleSRA
     elseif (tagis[component.Hindrance] <> 0) then
       call InfoHinder
     elseif (tagis[component.Edge] <> 0) then
@@ -720,14 +988,16 @@
         ~ iteminfo &= "{br}"
         ~ endif
 	  
-	  if (tagis[Equipment.Natural] = 0) then
-        iteminfo &= "Weight: "
+	  if (tagis[component.Vehicle] = 0) then
+	    if (tagis[Equipment.Natural] = 0) then
+          iteminfo &= "Weight: "
 		
-        if (field[gearWeight].value > 0) then
-          iteminfo &= field[gearWeight].value & " each"
-        else
-          iteminfo &= chr(150)
-          endif
+          if (field[gearWeight].value > 0) then
+            iteminfo &= field[gearWeight].value & " each"
+          else
+            iteminfo &= chr(150)
+            endif
+		  endif
 		endif
 		
       iteminfo &= "{br}"
@@ -1118,7 +1388,7 @@
 	
     iteminfo &= "{br}"]]></procedure>
 	
-  <procedure id="InfoVehSRA" context="info"><![CDATA[
+  <procedure id="InfoVehicleSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -1169,7 +1439,7 @@
     doneif (isentity = 0)
 	
     ~ Weapons and Equipment
-	call InfoVehEqRifts
+	call InfoVehEqSRA
 	
     ~ @text = iteminfo]]></procedure>
 	
@@ -1240,7 +1510,7 @@
 	  
 	iteminfo &= "{br}{br}"]]></procedure>
 	
-  <procedure id="InfoVehEqRifts" context="info"><![CDATA[
+  <procedure id="InfoVehEqSRA" context="info"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var iteminfo as string
 
@@ -1284,7 +1554,11 @@
 	      else 
 		    currmod = eachpick.idstring & eachpick.field[modValue].value
 			endif
-		  
+			
+		  if (eachpick.tagis[component.WeaponBaseSRA] <> 0) then
+		    currmod &= eachpick.field[wpLocation].text
+			endif
+			
           if (compare(prevmod,currmod) = 0) then
             dupcount += 1
             if (eachpick.field[stackQty].value > 1) then 
@@ -1292,6 +1566,7 @@
             else  
               dupstack += 1
               endif
+			  
             if (dupcount = 2) then
               breakit = lastpos(ModList," - ")
               ending = length(ModList)
@@ -1308,12 +1583,14 @@
               endif
           else
             if (empty(ModList) <> 0) then
-			  ModList = "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+			  ModList = "{br}{horz 10}" & chr(149) & " " 
 			  
               if (eachpick.field[stackQty].value > 1) then 
-                ModList &= " (x" & eachpick.field[stackQty].value & ")"
+                ModList &= eachpick.field[stackQty].value & "x "
                 endif
 				
+			  ModList &= eachpick.field[name].text
+			  
 			  if (eachpick.tagis[component.WeaponBaseSRA] <> 0) then
 			    if (eachpick.field[wpLocation].isempty = 0) then
 				  ModList &= " (" & eachpick.field[wpLocation].text & ")"
@@ -1322,11 +1599,13 @@
 				
 			  ModList &= " - " & eachpick.field[summary].text
             else
-			  ModList &= "{br}{horz 10}" & chr(149) & " " & eachpick.field[name].text
+			  ModList &= "{br}{horz 10}" & chr(149) & " " 
 			  
               if (eachpick.field[stackQty].value > 1) then 
-                ModList &= " (x" & eachpick.field[stackQty].value & ")"
+                ModList &= eachpick.field[stackQty].value & "x "
                 endif
+				
+			  ModList &= eachpick.field[name].text
 								
 			  if (eachpick.tagis[component.WeaponBaseSRA] <> 0) then
 			    if (eachpick.field[wpLocation].isempty = 0) then
@@ -1339,9 +1618,9 @@
             
             if (eachpick.tagis[WeaponType.?] <> 0) then
               if (eachpick.tagis[WeaponType.FutMelee] + eachpick.tagis[WeaponType.SFVehMelee] <> 0) then
-                ModList &= "{br}{horz 30}" & chr(164) & " " & eachpick.field[wpShowDmg].text
+                ModList &= "{br}{horz 20}" & chr(164) & " " & eachpick.field[wpShowDmg].text
               else
-                ModList &= "{br}{horz 30}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
+                ModList &= "{br}{horz 20}" & chr(164) & " " & eachpick.field[wpShowDmg].text & ", " & eachpick.field[wpRange].text
               endif
 
               if (eachpick.field[wpNotes].isempty = 0) then
@@ -1350,7 +1629,8 @@
 			  
             endif
 			 
-            prevmod = eachpick.idstring & eachpick.field[modValue].value
+            ~ prevmod = eachpick.idstring & eachpick.field[modValue].value
+			prevmod = currmod
             dupcount = 1
             dupstack = 1
             endif

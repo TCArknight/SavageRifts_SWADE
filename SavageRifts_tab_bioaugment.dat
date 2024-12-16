@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definition of the "Gear" tab panel. This tab is where
+      the user selects general gear (non-weapons) for the character.
+
+      All public visual elements used with this tab panel start with the prefix "gr"
+      to associate them with the tab.
+-->
+
+<document signature="Hero Lab Data">
+
+
+  <!-- Bio-Wizardry Augmentations  -->
+  <portal
+    id="tabGenBioAugments"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="BioAugPick"
+      choosetemplate="BioAugThing"
+      choosesortset="BioAugmentSRA"
+      showsortset="BioAugmentSRA"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.BioAugmentSRA</list>
+      <titlebar><![CDATA[
+        @text = "Add BW Augmentation"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        var maxstrain as number
+        var curstrain as number
+        var diff as number
+
+        maxstrain = #trait[trSRAStrainMax]
+        curstrain = #trait[trSRAStrain]
+
+        if (curstrain < maxstrain) then
+          diff = maxstrain - curstrain
+          @text = "{text clrprompt}BW Augmentations - " & curstrain & " of " & maxstrain & " Strain used (" & diff & " left)"
+        elseif (curstrain > maxstrain) then
+          diff = curstrain - maxstrain
+          @text = "{text clrwarning}BW Augmentations - " & curstrain & " of " & maxstrain& " Strain used (" & diff & " over)"
+        else
+          @text = "BW Augmentations  - " & curstrain & " of " & maxstrain & " Strain used"
+          endif
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New BW Augmentation"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+  <!-- Bio-Wizardry Symbiotes  -->
+  <portal
+    id="tabGenBioSymb"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="SimpleItem"
+      choosetemplate="SimpleItem"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.BioSymbioteSRA</list>
+      <titlebar><![CDATA[
+        @text = "Add BW Symbiote"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        @text = "BW Symbiotes"
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New BW Symbiote"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+  <!-- baugThing template
+        Derived from the SimpleItem template, this includes the purchase cost and
+        the lotsize of the item to be purchased.
+  -->
+  <template
+    id="BioAugThing"
+    name="BW Augmentation Thing"
+    compset="BioAugmentSRA"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[name].text
+          if (field[lotsize].value > 1) then
+            @text &= " (x" & field[lotsize].text & ")"
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="strain"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[bwizStrain].value
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="cost"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[grCost].text
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our dimensions, with a width that we dictate
+      height = portal[name].height
+      width = 285
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~if this is a show-only thing, hide the cost, then position the name
+      if (tagis[thing.showonly] <> 0) then
+        portal[cost].visible = 0
+        portal[strain].visible = 0
+        portal[name].width = width
+        done
+        endif
+
+      ~position the cost portal on the far right
+      perform portal[cost].alignedge[right,0]
+
+      ~position the damage portal to the left of the cost; we want the damage to
+      ~be centered in its own column relative to a centerpoint position
+      perform portal[strain].centerpoint[horz,225]
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[strain].left - 10)
+      ]]></position>
+
+    </template>
+	
+  <!-- BioAugPick template
+        Derived from the SimpleItem template, this includes the gear button to move
+        equipment between various containers.  -->
+  <template
+    id="BioAugPick"
+    name="BW Augmentation Pick"
+    compset="BioAugmentSRA"
+    marginhorz="2"
+    marginvert="3">
+
+    <portal
+      id="name"
+      style="lblLeft"
+      showinvalid="yes">
+      <label
+        field="grStkName">
+        </label>
+      </portal>
+
+    <portal
+      id="namecheck"
+      style="chkNormal"
+      showinvalid="yes"
+      tiptext="Click to equip this Skill Chip.">
+      <checkbox
+        field="grIsEquip"
+        dynamicfield="grStkName">
+        </checkbox>
+      </portal>
+
+  <!-- RDS IZ20 This was added to allow external factors to effect modifiers without unequipping the cyberware -->
+    <portal
+      id="baugcheck"
+      style="chkNormal"
+      showinvalid="yes"
+      tiptext="Click to enable a conditional modifier.">
+      <checkbox
+        field="bwizActive"
+        dynamicfield="grStkName">
+        </checkbox>
+      </portal>
+
+    <portal
+      id="skillthing"
+      style="menuNormal"
+      width="154">
+      <menu_things
+        field="usrChosen1"
+        component="Skill"
+        maxvisible="20">
+        </menu_things>
+      </portal>
+
+    <portal
+      id="attribute"
+      style="menuNormal"
+      width="275">
+      <menu_things
+        field="usrChosen1"
+        component="Attribute"
+        maxvisible="5">
+        <candidate>!Attribute.attrSup</candidate>
+        </menu_things>
+      </portal>
+
+    <portal
+      id="rangething"
+      style="menuNormal"
+      width="154">
+      <menu_things
+        field="usrChosen1"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource1"
+        candidatefield="usrCandid1">
+        </menu_things>
+      </portal>
+
+    <portal
+      id="domain"
+      style="editNormal">
+      <edit
+        field="domDomain"
+        maxlength="50">
+        </edit>
+      </portal>
+	  
+    <portal
+      id="menu1"
+      style="menuSmall">
+      <menu_things
+        field="usrChosen1"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource1"
+        candidatefield="usrCandid1">
+        </menu_things>
+      </portal>
+
+    <portal
+      id="bonusValue"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text =  " (+" & field[bwizValue].text & " die type)"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="strain"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[bwizStrain].value
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="grade"
+      style="lblLeft">
+      <label>
+        <labeltext><![CDATA[
+          @text =  " (" & field[baugGrade].text & ")"
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this equipment">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      var namewidth as number
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      if (hero.tagis[source.sfGradCybr] = 0) then
+        portal[grade].visible = 0
+        endif
+
+      ~center the portals vertically
+      perform portal[info].centervert
+      perform portal[name].centervert
+      perform portal[namecheck].centervert
+      perform portal[baugcheck].centervert
+      perform portal[grade].centervert
+      perform portal[bonusValue].centervert
+      perform portal[strain].centervert
+      perform portal[delete].centervert
+      perform portal[menu1].centervert
+	  
+      portal[name].visible = 0
+      portal[namecheck].visible = 0
+      portal[baugcheck].visible = 0
+
+      ~position the grade portal to the right of the name
+      if (tagis[Equipped.Equippable] <> 0) then
+        portal[namecheck].visible = 1
+        perform portal[grade].alignrel[ltor,namecheck,2]
+        namewidth = portal[namecheck].width
+
+      elseif (tagis[User.Activation] <> 0) then
+        portal[baugcheck].visible = 1
+        perform portal[grade].alignrel[ltor,baugcheck,2]
+        namewidth = portal[baugcheck].width
+
+      else
+        portal[name].visible = 1
+        perform portal[grade].alignrel[ltor,name,2]
+        namewidth = portal[name].width
+        endif
+
+      portal[grade].width = 100
+
+      var rightedge as number
+		
+      perform portal[skillthing].centervert
+      perform portal[domain].centervert
+      perform portal[bonusValue].centervert
+      portal[skillthing].visible = 0
+      portal[skillthing].width = 124
+      portal[domain].visible = 0
+      portal[domain].width = 150
+      portal[bonusValue].visible = 0
+      portal[bonusValue].width = 82
+	  
+      ~determine whether our menus are visible
+      ~Note: Remember that a non-empty tagexpr field indicates menu selection is used.
+      if (field[usrCandid1].isempty <> 0) then
+        portal[menu1].visible = 0
+        endif
+	  
+      ~Add drop menus for the Skill chips and the Skill Trait bonuses
+      if (tagis[Cyberware.cybTraitSk] + tagis[Cyberware.cybSkill] <> 0) then
+        portal[skillthing].visible = 1
+        if (portal[grade].visible = 0) then
+          rightedge = namewidth
+        else
+          rightedge = namewidth + portal[grade].width
+          endif
+        portal[skillthing].left = rightedge + 5
+        rightedge = rightedge + portal[skillthing].width
+        perform portal[domain].alignrel[ltor,skillthing,5]
+        if (tagis[User.NeedDomain] <> 0) then
+          portal[domain].visible = 1
+          rightedge = rightedge + portal[domain].width + 5
+          endif
+        endif
+
+      if (tagis[Cyberware.cybSkill] <> 0) then
+        portal[bonusValue].visible = 1
+        if (tagis[User.NeedDomain] <> 0) then
+          perform portal[bonusValue].alignrel[ltor,domain,0]
+        else
+          portal[bonusValue].left = rightedge + 5
+          endif
+        endif
+
+      ~Add drop menu for the Attribute Trait bonuses
+      perform portal[attribute].centervert
+      portal[attribute].visible = 0
+      portal[attribute].width = 74
+      if (tagis[Cyberware.cybTraitAt] + tagis[Cyberware.cybTrait] <> 0) then
+        portal[attribute].visible = 1
+        if (portal[grade].visible = 0) then
+          rightedge = namewidth
+        else
+          rightedge = namewidth + portal[grade].width
+          endif
+        portal[attribute].left = rightedge + 5
+        endif
+
+      ~Add drop menu for the Attribute Trait bonuses
+      perform portal[rangething].centervert
+      portal[rangething].visible = 0
+      portal[rangething].width = 124
+      if (tagis[Cyberware.cybRanged] <> 0) then
+        portal[rangething].visible = 1
+        if (portal[grade].visible = 0) then
+          rightedge = namewidth
+        else
+          rightedge = namewidth + portal[grade].width
+          endif
+        portal[rangething].left = rightedge + 5
+        endif
+
+      ~position the info portal to the left of the delete button
+	  portal[menu1].width = 125
+      perform portal[menu1].alignrel[ltor,name,8]
+
+      portal[domain].visible = tagis[User.NeedDomain]
+      perform portal[domain].alignrel[ltor,name,15]
+	  
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~position the strain portal to the left of the info and
+      ~be centered in its own column relative to a centerpoint position
+      perform portal[strain].centerpoint[horz,410]
+
+      ~if the gear can't be deleted (i.e. it's been auto-added instead of user-added,
+      ~set the style to indicate that behavior to the user
+      if (candelete = 0) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+
+    </template>
+
+
+ 
+ <!-- gear layout
+        This layout orchestrates the display of the visual elements that comprise
+        the Gear tab. This amounts to a title and a table that allow the user to
+        add gear to the character.
+
+        The logic for this layout is similar to preceeding tabs, so please refer
+        to those tabs for more details.
+  -->
+  <layout
+    id="biowizardry">
+    <portalref portal="tabGenBioSymb" taborder="10"/>
+    <portalref portal="tabGenBioAugments" taborder="20"/>
+
+    <!-- This script sizes and positions the layout and its child visual elements. -->
+    <position><![CDATA[
+      autogap = 10
+      ~all tables span the full width
+      portal[tabGenBioSymb].width = width
+      portal[tabGenBioAugments].width = width
+	  
+	  ~ if cyberware is not valid, freeze the table
+	  portal[tabGenBioAugments].freeze = hero.tagis[Helper.BWAugmentNotValid]
+	    
+      perform portal[tabGenBioSymb].batchadd
+      perform portal[tabGenBioAugments].batchadd
+	  
+      perform this.batchplace
+
+      ]]></position>
+
+    </layout>
+
+
+  <!-- gear panel
+        This is the "Gear" panel shown within Hero Lab. Since we want this panel to
+        appear second within the second grouping (equipment), we assign it an
+        "order" of 220.
+
+        The logic for this panel is similar to the logic for the preceeding panels,
+        so please refer to those panels for more details.
+		
+		original live:
+		<live>((source.sfShowCybr | Hero.ShowCyber) &amp; !Hindrance.hinSFCybRe &amp; !Race.racSFConst &amp; source.SciFi &amp; !Creature.creSFR?) | Cyberware.? | (CybRobAdd.? &amp; (!Race.racSFConst &amp; !Creature.creSFR?))</live>
+  -->
+  <panel
+    id="biowizardry"
+    name="Bio-Wizardry"
+    marginhorz="5"
+    marginvert="5"
+    order="210">
+	<live>source.srcRiftsAtlantisAE</live>
+    <layoutref layout="biowizardry"/>
+    <position><![CDATA[
+      ]]></position>
+    </panel>
+
+
+  </document>
+

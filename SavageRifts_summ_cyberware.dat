@@ -14,14 +14,16 @@
   <!-- frAbility portal - table of edges
   -->
   <portal
-    id="frAbility"
+    id="cybCyberware"
     style="tblInvisSm">
     <table_fixed
-      component="FraAbility"
-      showtemplate="frAbility"
+      component="CyberwareSRA"
+      showtemplate="SimpleItem"
       scrollable="no"
 	  alwaysupdate="yes">
-	  <list>Helper.FirstCopy</list>
+	  <headertitle>
+        @text = "Cyberware"
+        </headertitle>
       </table_fixed>
     </portal>
 
@@ -29,73 +31,31 @@
   <!-- frComp portal - table of hindrances
   -->
   <portal
-    id="frComp"
+    id="cybBioAugment"
     style="tblInvisSm">
     <table_fixed
-      component="FraComp"
-      showtemplate="frComp"
-      scrollable="no">
+      component="BioAugmentSRA"
+      showtemplate="cybAugPick"
+      scrollable="no"
+	  alwaysupdate="yes">
+	  <list>Helper.FirstCopy</list>
+	  <headertitle>
+        @text = "Augmentations"
+        </headertitle>
       </table_fixed>
     </portal>
 
-
-  <!-- frAbility template
-        This template shows the names of each special ability ability, providing
-        mouse-over behavior to show the details of each ability.
-  -->
   <template
-    id="frAbility"
+    id="cybAugPick"
     name="Summary Ability Pick"
-    compset="FraAbility">
+    compset="BioAugmentSRA">
 
     <portal
       id="name"
       style="lblSummary">
 	  <label>
         <labeltext><![CDATA[
-		  @text = field[shortname].text
-		  
-		  if (field[frNameAppend].isempty = 0) then
-		    @text &= field[frNameAppend].text
-			endif
-		  
-		  doneif (tagis[Helper.NoAppendCount] <> 0)
-		  
-          if (field[frNumCopies].value > 1) then
-            @text &= " (x" & field[frNumCopies].value & ")"
-            endif
-          ]]></labeltext>
-        </label>
-      <mouseinfo/>
-      </portal>
-
-    <position><![CDATA[
-      ~set up our height based on our tallest portal
-      height = portal[name].height
-
-      ~if this is a "sizing" calculation, we're done
-      doneif (issizing <> 0)
-
-      ~the name is the only portal to position
-      portal[name].left = 0
-      portal[name].top = 0
-      ]]></position>
-    </template>
-  <template
-    id="frComp"
-    name="Summary Ability Pick"
-    compset="FraComp">
-
-    <portal
-      id="name"
-      style="lblSummary">
-	  <label>
-        <labeltext><![CDATA[
-		  @text = field[shortname].text
-		  
-          if (field[frNumCopies].value > 1) then
-            @text &= " (x" & field[frNumCopies].value & ")"
-            endif
+		  @text = field[xCountShortname].text
           ]]></labeltext>
         </label>
       <mouseinfo/>
@@ -120,14 +80,14 @@
         skills for the actor.
   -->
   <layout
-    id="frAbilComp">
-    <portalref portal="frAbility"/>
-    <portalref portal="frComp"/>
+    id="cybCyberware">
+    <portalref portal="cybCyberware"/>
+    <portalref portal="cybBioAugment"/>
 
     <position><![CDATA[
       ~position and size the tables to span the full layout
-      perform portal[frAbility].autoplace
-      perform portal[frComp].autoplace[10]
+      perform portal[cybCyberware].autoplace
+      perform portal[cybBioAugment].autoplace[10]
       ]]></position>
 
     </layout>
@@ -145,14 +105,14 @@
         ghosts vs. mortals in the World of Darkness game system.
   -->
   <panel
-    id="frAbility"
-    name="Framework"
-    order="10021"
+    id="cybCyberware"
+    name="Cyberware"
+    order="10030"
     marginhorz="2"
     marginvert="2"
     issummary="yes">
     <live>source.srcRiftsTLPGAE</live>
-    <layoutref layout="frAbilComp"/>
+    <layoutref layout="cybCyberware"/>
 
     <position><![CDATA[
       ]]></position>

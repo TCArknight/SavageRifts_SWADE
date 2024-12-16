@@ -36,7 +36,7 @@
     </portal>
 
   <portal
-    id="arSRARange"
+    id="arRangedSRA"
     style="tblNormal">
     <table_dynamic
       component="Gear"
@@ -60,7 +60,7 @@
       </table_dynamic>
     </portal>
 	
-  <!-- arSRAArmor portal
+  <!-- arArmorSRA portal
         Presents a dynamic table where the user can add armor and shields for the
         character. This portal is identical to "arMelee" above, except that it
         manages defensive gear instead of melee weapons, resulting in a few minor
@@ -70,7 +70,7 @@
         sortset to sort all of the armor first and then the shields below.
   -->
   <portal
-    id="arSRAArmor"
+    id="arArmorSRA"
     style="tblNormal">
     <table_dynamic
       component="Gear"
@@ -95,12 +95,12 @@
 
   <!-- arSpecial portal
         Presents a dynamic table where the user can add special weapons for the
-        character. This portal is identical to "arSRARange" above, except that it
+        character. This portal is identical to "arRangedSRA" above, except that it
         manages special weapons instead of ranged weapons. Since special weapons
         are so similar to ranged weapons, we can re-use the the template.
   -->
   <portal
-    id="arSRASpecial"
+    id="arSpecialSRA"
     style="tblNormal">
     <table_dynamic
       component="Gear"
@@ -123,7 +123,47 @@
         ]]></additem>
       </table_dynamic>
     </portal>
+	
+  <!-- arPowerArmorSRA portal
+        Presents a dynamic table where the user can add Power Armor for the character.
 
+        We use separate templates for selecting vehicles and showing the vehicles
+        that have been chosen. Each of these appears further below.
+
+        We use an "additem" script to simply prompt the user to add vehicles.
+
+        The "buytemplate" and "selltemplate" attributes hook in the logic for
+        properly buying and selling vehicles for cash.
+
+        We use a "headertitle" script to place a suitable title above the table.
+
+        The "list" tag expression restricts everything to only vehicles (e.g. no
+        weapons). The "candidate" tag expression is omitted, resulting in the same
+        contents as the "list" tag expression.
+  -->
+  <portal
+    id="arPowerArmorSRA"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="arPAPickSRA"
+      choosetemplate="arPAThingSRA"
+      choosesortset="GenVehicle"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.PowerAr</list>
+      <titlebar><![CDATA[
+        @text = "Select Power Armor to Purchase from the List Below"
+        ]]></titlebar>
+      <headertitle><![CDATA[
+        @text = "Power Armor"
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New Power Armor"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
 
   <!-- arWpnThing template
         Derived from the SimpleItem template, this template includes the weapon
@@ -843,6 +883,160 @@
 
     </template>
 
+	
+  <!-- HGThingRIFTS template
+        Derived from the SimpleItem template, this includes the purchase cost of
+        the vehicle to be purchased.
+  -->
+  <template
+    id="arPAThingSRA"
+    name="Power Armor Thing"
+    compset="PowerArmorSRA"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal">
+      <label field="name">
+        </label>
+      </portal>
+
+    <portal
+      id="cost"
+      style="lblNormal">
+      <label>
+        <labeltext><![CDATA[
+          @text = field[grCost].text
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our dimensions, with a width that we dictate
+      height = portal[name].height
+      width = 250
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      if (tagis[thing.showonly] <> 0) then
+        portal[cost].visible = 0
+        portal[name].width = width
+        done
+        endif
+
+      ~position the cost portal on the far right
+      perform portal[cost].alignedge[right,0]
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[cost].left - 10)
+      ]]></position>
+
+    </template>
+	
+  <!-- arPAPickSRA template
+        Derived from the SimpleItem template, this includes the gear button to move
+        equipment between various containers.
+  -->
+  <template
+    id="arPAPickSRA"
+    name="Power Armor Pick"
+    compset="PowerArmorSRA"
+    marginhorz="3"
+    marginvert="3">
+
+    <portal
+      id="name"
+      style="chkNormal"
+      showinvalid="yes"
+      tiptext="Click to pilot this vehicle">
+      <checkbox
+        field="grIsEquip"
+        dynamicfield="grStkName">
+        </checkbox>
+      </portal>
+
+    <portal
+      id="container"
+      style="imgNormal">
+      <image_literal
+        image="container.bmp"
+        isbuiltin="yes"
+        istransparent="yes">
+        </image_literal>
+      <mouseinfo><![CDATA[
+        call InfoHolder
+        ]]></mouseinfo>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo><![CDATA[
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
+        ]]></mouseinfo>
+      </portal>
+
+    <portal
+      id="edit"
+      style="actEdit"
+      tiptext="Click here to edit the entry.">
+      <action
+        action="edit">
+        </action>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this vehicle">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~center the portals vertically
+      perform portal[info].centervert
+      perform portal[name].centervert
+      perform portal[delete].centervert
+      perform portal[container].centervert
+      perform portal[edit].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~show the 'container' icon to the left of the edit button
+      perform portal[container].alignrel[rtol,info,-8]
+	  
+      ~position the edit portal to the left of the container button
+	  ~portal[edit].visible = 0
+      perform portal[edit].alignrel[rtol,container,-8]
+	  
+      ~position the name on the left and position the user-fillable name field next to it
+      var limit as number
+      portal[name].left = 0
+
+      ]]></position>
+
+    </template>
+
 
   <!-- armory layout
         This layout orchestrates the display of the visual elements that comprise
@@ -865,103 +1059,29 @@
   <layout
     id="armorySRA">
     <portalref portal="arMeleeSRA" taborder="10"/>
-    <portalref portal="arSRARange" taborder="20"/>
-    <portalref portal="arSRAArmor" taborder="30"/>
-    <portalref portal="arSRASpecial" taborder="40"/>
+    <portalref portal="arRangedSRA" taborder="20"/>
+    <portalref portal="arSpecialSRA" taborder="30"/>
+    <portalref portal="arArmorSRA" taborder="40"/>
+    <portalref portal="arPowerArmorSRA" taborder="10"/>
 
     <!-- This script sizes and positions the layout and its child visual elements. -->
     <position><![CDATA[
-      ~determine the gap to use between tables
-      var gap as number
-      gap = 10
+      autogap = 10
 
-      ~set the width of all tables to the full width of the layout
+      ~set all tables to span the full width of the layout
       portal[arMeleeSRA].width = width
-      portal[arSRARange].width = width
-      portal[arSRAArmor].width = width
-      portal[arSRASpecial].width = width
+      portal[arRangedSRA].width = width
+      portal[arArmorSRA].width = width
+      portal[arSpecialSRA].width = width
+      portal[arPowerArmorSRA].width = width
 
-      ~position the special weapons table at the bottom, allowing for at most three rows
-      portal[arSRASpecial].maxrows = 3
-      portal[arSRASpecial].top = height - portal[arSRASpecial].height
+      perform portal[arMeleeSRA].batchadd
+      perform portal[arRangedSRA].batchadd
+      perform portal[arSpecialSRA].batchadd
+      perform portal[arArmorSRA].batchadd
+      perform portal[arPowerArmorSRA].batchadd
 
-      ~determine the height remaining that can be used by other tables
-      var ht as number
-      ht = height - portal[arSRASpecial].height - gap
-
-      ~position the armor/shield table above special weapons, allowing for at most
-      ~two rows
-      portal[arSRAArmor].maxrows = 2
-      portal[arSRAArmor].top = ht - portal[arSRAArmor].height
-
-      ~position the melee table at the top
-      portal[arMeleeSRA].top = 0
-
-      ~set the heights of the two weapon tables to use all the space available
-      portal[arMeleeSRA].height = ht
-      portal[arSRARange].height = ht
-
-      ~determine how much space we have left for the two tables; be sure to exclude
-      ~the extra title and the extra spacing we'll use inbetween
-      ~NOTE! If a value of 10 is added to the bottom coordinate of a portal, the
-      ~net value will yield an actual GAP of one less. For example, if the bottom
-      ~is at pixel 15, that pixel is part of the physical height of the portal. If
-      ~you add 10 to that position for the next portal, it starts on pixel 25, so
-      ~pixel 25 is part of the next portal. That means that pixels 16 through 24
-      ~represent the dead space inbetween, which is a span of 9 pixels. We have to
-      ~factor this detail in when adjusting the space remaining by our gaps.
-      var remain as number
-      remain = portal[arSRAArmor].top - portal[arMeleeSRA].top
-      remain -= (gap - 1) * 2
-
-      ~if the height of both tables exceeds what we have left, we need to divvy up
-      ~that space between the two tables
-      if (portal[arMeleeSRA].height + portal[arSRARange].height > remain) then
-
-        ~if the melee table is less than half the space, limit the ranged table
-        ~to whatever space is leftover
-        if (portal[arMeleeSRA].height < remain / 2) then
-          portal[arSRARange].height = remain - portal[arMeleeSRA].height
-
-        ~if the ranged table is less than half the space, limit the melee table
-        ~to whatever space is leftover
-        elseif (portal[arSRARange].height < remain / 2) then
-          portal[arMeleeSRA].height = remain - portal[arSRARange].height
-
-        ~otherwise, both tables are larger than half the space, so we need to limit
-        ~the height of both of them
-        ~NOTE! If we just divide the remaining amount by two and set both tables to
-        ~that height, we could end up with both tables being truncated by more than
-        ~a half item, with the combined height being a full item short of taking up
-        ~the full space. So we have to set the height of one table to half the
-        ~remaining space, then subtract that table's final height from our remaining
-        ~space, and finally set that as the height for the second table.
-        else
-          portal[arSRARange].height = remain / 2
-          portal[arMeleeSRA].height = remain - portal[arSRARange].height
-          endif
-        endif
-
-      ~position the ranged weapons table beneath the melee table
-      portal[arSRARange].top = portal[arMeleeSRA].bottom + gap
-
-      ~position the armor/shields table beneath the ranged weapons table
-      ~NOTE! we already positioned this table, but the above logic could result in
-      ~a gap between the tables, so we close that gap by repositioning again
-      portal[arSRAArmor].top = portal[arSRARange].bottom + gap
-
-      ~set the height of the armor/shields table to the whatever height is left;
-      ~if the armor list is long and the weapon lists are short, this will show as
-      ~much armor as there is remaining room to accommodate
-      portal[arSRAArmor].height = ht - portal[arSRAArmor].top
-
-      ~position the special weapons table beneath the armor/shields table
-      portal[arSRASpecial].top = portal[arSRAArmor].bottom + gap
-
-      ~set the height of the special weapons table to the whatever height is left;
-      ~if the above tables are short, this will show as many special weapons as
-      ~there is remaining room to accommodate
-      portal[arSRASpecial].height = height - portal[arSRASpecial].top
+      perform this.batchplace
       ]]></position>
 
     </layout>
@@ -980,7 +1100,7 @@
     name="Armory"
     marginhorz="5"
     marginvert="5"
-    order="210">
+    order="220">
     <live>source.srcRiftsTLPGAE</live>
     <layoutref layout="armorySRA"/>
     <position><![CDATA[

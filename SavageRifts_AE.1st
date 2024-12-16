@@ -82,13 +82,24 @@
 	
   <!-- Cybernetics Categories -->
   <group
-    id="CyberCatRiftsAE"
+    id="CyberCatSRA"
 	sequence="explicit">
     <value id="BioRep" name="Bio-Enhancements and Replacements" order="1"/>    
     <value id="CombatEnh" name="Combat Enhancement" order="2"/>    
     <value id="Comm" name="Communications, Data and Sensory Systems" order="3"/>    
     <value id="Mobility" name="Mobility" order="4"/>    
     <value id="Weapons" name="Weapons and Tools" order="5"/>            
+    </group>
+	
+  <!-- Cybernetics Categories -->
+  <group
+    id="BioAugSRA"
+	sequence="explicit">
+    <value id="PhysTrans"	name="Physical Transmutation" 		order="1"/>    
+    <value id="Appendage"	name="Bio-Wizard Appendage" 		order="2"/>    
+    <value id="SpecAbil" 	name="Bio-Wizard Special Ability" 	order="3"/>    
+    <value id="Senses" 		name="Bio-Wizard Senses" 			order="4"/>    
+    <value id="Healing" 	name="Transmutation Healing" 		order="5"/>            
     </group>
 
   <!-- WeaponCat group - tags identifying the specific category of weapon
@@ -201,12 +212,24 @@
     <value id="Melee" name="Weapon (Melee)" order="61"/>
     <value id="Ranged" name="Weapon (Ranged)" order="62"/>
     </group>
+	
   <!-- Item Mod Category tags -->
   <group
     id="ItemModType"
 	dynamic="yes"
     sequence="explicit">
     <value id="Manufact" name="Manufacturer" order="20"/>
+    </group>
+
+  <!-- TCA: Item Mod  -->
+  <group
+    id="FrameworkSelect"
+	dynamic="yes">
+    <value id="Selection1" name="Selection 1"/>
+    <value id="Selection2" name="Selection 2"/>
+    <value id="Selection3" name="Selection 3"/>
+    <value id="Selection4" name="Selection 4"/>
+    <value id="Selection5" name="Selection 5"/>
     </group>
 	
   <!-- TCA: Savage Rifts Sources -->
@@ -271,7 +294,7 @@
     id="srcRiftsBloBanAE"
     name="Blood and Banes"
     parent="sepRiftsSuppAE"
-    selectable="no"
+    selectable="yes"
     reportable="yes"
 	sortorder="3"
     description="Material from the supplement.">
@@ -284,6 +307,16 @@
     selectable="yes"
     reportable="yes"
 	sortorder="4"
+    description="Material from the supplement.">
+    </source> 
+
+  <source
+    id="srcRiftsAtlantisAE"
+    name="Atlantis and the Demon Seas"
+    parent="sepRiftsSuppAE"
+    selectable="yes"
+    reportable="yes"
+	sortorder="5"
     description="Material from the supplement.">
     </source> 
 	
@@ -346,7 +379,14 @@
   <sortset
     id="CyberwareSRA"
     name="Cyberware sort">
-    <sortkey isfield="no" id="CyberCatRiftsAE" isascend="yes"/>
+    <sortkey isfield="no" id="CyberCatSRA" isascend="yes"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
+  <sortset
+    id="BioAugmentSRA"
+    name="Bio-Augmentation sort">
+    <sortkey isfield="no" id="BioAugSRA" isascend="yes"/>
     <sortkey isfield="no" id="_Name_"/>
     </sortset>
 

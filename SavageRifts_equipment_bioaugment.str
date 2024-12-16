@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definitions of components associated with equipment such as
+      weapons, armor, gear, etc.
+-->
+
+<document signature="Hero Lab Structure">
+
+  <!-- Rifts Cyberware component
+        All Cyberware derives from this component
+  -->
+  <component
+    id="BioWizardCore"
+    name="Bio-Wizard Augmentation"
+    autocompset="yes">
+	  
+    <!-- This contains the amount of Strain the Cyberware exerts -->
+    <field
+      id="bwizStrain"
+      name="Strain this Cyberware exerts"
+      type="derived">
+      </field>
+
+    <!-- Are the Cyberware's abilities on/applicable? This is for Cyberware that either has a conditional modifier that depends on external factors
+         like a Survival bonus that's only good in a certain type of terrain, or a Charisma modifier that depends on the sex of the target. 
+         It's a separate issue from Equipping/Unequipping the object, as being in effect or not has no effect on the Strain -->
+    <field
+      id="bwizActive"
+      name="Augment is Active/Applicable"
+      type="user"
+      minvalue="0"
+      maxvalue="1"
+      defvalue="1">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bwizValue"
+      name="Value"
+      type="derived"
+      persistence="full">
+      </field>
+	  
+    <identity group="BioWizardCore"/>
+    <tag group="SpecialTab" tag="RacialProp"/>
+	
+    </component>
+	
+  <!-- Rifts Cyberware component
+        All Cyberware derives from this component
+  -->
+  <component
+    id="BioAugmentSRA"
+    name="Bio-Wizard Augmentation"
+    autocompset="no"
+    panellink="biowizardry">
+
+    <!-- This is a Cyberware grade field for Settings like Interface Zero 2.0 -->
+    <field
+      id="baugGrade"
+      name="Grade"
+      type="user"
+      minvalue="1"
+      maxvalue="4"
+      maxfinal="100"
+      nevercache="yes">
+      <finalize><![CDATA[
+        if (tagis[baugGrade.?] <> 0) then
+          @value = tagvalue[baugGrade.?]
+          @text = tagnames[baugGrade.?,"|"]
+        else
+          @text = "No Grade"
+          endif
+        ]]></finalize>
+      </field>
+
+    <linkage linkage="baugAtt" optional="yes"/>
+    <linkage linkage="baugSkill" optional="yes"/>
+	
+    <identity group="BioAugmentSRA"/>
+	
+    <creation><![CDATA[
+          ~if we don't have a transaction pick to initialize from, use what we know;
+          ~this can occur if the gear is bootstrapped or auto-added for the actor
+          if (hero.istransact <> 0) then
+            if (tagis[Equipment.Leveled] <> 0) then
+              field[bwizValue].value = hero.transact.field[xactValue].value
+              endif
+            endif
+      ]]></creation>
+	
+
+    <eval index="1" phase="Initialize" priority="3000" name="Forward Augment Hero tags"><![CDATA[
+      perform forward[Hero.?]
+      ]]></eval>
+	  
+    <!-- TCA: Track the BioAugment on the actor by assigning the appropriate tag  -->
+    <eval index="2" phase="Setup" priority="3000" name="Forward BioAugment tags"><![CDATA[
+      perform forward[BioAugmentSRA.?]
+      ]]></eval>
+
+    <eval index="3" phase="Traits" priority="5000" name="Calc Current Strain"><![CDATA[
+	  ~ If we have the NoStrainCost then we're done
+	  doneif (tagis[Helper.NoStrainCost] <> 0)
+	  
+      if (hero.tagis[Race.racSFConst] + hero.tagis[Creature.creSFR?] = 0) then
+        if (tagis[Equipped.Equippable] <> 0) then
+          if (tagis[Equipped.Equipped] <> 0) then
+		    perform #resspent[resSRAStrainBio,+,field[bwizStrain].value,field[name].text]
+            endif
+        else
+		  perform #resspent[resSRAStrainBio,+,field[bwizStrain].value,field[name].text]
+          endif
+        endif
+      ]]></eval>
+
+    <eval index="4" phase="Setup" priority="2000" name="Check for Double Cost"><![CDATA[
+	  if (hero.tagis[BioAugment.DoubleCost] <> 0) then
+	    field[grCost].value *= 2
+        endif
+      ]]></eval> 
+	  
+    <evalrule index="1" phase="Validate" priority="9000" message="Cyberware exceeds limit on number of uses per item."><![CDATA[
+      var totaluses as number
+
+      if (empty(field[grDupMax].text) = 1) then
+        @valid = 1
+        endif
+        
+      totaluses = container.intersect[BioAugmentSRA,BioAugmentSRA,counttarget]
+
+      if (totaluses <= field[grDupMax].text) then
+        @valid = 1
+        endif
+      ]]></evalrule>
+
+    <evalrule index="2" phase="Validate" priority="9000" message="Constructs and Robots are not allowed to have BW Augmentations."><![CDATA[
+      validif (hero.tagis[Race.racSFConst] + hero.tagis[Creature.creSFR?] = 0)
+
+      if (hero.tagis[BioAugmentSRA.?] = 0) then
+        @valid = 1
+        endif
+      ]]></evalrule>
+
+    </component>
+
+<!-- TCA - This component provides for the Abilities of the Iconic Frameworks -->
+<!-- FraAbility component
+        Each Framework Ability is based upon this component
+  -->
+  <component
+    id="BioSymbioteSRA"
+    name="Bio-Wizard Symbiote"
+    autocompset="no"
+    panellink="biowizardry">
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bsymHost"
+      name="Host"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bsymLocation"
+      name="Location"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bsymSpan"
+      name="Lifespan"
+      type="derived"
+      maxlength="50">
+      </field>
+	  
+    <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="BioSymbioteSRA"/>
+
+    <!-- Track the Frame Ability on the actor -->
+    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+      perform forward[BioSymbioteSRA.?]
+      ]]></eval>
+
+    </component>
+
+<!-- TCA - This component provides for the Abilities of the Iconic Frameworks -->
+<!-- FraAbility component
+        Each Framework Ability is based upon this component
+  -->
+  <component
+    id="BioMicrobeSRA"
+    name="Bio-Wizard Microbe"
+    autocompset="no"
+    panellink="biowizardry">
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bmicHost"
+      name="Host"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bmicHostEnv"
+      name="Host Environment"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bmicSpan"
+      name="Lifespan"
+      type="derived"
+      maxlength="50">
+      </field>
+	  
+    <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="BioMicrobeSRA"/>
+
+    <!-- Track the Frame Ability on the actor -->
+    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+      perform forward[BioMicrobeSRA.?]
+      ]]></eval>
+
+    </component>
+
+	
+  <!-- Define various component sets associated with the components defined above. -->
+
+  <!-- No compsets are auto-defined for the component -->
+
+
+	
+  </document>

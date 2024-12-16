@@ -346,9 +346,9 @@
 	  
     </component>
 	
-  <!-- RiftsPowerAr component -->
+  <!-- PowerArmorSRA component -->
   <component
-    id="RiftsPowerAr"
+    id="PowerArmorSRA"
     name="Power Armor (Rifts)"
     autocompset="no"
     ispublic="no">
@@ -711,9 +711,9 @@
 	
   <!-- Power Armor -->
   <compset
-    id="PowerArSRA">
+    id="PowerArmorSRA">
     <compref component="PowerAr"/>
-    <compref component="RiftsPowerAr"/>
+    <compref component="PowerArmorSRA"/>
     <compref component="Equippable"/>
     <compref component="Vehicle"/>
     <compref component="Gear"/>

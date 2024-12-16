@@ -1,0 +1,61 @@
+ <?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- This file contains all specifications pertaining to the operational control of
+      the data files. This includes usage pools, sources, sortsets, and other related
+      mechanisms.
+-->
+
+<document signature="Hero Lab Structure">
+
+  <!-- TCA: BioAugmentation Skill "Chip" Levels -->
+  <group
+    id="baugSkillChip"
+    name="Skill Chip Levels">
+    <value id="1" name="+1 die type" order="10"/>
+    <value id="2" name="+2 die types" order="20"/>
+    <value id="3" name="+3 die types" order="30"/>
+    <value id="4" name="+4 die types" order="40"/>
+    </group>
+
+  <!-- TCA: BioAugmentation grades -->
+  <group
+    id="baugGrade"
+    name="BW Augment Grades">
+    <value id="1" name="1 Gutterware" order="10"/>
+    <value id="2" name="2 Streetware" order="20"/>
+    <value id="3" name="3 Hyperchrome" order="30"/>
+    <value id="4" name="4 Milware" order="40"/>
+    </group>
+
+  <!-- TCA: BioAugmentation Trait Bonus and Skill Chip ID tags -->
+  <group
+    id="baugTrait"
+    name="BW Augment Bon./Chip">
+    <value id="AttrBonus"  name="Has a Attribute Bonus applied" order="10"/>
+    <value id="AttrDie"    name="Has a Attribute Die applied"   order="20"/>
+    <value id="SkillBonus" name="Has a Skill Bonus applied"     order="30"/>
+    <value id="SkillChip"  name="Has a Skill Chip applied"      order="40"/>
+    <value id="Edge"       name="Has an Edge applied"           order="50"/>
+    </group>
+
+  <!-- Identity tags that have to be explicitly defined for the "source" data files to work 
+       Also identifies BW Augmentation that can be disabled for a custom setting -->
+  <group
+    id="BioAugment"
+    name="BW Augmentation"
+    dynamic="yes">
+    <value id="baugTraitSk"/>
+    <value id="baugTraitAt"/>
+    <value id="baugTrait"/>
+    <value id="baugSkill"/>
+    <value id="baugRanged"/>
+    <value id="baugCombat1"/>
+    <value id="baugCombat2"/>
+    <value id="baugCombat3"/>
+    <value id="baugCombat4"/>
+    <value id="baugCombat5"/>
+    <value id="DoubleCost"/>
+    <value id="VCIpresent"/>
+    </group>
+	
+  </document>

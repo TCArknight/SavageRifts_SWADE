@@ -7,6 +7,32 @@
 
 <document signature="Hero Lab Data">
 
+  <!-- Procedure sbattributesSRA
+        Output all of the traits that satisfy the provided tag expression, reporting
+        the name and final value for each. The "tagexpr" text variable specifies the
+        constraints that must be satisfied for the list of traits.
+
+        Inbound parameter:  tagexpr
+  -->
+  <procedure id="sbattributesSRA" scripttype="synthesize"><![CDATA[
+    var tagexpr as string
+    var ismore as number
+    ismore = 0
+    foreach pick in hero where tagexpr
+      if (ismore <> 0) then
+        append ", "
+        endif
+      append eachpick.field[name].text & " " & eachpick.field[trtDisplay].text
+	  
+	  if (eachpick.tagis[Helper.AnimalLevel] <> 0) then
+	    append " (A)"
+		endif
+		
+      ismore = 1
+      nexteach
+    append @newline
+    ]]></procedure>
+	
   <!-- Procedure sbherojrny
         Output all of the hero journey entries that satisfy the provided tag expression, reporting
         the name and final value for each. The "tagexpr" text variable specifies the
@@ -550,7 +576,7 @@
         ~output attributes
         append @boldon & "Attributes: " & @boldoff
         tagexpr = "component.Attribute & !Hide.Attribute"
-        call sbtraits
+        call sbattributesSRA
 
         ~output skills
         append @boldon & "Skills: " & @boldoff
@@ -601,8 +627,6 @@
           call sbarcanesimple
 		  endif
 		
-		
-		
         ~if (hero.haschild[Power] <> 0) then
         ~  append @boldon & "Powers:" & @boldoff & @newline
         ~  foreach pick in hero from Power
@@ -642,9 +666,19 @@
             if (eachpick.tagis[User.HindMajor] <> 0) then
               append chr(149) & " " & eachpick.field[shortname].text & "(*): "
             else
-              append chr(149) & " " & eachpick.field[shortname].text & ": "
+              append chr(149) & " " & eachpick.field[shortname].text 
               endif
-            append eachpick.field[summary].text & @newline
+			  
+			if (eachpick.tagis[component.CustomDesc] <> 0) then
+			  if (eachpick.field[CustSumm].isempty = 0) then
+                append ": " & eachpick.field[CustSumm].text & @newline
+				endif
+			else
+			  if (eachpick.field[summary].isempty = 0) then
+                append ": " & eachpick.field[summary].text & @newline
+			    endif
+			  endif
+			  
             nexteach
           endif
 
@@ -826,7 +860,7 @@
         ~output attributes
         append @boldon & "Attributes: " & @boldoff
         tagexpr = "component.Attribute & !Hide.Attribute"
-        call sbtraits
+        call sbattributesSRA
 
         ~output derived traits
 		append @boldon & "Charisma: " & @boldoff & hero.child[trCharisma].field[trtDisplay].text & "; " 

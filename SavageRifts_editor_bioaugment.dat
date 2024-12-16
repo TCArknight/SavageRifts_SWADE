@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definitions of how the Editor should handle all the
+      various publicly accessible objects (i.e. component sets) within the game
+      system. A separate "editthing" elemenet is defined for each component set,
+      along with the appropriate details for how to configure each facet via
+      "inputthing" elements.
+-->
+
+<document signature="Hero Lab Data">
+
+  <!-- TCA - Generic Cyberware editor -->
+
+  <!-- Cyberware editthing -->
+  <editthing
+    group="Rifts"
+    compset="BioAugmentSRA"
+    name="BW Augmentations"
+    prefix="bwa"
+    description="Bio-Wizard Augmentations in the Rifts setting."
+    summary="Defines generic augmentations that can be selected on the Cyberware tab.">
+    <inputthing
+      name="BioAugment Category"
+      helptext="Specify the Augmentation Type.">
+      <it_tagpick group="BioAugSRA" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Max Times"
+      helptext="Specify the number of times the item can be added to the hero.">
+      <it_field field="grDupMax"/>
+      </inputthing>
+    <inputthing
+      name="Strain Cost"
+      helptext="Strain cost for the augmentation.">
+      <it_field field="bwizStrain"/>
+      </inputthing>
+    <inputthing
+      name="Conditional ?"
+      helptext="Specify whether this augmentation has an effect that can be activated by the user.">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Focus required?"
+      helptext="Specify whether this cyberware has a user-specified requirement.">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    <inputthing
+      name="Focus for domain."
+      helptext="Specify a Focus.">
+      <it_field field="domDomain"/>
+      </inputthing>
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    </editthing>
+
+  <!-- Cyberware editthing -->
+  <editthing
+    group="Rifts"
+    compset="BioSymbioteSRA"
+    name="BW Symbiotes"
+    prefix="bwa"
+    description="Bio-Wizard Augmentations in the Rifts setting."
+    summary="Defines generic augmentations that can be selected on the Cyberware tab.">
+    <inputthing
+      name="Host"
+      helptext="Specify type of host for the Symbiote.">
+      <it_field field="bsymHost"/>
+      </inputthing>
+    <inputthing
+      name="Location"
+      helptext="Specify a Location for the Symbiote.">
+      <it_field field="bsymLocation"/>
+      </inputthing>
+    <inputthing
+      name="Life Span"
+      helptext="Specify the Symbiote's lifespan.">
+      <it_field field="bsymSpan"/>
+      </inputthing>
+    <inputthing
+      name="Max Times"
+      helptext="Specify the number of times the item can be added to the hero.">
+      <it_field field="grDupMax"/>
+      </inputthing>
+    <inputthing
+      name="Strain Cost"
+      helptext="Strain cost for the augmentation.">
+      <it_field field="bwizStrain"/>
+      </inputthing>
+    <inputthing
+      name="Conditional ?"
+      helptext="Specify whether this augmentation has an effect that can be activated by the user.">
+      <it_tagcheck group="User" tag="Activation"/>
+      </inputthing>
+    <inputthing
+      name="Focus required?"
+      helptext="Specify whether this cyberware has a user-specified requirement.">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    <inputthing
+      name="Focus for domain."
+      helptext="Specify a Focus.">
+      <it_field field="domDomain"/>
+      </inputthing>
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    </editthing>	
+  </document>

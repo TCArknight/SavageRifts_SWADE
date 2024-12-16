@@ -11,21 +11,6 @@
   <fileinfo>
     <info_author>Coordinator: TCArknight (Thomas Clegg)
 Contributors: Salcor, Father Morpheus</info_author>
-    <info_history><![CDATA[
-    06/04/20
-	Added source to show tab or not
-	
-    09/30/19
-	Added Hindrance chooser
-	
-	07/14/19
-	Hide tab if Creature since creature abilities show on the Abilities tab
-	
-	06/14/19
-	Added Property chooser
-	]]></info_history>
-    <info_todo>Future enhancements:
-	XXX</info_todo>
     </fileinfo>
 
   <portal
@@ -38,7 +23,11 @@ Contributors: Salcor, Father Morpheus</info_author>
       scrollable="no">
       <list>!component.RacialProp</list>
       <headertitle><![CDATA[
-        @text = "Racial Abilities"
+	    if (hero.tagis[Hero.Creature] <> 0) then
+		  @text = "Monstrous Abilities"
+		else
+          @text = "Racial Abilities"
+		  endif
         ]]></headertitle>
       </table_fixed>
     </portal>

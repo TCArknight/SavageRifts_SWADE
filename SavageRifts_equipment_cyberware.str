@@ -202,14 +202,5 @@
   <!-- Define various component sets associated with the components defined above. -->
 
   <!-- No compsets are auto-defined for the component -->
-
-  <!-- Savage Rifts Cyberware -->
-  <compset
-    id="CyberwareSRA"
-    stackable="yes">
-    <compref component="CyberwareSRA"/>
-    <compref component="Gear"/>
-    <compref component="Equippable"/>
-    </compset>
 	
   </document>

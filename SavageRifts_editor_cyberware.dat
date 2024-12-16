@@ -22,7 +22,7 @@
     <inputthing
       name="Cyberware Category"
       helptext="Specify the Cyberware Type.">
-      <it_tagpick group="CyberCatRiftsAE" tag="?"/>
+      <it_tagpick group="CyberCatSRA" tag="?"/>
       </inputthing>
     <inputthing
       name="Max Times"

@@ -412,6 +412,90 @@
 	  maxlength="500">
 	  </field>	
 	  
+    <field
+      id="ehFrameAdd3"
+      name="Framework AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameHdr3"
+      name="Framework Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameCst3"
+      name="Framework Expression Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehFrameExp3"
+      name="Framework Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>	
+	  
+    <field
+      id="ehFrameAdd4"
+      name="Framework AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameHdr4"
+      name="Framework Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameCst4"
+      name="Framework Expression Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehFrameExp4"
+      name="Framework Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>	
+	  
+    <field
+      id="ehFrameAdd5"
+      name="Framework AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameHdr5"
+      name="Framework Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehFrameCst5"
+      name="Framework Expression Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehFrameExp5"
+      name="Framework Expression"
+      type="derived"
+	  maxlength="500">
+	  </field>	
+	  
     </component>
 	
   <component
@@ -602,6 +686,163 @@
       ]]></eval>
 	  
     </component>	  
+
+  <component
+    id="xCopyTracker"
+    name="Copy Tracker"
+	autocompset="yes">
+    
+    <!-- Selection Tag Expressions -->
+    <field
+      id="xIndex"
+      name="Index of Copy"
+      type="derived"
+      defvalue="0">
+      </field>
+      
+    <field
+      id="xCount"
+      name="Number of Copies"
+      type="derived"
+      defvalue="0">
+      </field>
+    <!-- Stack name field - name is prefixed with the quantity if not a value of one,
+          which is important for stackable items that can have varying quantities
+    -->
+    <field
+      id="xCountName"
+      name="Name (Qty)"
+      type="derived"
+      maxfinal="100"
+      nevercache="yes">
+      <!-- Final value for display consists of the name with a prefixed quantity
+            if not one
+      -->
+      <finalize><![CDATA[
+        ~if we have a customized name already, use it; otherwise, use the default name
+        var name as string
+        if (field[livename].isempty = 0) then
+          name = field[livename].text
+        else
+          name = field[name].text
+          endif
+
+        @text = name
+		
+        if (field[xCount].value <> 1) then
+          @text &= " (x" & field[xCount].value & ")"
+          endif
+        ]]></finalize>
+      </field>    
+	  
+    <!-- Stack name field - name is prefixed with the quantity if not a value of one,
+          which is important for stackable items that can have varying quantities
+    -->
+    <field
+      id="xCountShortname"
+      name="Short Name (Qty)"
+      type="derived"
+      maxfinal="100"
+      nevercache="yes">
+      <!-- Final value for display consists of the name with a prefixed quantity
+            if not one
+      -->
+      <finalize><![CDATA[
+        ~if we have a customized name already, use it; otherwise, use the default name
+        var name as string
+        if (tagis[component.shortname] <> 0) then
+          name = field[shortname].text
+        else
+          name = field[name].text
+          endif
+
+        @text = name
+		
+        if (field[xCount].value <> 1) then
+          @text &= " (x" & field[xCount].value & ")"
+          endif
+        ]]></finalize>
+      </field>	  
+    <eval index="1" phase="Effects" priority="155" name="Determine First Copy"><![CDATA[
+      doneif (tagis[Helper.FirstCopy] <> 0)
+
+      ~if we're not the first copy of a special ability, we need to set up a
+      ~redirection to the actual first copy. That means whenever another pick
+      ~does a "hero.child[x]" to find pick x, they always arrive at the first
+      ~copy. This allows the first copy to be determined at every evaluation,
+      ~and the first copy is then the one used to display the totals for the
+      ~ability, even if it's added in multiple places (e.g. sneak attack, which
+      ~can be added by multiple classes). The first copy is the one in the
+      ~quickfind list, so retrieve it.
+      perform quickfind.setfocus
+
+      ~if we found a copy to set our focus to, we're a secondary copy of this
+      ~ability, delete the Helper.OnlyCopy tag from the first (primary) copy.
+      ~That means the Helper.OnlyCopy tag will only be left on those picks that
+      ~are the only copy of their things.
+      if (state.isfocus <> 0) then
+        perform focus.redirect
+        perform assign[Helper.SpecUp]
+        perform focus.delete[Helper.OnlyCopy]
+        endif
+      ]]></eval>
+	  
+    <eval index="2" phase="Effects" priority="200" name="Calc xIndex"><![CDATA[
+      ~we only need to run this if we're not the only copy
+      ~if we aren't the only copy, we need to search the rest of our copies and get information
+      if (tagis[Helper.OnlyCopy] = 0) then
+
+        ~only run these for the first copy
+        if (tagis[Helper.FirstCopy] <> 0) then
+
+          var searchexpr as string
+          searchexpr = "thingid." & this.idstring
+
+          var index as number
+          index = 1
+
+          var runonce as number
+
+          foreach pick in hero from xCopyTracker where searchexpr
+            ~assign this thing the current index value, then increment the index for the next thing
+            eachpick.field[xIndex].value = index
+            index += 1
+			
+            nexteach
+
+        else
+          field[xCount].value += 1
+          endif
+      else
+        ~if we are the only copy, xIndex and xCount = 1
+        field[xIndex].value = 1
+        field[xCount].value = 1
+        endif
+
+      ]]></eval> 
+
+    <eval index="3" phase="Effects" priority="250" name="Calc xCount"><![CDATA[
+      ~we only need to run this if we're not the only copy
+      ~if we aren't the only copy, we need to search the rest of our copies and get information
+      doneif (tagis[Helper.OnlyCopy] <> 0)
+
+      var index as number
+      var source as string
+
+      ~only run these if we're the first copy
+      if (tagis[Helper.FirstCopy] <> 0) then
+        var searchexpr as string
+        searchexpr = "thingid." & this.idstring
+
+        foreach pick in hero from xCopyTracker where searchexpr 
+          field[xCount].value += 1
+          nexteach
+		  
+        endif
+
+      ]]></eval>	  
+    </component>
+	  	  	
 <!-- TCA - This component set enables the use of Iconic Framework Abilities
            as defined in the Savage Rifts sourcebooks -->
   <!-- FraAbility - all Framework Abilities derive from this compset -->
@@ -647,6 +888,55 @@
     <compref component="SpecialTab"/>
     <compref component="CanAdvance"/>
     <compref component="CustomDesc"/>
-    </compset>	
+    </compset>
+	
+  <!-- Savage Rifts Cyberware -->
+  <compset
+    id="CyberwareSRA"
+    stackable="yes">
+    <compref component="CyberwareSRA"/>
+    <compref component="Gear"/>
+    <compref component="Equippable"/>
+    <compref component="xCopyTracker"/>
+    </compset>
+	
+ <compset
+    id="BioAugmentSRA"
+    stackable="yes">
+    <compref component="BioAugmentSRA"/>
+    <compref component="BioWizardCore"/>
+    <compref component="Gear"/>
+    <compref component="Domain"/>
+    <compref component="UserSelect"/>
+    <compref component="Equippable"/>
+    <compref component="SpecialTab"/>
+    <compref component="xCopyTracker"/>
+    </compset>
+	
+ <compset
+    id="BioSymbioteSRA"
+    stackable="yes">
+    <compref component="BioSymbioteSRA"/>
+    <compref component="BioWizardCore"/>
+    <compref component="Gear"/>
+    <compref component="Domain"/>
+    <compref component="UserSelect"/>
+    <compref component="Equippable"/>
+    <compref component="SpecialTab"/>
+    <compref component="xCopyTracker"/>
+    </compset>
+	
+ <compset
+    id="BioMicrobeSRA"
+    stackable="yes">
+    <compref component="BioMicrobeSRA"/>
+    <compref component="BioWizardCore"/>
+    <compref component="Gear"/>
+    <compref component="Domain"/>
+    <compref component="UserSelect"/>
+    <compref component="Equippable"/>
+    <compref component="SpecialTab"/>
+    <compref component="xCopyTracker"/>
+    </compset>
 	
   </document>
