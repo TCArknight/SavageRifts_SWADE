@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains the definition of the "Gear" tab panel. This tab is where
+      the user selects general gear (non-weapons) for the character.
+
+      All public visual elements used with this tab panel start with the prefix "gr"
+      to associate them with the tab.
+-->
+
+<document signature="Hero Lab Data">
+
+
+  <!-- Bio-Wizardry Augmentations  -->
+  <portal
+    id="tatTattoos"
+    style="tblNormal">
+    <table_dynamic
+      component="Tattoo"
+      showtemplate="tatTattooPick"
+      choosetemplate="SimpleItem"
+      choosesortset="TattooType"
+      descwidth="350">
+      <titlebar><![CDATA[
+        @text = "Add new Magic Tattoo"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        var maxstrain as number
+        var curstrain as number
+        var diff as number
+
+        maxstrain = #trait[trSRAStrainMax]
+        curstrain = #trait[trSRAStrain]
+
+        if (curstrain < maxstrain) then
+          diff = maxstrain - curstrain
+          @text = "{text clrprompt}Magic Tattoos - " & curstrain & " of " & maxstrain & " Strain used (" & diff & " left)"
+        elseif (curstrain > maxstrain) then
+          diff = curstrain - maxstrain
+          @text = "{text clrwarning}Magic Tattoos - " & curstrain & " of " & maxstrain& " Strain used (" & diff & " over)"
+        else
+          @text = "Magic Tattoos - " & curstrain & " of " & maxstrain & " Strain used"
+          endif
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New Magic Tattoo"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+  <!-- edEdge template
+        Displays an edge within the table of edges. Edges can be deleted and have
+        a mouse-over info icon.
+  -->
+  <template
+    id="tatTattooPick"
+    name="Tattoo Pick"
+    compset="Tattoo"
+    marginhorz="3"
+    marginvert="2">
+
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label
+        field="thingname">
+        </label>
+      </portal>
+
+    <portal
+      id="tatcheck"
+      style="chkNormal"
+      showinvalid="yes"
+      tiptext="Click to activate the tattoo.">
+      <checkbox
+        field="tatActive"
+        dynamicfield="thingname">
+        </checkbox>
+      </portal>
+
+    <portal
+      id="menu1"
+      style="menuSmall">
+      <menu_things
+        field="usrChosen1"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource1"
+        candidatefield="usrCandid1">
+        </menu_things>
+      </portal>
+
+    <portal
+      id="menu2"
+      style="menuSmall">
+      <menu_things
+        field="usrChosen2"
+        component="none"
+        maxvisible="10"
+        usepicksfield="usrSource2"
+        candidatefield="usrCandid2">
+        </menu_things>
+      </portal>
+
+    <portal
+      id="lbldomain"
+      style="lblSecond">
+      <label>
+        <labeltext><![CDATA[
+          if (tagis[DomainTerm.?] <> 0) then
+            @text = tagnames[DomainTerm.?] & ":"
+          else
+            @text = "Domain:"
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="domain"
+      style="editNormal">
+      <edit
+        field="domDomain">
+        </edit>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~determine whether our menus are visible
+      ~Note: Remember that a non-empty tagexpr field indicates menu selection is used.
+      if (field[usrCandid1].isempty <> 0) then
+        portal[menu1].visible = 0
+        endif
+      if (field[usrCandid2].isempty <> 0) then
+        portal[menu2].visible = 0
+        endif
+
+      var namewidth as number
+	  
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~position the other portals vertically
+      perform portal[name].centervert
+      perform portal[tatcheck].centervert
+      perform portal[delete].centervert
+      perform portal[menu1].centervert
+      perform portal[menu2].centervert
+      perform portal[domain].centervert
+      perform portal[lbldomain].alignrel[btob,domain,0]
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      portal[tatcheck].visible = 0
+	  
+      ~position the name on the left and use availble space, with a gap for menus
+	  
+	  if (tagis[User.Activation] <> 0) then
+        portal[tatcheck].visible = 1
+        perform portal[menu1].alignrel[ltor,tatcheck,2]
+        namewidth = portal[tatcheck].width
+		portal[name].visible = 0
+      else
+        portal[name].visible = 1
+        perform portal[menu1].alignrel[ltor,name,2]
+        namewidth = portal[name].width
+        endif
+	  
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,portal[info].left - portal[name].left - 150)
+
+      ~position the menus to the right of the name in the available space
+      ~ perform portal[menu1].alignrel[ltor,name,10]
+	  
+      portal[menu1].width = (portal[info].left - portal[menu1].left - 20) / 2
+      portal[menu2].width = portal[menu1].width
+      perform portal[menu2].alignrel[ltor,menu1,10]
+
+      ~if we don't need a domain, hide the portals
+      if (tagis[User.NeedDomain] = 0) then
+        portal[lbldomain].visible = 0
+        portal[domain].visible = 0
+
+      ~otherwise, position the domain portals next to the name, making sure the
+      ~domain edit portal doesn't run beyond the available space
+      ~RDS altered to make the name portal invivisible and shift the domain to the name position 
+      ~    to use it as a custom Edge name when the Custom Edge is chosen
+      else
+        if (tagis[Custom.Edge] > 0) then
+          portal[name].visible = 0
+          portal[lbldomain].visible = 0
+          portal[domain].left = 0
+          portal[domain].width = minimum(150,portal[info].left - portal[domain].left - 10)
+        else
+          perform portal[lbldomain].alignrel[ltor,name,10]
+          perform portal[domain].alignrel[ltor,lbldomain,5]
+          portal[domain].width = minimum(150,portal[info].left - portal[domain].left - 10)
+          endif
+        endif
+
+      ~if a menu is visible, make sure it has a selection
+      if (portal[menu1].visible <> 0) then
+        if (field[usrChosen1].ischosen = 0) then
+          perform portal[menu1].setstyle[menuErrSm]
+          endif
+        endif
+      if (portal[menu2].visible <> 0) then
+        if (field[usrChosen2].ischosen = 0) then
+          perform portal[menu2].setstyle[menuErrSm]
+          endif
+        endif
+
+      ~if the ability is auto-added, change its font to indicate that fact
+      if (candelete = 0) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+
+    </template> 
+ <!-- gear layout
+        This layout orchestrates the display of the visual elements that comprise
+        the Gear tab. This amounts to a title and a table that allow the user to
+        add gear to the character.
+
+        The logic for this layout is similar to preceeding tabs, so please refer
+        to those tabs for more details.
+  -->
+  <layout
+    id="tattoos">
+    <portalref portal="tatTattoos" taborder="10"/>
+
+    <!-- This script sizes and positions the layout and its child visual elements. -->
+    <position><![CDATA[
+      autogap = 10
+      ~all tables span the full width
+      portal[tatTattoos].width = width
+	   
+      perform portal[tatTattoos].batchadd
+	  
+      perform this.batchplace
+
+      ]]></position>
+
+    </layout>
+
+
+  <!-- gear panel
+        This is the "Gear" panel shown within Hero Lab. Since we want this panel to
+        appear second within the second grouping (equipment), we assign it an
+        "order" of 220.
+
+        The logic for this panel is similar to the logic for the preceeding panels,
+        so please refer to those panels for more details.
+		
+		original live:
+		<live>((source.sfShowCybr | Hero.ShowCyber) &amp; !Hindrance.hinSFCybRe &amp; !Race.racSFConst &amp; source.SciFi &amp; !Creature.creSFR?) | Cyberware.? | (CybRobAdd.? &amp; (!Race.racSFConst &amp; !Creature.creSFR?))</live>
+  -->
+  <panel
+    id="tattoos"
+    name="Magic Tattoos"
+    marginhorz="5"
+    marginvert="5"
+    order="210">
+	<live>source.srcRiftsAtlantisAE</live>
+    <layoutref layout="tattoos"/>
+    <position><![CDATA[
+      ]]></position>
+    </panel>
+
+
+  </document>
+

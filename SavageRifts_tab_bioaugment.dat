@@ -76,6 +76,59 @@
         ]]></additem>
       </table_dynamic>
     </portal>
+	
+  <!-- Bio-Wizardry Symbiotes  -->
+  <portal
+    id="tabGenBioMicr"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="SimpleItem"
+      choosetemplate="SimpleItem"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.BioMicrobeSRA</list>
+      <titlebar><![CDATA[
+        @text = "Add BW Microbe"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        @text = "BW Microbes"
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New BW Microbe"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+  <!-- Bio-Wizardry Symbiotes  -->
+  <portal
+    id="tabGenBioPara"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="SimpleItem"
+      choosetemplate="SimpleItem"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.BioParasiteSRA</list>
+      <titlebar><![CDATA[
+        @text = "Add BW Parasite"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        @text = "BW Parasites"
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New BW Parasite"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+	
+	
+	
   <!-- baugThing template
         Derived from the SimpleItem template, this includes the purchase cost and
         the lotsize of the item to be purchased.
@@ -270,16 +323,6 @@
       </portal>
 
     <portal
-      id="grade"
-      style="lblLeft">
-      <label>
-        <labeltext><![CDATA[
-          @text =  " (" & field[baugGrade].text & ")"
-          ]]></labeltext>
-        </label>
-      </portal>
-
-    <portal
       id="info"
       style="actInfo">
       <action
@@ -306,16 +349,11 @@
       ~if this is a "sizing" calculation, we're done
       doneif (issizing <> 0)
 
-      if (hero.tagis[source.sfGradCybr] = 0) then
-        portal[grade].visible = 0
-        endif
-
       ~center the portals vertically
       perform portal[info].centervert
       perform portal[name].centervert
       perform portal[namecheck].centervert
       perform portal[baugcheck].centervert
-      perform portal[grade].centervert
       perform portal[bonusValue].centervert
       perform portal[strain].centervert
       perform portal[delete].centervert
@@ -324,25 +362,6 @@
       portal[name].visible = 0
       portal[namecheck].visible = 0
       portal[baugcheck].visible = 0
-
-      ~position the grade portal to the right of the name
-      if (tagis[Equipped.Equippable] <> 0) then
-        portal[namecheck].visible = 1
-        perform portal[grade].alignrel[ltor,namecheck,2]
-        namewidth = portal[namecheck].width
-
-      elseif (tagis[User.Activation] <> 0) then
-        portal[baugcheck].visible = 1
-        perform portal[grade].alignrel[ltor,baugcheck,2]
-        namewidth = portal[baugcheck].width
-
-      else
-        portal[name].visible = 1
-        perform portal[grade].alignrel[ltor,name,2]
-        namewidth = portal[name].width
-        endif
-
-      portal[grade].width = 100
 
       var rightedge as number
 		
@@ -365,11 +384,8 @@
       ~Add drop menus for the Skill chips and the Skill Trait bonuses
       if (tagis[Cyberware.cybTraitSk] + tagis[Cyberware.cybSkill] <> 0) then
         portal[skillthing].visible = 1
-        if (portal[grade].visible = 0) then
-          rightedge = namewidth
-        else
-          rightedge = namewidth + portal[grade].width
-          endif
+        rightedge = namewidth
+
         portal[skillthing].left = rightedge + 5
         rightedge = rightedge + portal[skillthing].width
         perform portal[domain].alignrel[ltor,skillthing,5]
@@ -394,11 +410,7 @@
       portal[attribute].width = 74
       if (tagis[Cyberware.cybTraitAt] + tagis[Cyberware.cybTrait] <> 0) then
         portal[attribute].visible = 1
-        if (portal[grade].visible = 0) then
-          rightedge = namewidth
-        else
-          rightedge = namewidth + portal[grade].width
-          endif
+        rightedge = namewidth
         portal[attribute].left = rightedge + 5
         endif
 
@@ -408,11 +420,7 @@
       portal[rangething].width = 124
       if (tagis[Cyberware.cybRanged] <> 0) then
         portal[rangething].visible = 1
-        if (portal[grade].visible = 0) then
-          rightedge = namewidth
-        else
-          rightedge = namewidth + portal[grade].width
-          endif
+        rightedge = namewidth
         portal[rangething].left = rightedge + 5
         endif
 
@@ -436,6 +444,7 @@
       ~if the gear can't be deleted (i.e. it's been auto-added instead of user-added,
       ~set the style to indicate that behavior to the user
       if (candelete = 0) then
+	    portal[name].visible = 1
         perform portal[name].setstyle[lblAuto]
         endif
       ]]></position>
@@ -455,6 +464,8 @@
   <layout
     id="biowizardry">
     <portalref portal="tabGenBioSymb" taborder="10"/>
+    <portalref portal="tabGenBioMicr" taborder="10"/>
+    <portalref portal="tabGenBioPara" taborder="10"/>
     <portalref portal="tabGenBioAugments" taborder="20"/>
 
     <!-- This script sizes and positions the layout and its child visual elements. -->
@@ -462,11 +473,15 @@
       autogap = 10
       ~all tables span the full width
       portal[tabGenBioSymb].width = width
+      portal[tabGenBioMicr].width = width
+      portal[tabGenBioPara].width = width
       portal[tabGenBioAugments].width = width
 	  
 	  ~ if cyberware is not valid, freeze the table
 	  portal[tabGenBioAugments].freeze = hero.tagis[Helper.BWAugmentNotValid]
-	    
+	   
+      perform portal[tabGenBioMicr].batchadd
+      perform portal[tabGenBioPara].batchadd 
       perform portal[tabGenBioSymb].batchadd
       perform portal[tabGenBioAugments].batchadd
 	  

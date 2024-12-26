@@ -148,12 +148,42 @@
       ]]></eval>
     </component>
 
+  <!-- Tattoo component
+         Each Magic Tattoo derives from this component.
+  -->
+  <component
+    id="Tattoo"
+    name="Magic Tattoo"
+    autocompset="no"
+	panellink="tattoos">
+
+    <field
+      id="tatActive"
+      name="Tattoo is Active/Applicable"
+      type="user"
+      minvalue="0"
+      maxvalue="1"
+      defvalue="0">
+      </field>
+	  
+    <!-- Each HJ Entry needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="Tattoo"/>
+	
+	<!-- Forward the Heros Journey table and identity to the actor -->
+    <eval index="1" phase="Initialize" priority="2100"><![CDATA[
+      perform forward[Tattoo.?]
+
+      ]]></eval>
+
+    </component>
+	
   <compset
     id="Fortune">
     <compref component="Fortune"/>
 	<compref component="Domain"/>
 	<compref component="UserSelect"/>
     </compset>
+	
   <compset
     id="HerosJourney">
     <compref component="HerosJourney"/>
@@ -162,4 +192,13 @@
 	<compref component="UserSelect"/>
 	<compref component="SpecialTab"/>
     </compset>
+	
+  <compset
+    id="Tattoo">
+    <compref component="Tattoo"/>
+	<compref component="Domain"/>
+	<compref component="UserSelect"/>
+	<compref component="SpecialTab"/>
+    </compset>
+	
   </document>

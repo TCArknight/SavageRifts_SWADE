@@ -17,16 +17,6 @@
     <value id="4" name="+4 die types" order="40"/>
     </group>
 
-  <!-- TCA: BioAugmentation grades -->
-  <group
-    id="baugGrade"
-    name="BW Augment Grades">
-    <value id="1" name="1 Gutterware" order="10"/>
-    <value id="2" name="2 Streetware" order="20"/>
-    <value id="3" name="3 Hyperchrome" order="30"/>
-    <value id="4" name="4 Milware" order="40"/>
-    </group>
-
   <!-- TCA: BioAugmentation Trait Bonus and Skill Chip ID tags -->
   <group
     id="baugTrait"

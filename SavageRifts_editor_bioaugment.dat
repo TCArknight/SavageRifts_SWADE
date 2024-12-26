@@ -10,7 +10,41 @@
 <document signature="Hero Lab Data">
 
   <!-- TCA - Generic Cyberware editor -->
-
+  <!-- Inputthing groups -->
+  <inputthinggroup
+    id="BWOrganism">
+	<inputthing
+      name="BioWizard Organism"
+      helptext="Entries related to the source material are below.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Host"
+      helptext="Specify type of host for the Symbiote.">
+      <it_field field="bwizHost"/>
+      </inputthing>
+    <inputthing
+      name="Location/Environment"
+      helptext="Specify a Location/Environment for the Symbiote.">
+      <it_field field="bwizLocation"/>
+      </inputthing>
+    <inputthing
+      name="Life Span"
+      helptext="Specify the Organism's lifespan.">
+      <it_field field="bwizLifespan"/>
+      </inputthing>
+	<inputthing
+      name="Costs"
+      helptext="Entries related to the purchase of the item.">
+      <it_separator/>
+      </inputthing>
+    <inputthing
+      name="Cost"
+      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
+      <it_field field="grCost"/>
+      </inputthing>
+    </inputthinggroup>
+	
   <!-- Cyberware editthing -->
   <editthing
     group="Rifts"
@@ -18,11 +52,11 @@
     name="BW Augmentations"
     prefix="bwa"
     description="Bio-Wizard Augmentations in the Rifts setting."
-    summary="Defines generic augmentations that can be selected on the Cyberware tab.">
+    summary="Defines generic augmentations that can be selected on the Bio-Wizardry tab.">
     <inputthing
       name="BioAugment Category"
-      helptext="Specify the Augmentation Type.">
-      <it_tagpick group="BioAugSRA" tag="?"/>
+      helptext="Specify the Augmentation Category.">
+      <it_tagpick group="BWAugmentCat" tag="?"/>
       </inputthing>
     <inputthing
       name="Max Times"
@@ -61,53 +95,68 @@
     group="Rifts"
     compset="BioSymbioteSRA"
     name="BW Symbiotes"
-    prefix="bwa"
+    prefix="bws"
     description="Bio-Wizard Augmentations in the Rifts setting."
-    summary="Defines generic augmentations that can be selected on the Cyberware tab.">
-    <inputthing
-      name="Host"
-      helptext="Specify type of host for the Symbiote.">
-      <it_field field="bsymHost"/>
-      </inputthing>
-    <inputthing
-      name="Location"
-      helptext="Specify a Location for the Symbiote.">
-      <it_field field="bsymLocation"/>
-      </inputthing>
-    <inputthing
-      name="Life Span"
-      helptext="Specify the Symbiote's lifespan.">
-      <it_field field="bsymSpan"/>
-      </inputthing>
+    summary="Defines generic augmentations that can be selected on the Bio-Wizardry tab.">
     <inputthing
       name="Max Times"
       helptext="Specify the number of times the item can be added to the hero.">
       <it_field field="grDupMax"/>
       </inputthing>
-    <inputthing
-      name="Strain Cost"
-      helptext="Strain cost for the augmentation.">
-      <it_field field="bwizStrain"/>
+
+    <inputthing>
+      <it_groupref id="BWOrganism"/>
       </inputthing>
-    <inputthing
-      name="Conditional ?"
-      helptext="Specify whether this augmentation has an effect that can be activated by the user.">
-      <it_tagcheck group="User" tag="Activation"/>
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
       </inputthing>
-    <inputthing
-      name="Focus required?"
-      helptext="Specify whether this cyberware has a user-specified requirement.">
-      <it_tagcheck group="User" tag="NeedDomain"/>
-      </inputthing>
-    <inputthing
-      name="Focus for domain."
-      helptext="Specify a Focus.">
-      <it_field field="domDomain"/>
-      </inputthing>
-    <inputthing
-      name="Cost"
-      helptext="Specify the standard cost of the item, with a value of 0 meaning it is free.">
-      <it_field field="grCost"/>
-      </inputthing>
+	  
     </editthing>	
+
+  <!-- Parasite editthing -->
+  <editthing
+    group="Rifts"
+    compset="BioParasiteSRA"
+    name="BW Parasites"
+    prefix="bwp"
+    description="Bio-Wizard Parasite in the Rifts setting."
+    summary="Defines a parasite that can be selected on the Bio-Wizardry tab.">
+    <inputthing
+      name="Max Times"
+      helptext="Specify the number of times the item can be added to the hero.">
+      <it_field field="grDupMax"/>
+      </inputthing>
+
+    <inputthing>
+      <it_groupref id="BWOrganism"/>
+      </inputthing>
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
+      </inputthing>
+	  
+    </editthing>
+
+  <!-- Microbe editthing -->
+  <editthing
+    group="Rifts"
+    compset="BioMicrobeSRA"
+    name="BW Microbes"
+    prefix="bwm"
+    description="Bio-Wizard Microbe in the Rifts setting."
+    summary="Defines a microbe that can be selected on the Bio-Wizardry tab.">
+    <inputthing
+      name="Max Times"
+      helptext="Specify the number of times the item can be added to the hero.">
+      <it_field field="grDupMax"/>
+      </inputthing>
+
+    <inputthing>
+      <it_groupref id="BWOrganism"/>
+      </inputthing>
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
+      </inputthing>
+	  
+    </editthing>
+	
   </document>

@@ -10,7 +10,8 @@
   <component
     id="FraCommon"
     name="Framework Common"
-    autocompset="no">
+    autocompset="no"
+	panellink="framework">
 
     <!-- Extra value associated with the property -->
     <field
@@ -325,7 +326,7 @@
       id="ehFrameEdgeExp"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>
 	  
     <field
@@ -353,7 +354,7 @@
       id="ehFrameHindExp"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>
 	  
     <field
@@ -381,7 +382,7 @@
       id="ehFrameExp"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>
 	  
     <field
@@ -409,7 +410,7 @@
       id="ehFrameExp2"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>	
 	  
     <field
@@ -437,7 +438,7 @@
       id="ehFrameExp3"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>	
 	  
     <field
@@ -465,7 +466,7 @@
       id="ehFrameExp4"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>	
 	  
     <field
@@ -493,7 +494,7 @@
       id="ehFrameExp5"
       name="Framework Expression"
       type="derived"
-	  maxlength="500">
+	  maxlength="1500">
 	  </field>	
 	  
     </component>
@@ -551,6 +552,47 @@
 	  maxlength="500">
 	  </field>	  
     </component>
+
+  <component
+    id="ExprHelpTattoo"
+    name="Tattoo Selection Helper">
+	
+    <field
+      id="ehTattooIndex"
+      name="Index"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehTattooAdd"
+      name="Framework AddItem Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehTattooHdr"
+      name="Framework Expression Header"
+      type="derived"
+	  maxlength="500">
+	  </field>
+	  
+    <field
+      id="ehTattooCst"
+      name="Framework Expression Cost"
+      type="derived"
+	  defvalue="0">
+	  </field>
+	  
+    <field
+      id="ehTattooExp"
+      name="Framework Expression"
+      type="derived"
+	  maxlength="1500">
+	  </field>
+	
+    </component>	
 	
   <component
     id="ExprHelpRace"
@@ -679,8 +721,12 @@
 		endif
 	  
 	  if (field[CustSumm].isempty <> 0) then
-	    ~ if we are empty, then we use the description
-        field[CustSumm].text = field[CustDesc].text
+	    ~ if the summary field is empty, use the CustDesc
+		if (field[summary].isempty <> 0) then
+          field[CustSumm].text = field[CustDesc].text
+		else
+          field[CustSumm].text = field[summary].text
+		  endif
 		endif
 		
       ]]></eval>
@@ -930,6 +976,19 @@
     id="BioMicrobeSRA"
     stackable="yes">
     <compref component="BioMicrobeSRA"/>
+    <compref component="BioWizardCore"/>
+    <compref component="Gear"/>
+    <compref component="Domain"/>
+    <compref component="UserSelect"/>
+    <compref component="Equippable"/>
+    <compref component="SpecialTab"/>
+    <compref component="xCopyTracker"/>
+    </compset>
+	
+ <compset
+    id="BioParasiteSRA"
+    stackable="yes">
+    <compref component="BioParasiteSRA"/>
     <compref component="BioWizardCore"/>
     <compref component="Gear"/>
     <compref component="Domain"/>

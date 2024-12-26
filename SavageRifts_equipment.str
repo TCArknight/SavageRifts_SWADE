@@ -139,7 +139,8 @@
       <!-- If we have a weapon die, synthesize for display, else use wpDamage -->
       <finalize><![CDATA[
         ~use the weapon die to display the damage, else use the explicit damage
-        if (tagis[component.WeapMelee] + tagis[WeaponDie.?] < 2) then
+        ~ if (tagis[component.WeapMelee] + tagis[WeaponDie.?] < 2) then
+        if (tagis[WeaponDie.?] = 0) then
           @text = field[wpDamage].text
         else
           var die as number
@@ -148,7 +149,12 @@
           if (@ispick = 0) then
             die = tagvalue[WeaponDie.?] * 2
           else
-            die = field[wpDie].value * 2
+		    if (tagis[component.WeapMelee] <> 0) then
+              die = field[wpDie].value * 2
+			else
+			  die = tagvalue[WeaponDie.?] * 2
+			  endif
+			  
             endif
 		  mult = tagvalue[Helper.DieMult?]
 		  if (mult > 1) then

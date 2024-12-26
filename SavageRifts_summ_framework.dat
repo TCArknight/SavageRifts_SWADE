@@ -22,6 +22,9 @@
       scrollable="no"
 	  alwaysupdate="yes">
 	  <list>Helper.FirstCopy</list>
+	  <headertitle>
+        @text = "Abilities"
+        </headertitle>
       </table_fixed>
     </portal>
 
@@ -35,9 +38,26 @@
       component="FraComp"
       showtemplate="frComp"
       scrollable="no">
+	  <headertitle>
+        @text = "Complications"
+        </headertitle>
       </table_fixed>
     </portal>
 
+  <!-- frTattoo portal - table of tattoos
+  -->
+  <portal
+    id="frTattoo"
+    style="tblInvisSm">
+    <table_fixed
+      component="Tattoo"
+      showtemplate="frTattoo"
+      scrollable="no">
+	  <headertitle>
+        @text = "Magic Tattoos"
+        </headertitle>
+      </table_fixed>
+    </portal>
 
   <!-- frAbility template
         This template shows the names of each special ability ability, providing
@@ -113,6 +133,35 @@
       portal[name].top = 0
       ]]></position>
     </template>
+	
+  <template
+    id="frTattoo"
+    name="Summary Tattoo Pick"
+    compset="Tattoo">
+
+    <portal
+      id="name"
+      style="lblSummary">
+	  <label>
+        <labeltext><![CDATA[
+		  @text = field[shortname].text
+          ]]></labeltext>
+        </label>
+      <mouseinfo/>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[name].height
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~the name is the only portal to position
+      portal[name].left = 0
+      portal[name].top = 0
+      ]]></position>
+    </template>
 
 
   <!-- frAbility layout
@@ -123,11 +172,13 @@
     id="frAbilComp">
     <portalref portal="frAbility"/>
     <portalref portal="frComp"/>
+    <portalref portal="frTattoo"/>
 
     <position><![CDATA[
       ~position and size the tables to span the full layout
       perform portal[frAbility].autoplace
       perform portal[frComp].autoplace[10]
+      perform portal[frTattoo].autoplace[10]
       ]]></position>
 
     </layout>

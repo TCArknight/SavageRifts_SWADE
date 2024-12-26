@@ -18,6 +18,36 @@
       <it_separator/>
       </inputthing>
     </inputthinggroup>
+
+  <inputthinggroup
+    id="UserSelect">
+    <inputthing
+      name="Disable Auto-Naming?"
+      helptext="Specify whether the automatic synthesis of names for this edge should be disabled.">
+      <it_tagcheck group="User" tag="NoAutoName"/>
+      </inputthing>
+    <inputthing
+      name="Require Domain Specification?"
+      helptext="Specify whether the edge requires the user to specify a domain.">
+      <it_tagcheck group="User" tag="NeedDomain"/>
+      </inputthing>
+    <inputthing
+      name="Domain Term"
+      helptext="Specify the term to use as a label for the domain. If empty, the term 'Domain' is used.">
+      <it_tagpick group="DomainTerm" tag="?" dynamic="yes"/>
+      </inputthing>
+    <inputthing
+      name="Menu #1 Source"
+      helptext="Specify the source from which to retrieve choices for display in the first menu.">
+      <it_tagpick group="ChooseSrc1" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Menu #1 Tag Expression"
+      helptext="Specify the tag expression used to identify choices for display in the first menu. If empty, no first menu is shown.">
+      <it_field field="usrCandid1"/>
+      </inputthing>
+
+    </inputthinggroup>
 	
   <inputthinggroup
     id="WeaponAtkDmg">
@@ -768,6 +798,11 @@
       <it_field field="defParry"/>
       </inputthing>
     <inputthing
+      name="Cover Bonus"
+      helptext="Specify the cover bonus of the shield.">
+      <it_field field="defCover"/>
+      </inputthing>
+    <inputthing
       name="Special Traits"
       helptext="Specify any number of special traits that apply to this Shield.">
       <it_taglist group="ArmorSpecial" tag="?" />
@@ -776,6 +811,11 @@
       name="Strength Requirement Die"
       helptext="Specify the minimum strength required die type for this shield.">
       <it_tagpick group="ArmorStrReqDie" tag="?"/>
+      </inputthing>
+    <inputthing
+      name="Hardness"
+      helptext="Specify the Hardness of the object.">
+      <it_field field="grHardness"/>
       </inputthing>
     <inputthing
       name="Activated by User?"
@@ -1090,6 +1130,36 @@
       helptext="Specify any additional details, such as Focus for a Knowledge Skill, Environment for a Protection or a Weakness, a Dependency, a Racial Enemy, etc.">
       <it_field field="raceDomain"/>
       </inputthing>
+
+    <inputthing>
+      <it_groupref id="UserSelect"/>
+      </inputthing>
+	  
   </editthing>
+
+  <!-- Magic Tattooeditthing -->
+  <editthing
+    group="Rifts"
+    compset="Tattoo"
+    name="Magic Tattoo"
+    prefix="tat"
+    description="A Magic Tattoo. Can be selected by the user. Some require a value or text field which can be user-entered for customization."
+    summary="Defines a magic tattoo that can be selected by the user.">
+    <inputthing
+      name="Tattoo Type"
+      helptext="Specify the type for this vehicle.">
+      <it_tagpick group="TattooCat" tag="?" dynamic="yes"/>
+      </inputthing>
+
+    <inputthing>
+      <it_groupref id="UserSelect"/>
+      </inputthing>
+
+    <inputthing>
+      <it_groupref id="SourceInfo"/>
+      </inputthing>
+	  
+    </editthing>
+           
   
   </document>

@@ -80,7 +80,7 @@
 	  candidatepick="FrameworkHelper"
 	  candidatefield="ehFrameExp4"
 	  addpick="resFrameSelect4">
-      <list>FrameworkSelect.Selection2</list>
+      <list>FrameworkSelect.Selection4</list>
       <autotag group="FrameworkSelect" tag="Selection4"/>
       <description/>
       <additem><![CDATA[      
@@ -98,9 +98,9 @@
       showtemplate="fraChoosePick5"
       choosetemplate="SimpleItem"
 	  candidatepick="FrameworkHelper"
-	  candidatefield="ehFrameExp4"
+	  candidatefield="ehFrameExp5"
 	  addpick="resFrameSelect5">
-      <list>FrameworkSelect.Selection2</list>
+      <list>FrameworkSelect.Selection5</list>
       <autotag group="FrameworkSelect" tag="Selection5"/>
       <description/>
       <additem><![CDATA[      
@@ -565,7 +565,6 @@
 		]]></header>
 		</template>
 
-	
   <template
     id="fraChoosePick5"
     name="Chooser Pick"
@@ -681,9 +680,6 @@
 		</template>
 
 
-
-
-		
   <!-- racial layout
   -->
   <layout

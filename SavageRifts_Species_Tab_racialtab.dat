@@ -52,9 +52,10 @@ Contributors: Salcor, Father Morpheus</info_author>
     id="raChsEdge1"
     style="tblNormal">
     <table_dynamic
-      component="none"
+      component="Edge"
       showtemplate="raEdgePick1"
       choosetemplate="SimpleItem"
+	  choosesortset="Edge"
 	  candidatepick="RacialHelper1"
 	  candidatefield="rhEdgeExp"
 	  headertemplate="raEdgePick1"

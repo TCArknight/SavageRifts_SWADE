@@ -4,10 +4,13 @@ SWADE version of Savage Rifts
 # Releases:
 ## Version 0.10 (beta) (TBD)
 - New
+	- Create SR-specific Species tab to display racial properties/choosers
 	- Tag arcane skills with new *Helper.ArcaneSkill* tag 
 	- Replace Gear tab with SR-specific version
 	- Move Power Armor selection to Armory tab
 	- Move Robot Vehicle selection to Gear tab
+- New Source(s)
+	- Atlantis and the Demon Seas
 - Fixed
 - 
 ## Version 0.9 (beta) (11/29/24)
@@ -249,24 +252,17 @@ SWADE version of Savage Rifts
 ### Atlantis and the Demon Seas
 #### In Progress
 - Iconic Frameworks
-	- Bio-Borg
 	- Stone Master
-	- Tattooed Warrior
-	- Undead Slayer
-	- MARS
+		- Gem Magic
 - Races
-	- Amphibs
-	- Horune
 	- Kittani
 	- Kydians
-	- Lemurians
 	- Naut'Yll
 	- Ogres
 	- Rulians
 	- Sea Titans
 	- True Atlanteans
 	- Zembahk
-- Hindrances
 - Edges
 	- Iconic
 	- Combat
@@ -275,12 +271,40 @@ SWADE version of Savage Rifts
 	- Weird
 - Gear
 	- Adventuring Gear
-	- Bio-Wizardry
+		- Common Adventuring Gear
+		- Splugorth Adventuring Gear
+	- Bots
+	- Monster Market
+	- Body Armor
+		- Naval
+		- Atlantean
+	- Power Armor
+	- Bio-Armor
+	- Weapons
+		- Vibro-Weapons
+		- Kittani Melee Weapons
+		- Bio-Wizardry Melee Weapons
+		- Personal Ranged Weapons
+		- Bio-Wizardry Ranged Weapons
+		- Vehicular Weapons
+	- Vehicles
+	- Bio-Wizardry (Needs Scripts)
 - Bestiary
 	- Mercenaries and Specialists
 	- Supernatural Land Creatures
 	- Supernatural Sea Creatures
-
-### Land of a Thousand Islands (South America)
-### Europa
-
+#### Complete
+- Iconic Frameworks
+	- Bio-Borg
+	- Stone Master
+	- Tattooed Warrior
+	- Undead Slayer
+	- MARS
+- Races
+	- Amphibs
+	- Horune
+	- Lemurians
+- Hindrances
+	- Retrotech (Major)
+- Gear
+	- Bio-Wizardry

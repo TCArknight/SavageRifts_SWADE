@@ -83,6 +83,27 @@
     </portal>
 
   <portal
+    id="fraChsTblTattoo"
+    style="tblNormal">
+    <table_dynamic
+      component="Tattoo"
+      showtemplate="fraChsTattooPick"
+      choosetemplate="SimpleItem"
+      choosesortset="TattooType"
+	  candidatepick="TattooHelper"
+	  candidatefield="ehTattooExp"
+	  headertemplate="fraChsTattooPick"
+	  addpick="resTattoos">
+      <list>Helper.FrameTattoo</list>
+      <autotag group="Helper" tag="FrameTattoo"/>
+      <description/>
+      <additem><![CDATA[      
+        @text &= hero.child[TattooHelper].field[ehTattooAdd].text
+        ]]></additem>
+      </table_dynamic>
+    </portal>
+
+  <portal
     id="fraFortGlory"
     style="tblNormal">
     <table_dynamic
@@ -346,6 +367,121 @@
 		</template>
 		
   <template
+    id="fraChsTattooPick"
+    name="Tattoo Chooser Pick"
+    compset="Tattoo"
+    marginhorz="3"
+    marginvert="2">
+
+	<portal
+      id="hdrText"
+      style="lblTitle"
+	  isheader="yes">
+      <label>
+      	<labeltext><![CDATA[
+  	       @text = hero.child[TattooHelper].field[ehTattooHdr].text
+      	   ]]></labeltext>
+        </label>
+      </portal>
+	  
+    <portal
+      id="name"
+      style="lblNormal"
+      showinvalid="yes">
+      <label
+        field="name">
+        </label>
+      </portal>
+
+    <portal
+      id="info"
+      style="actInfo">
+      <action
+        action="info">
+        </action>
+      <mouseinfo/>
+      </portal>
+
+    <portal
+      id="delete"
+      style="actDelete"
+      tiptext="Click to delete this item">
+      <action
+        action="delete">
+        </action>
+      </portal>
+
+    <position><![CDATA[
+      ~set up our height based on our tallest portal
+      height = portal[info].height
+
+      ~if we've been assigned a non-default width for use when showing things, adopt
+      ~that width now
+      if (ispick = 0) then
+        var size as number
+        size = tagvalue[SimpleItem.width?]
+        if (size > 0) then
+          width = size
+          endif
+        endif
+
+      ~if this is a "sizing" calculation, we're done
+      doneif (issizing <> 0)
+
+      ~position our tallest portal at the top
+      portal[info].top = 0
+
+      ~center the other portals vertically
+      perform portal[name].centervert
+      perform portal[delete].centervert
+
+      ~position the delete portal on the far right
+      perform portal[delete].alignedge[right,0]
+
+      ~position the info portal to the left of the delete button
+      perform portal[info].alignrel[rtol,delete,-8]
+
+      ~if we're showing a thing, the info and delete buttons are irrelevant, since
+      ~we should be showing within a chooser, in which case there's nothing to
+      ~delete and we have the description already visible
+      var edge as number
+      if (ispick = 0) then
+        portal[info].visible = 0
+        portal[delete].visible = 0
+        edge = width
+      else
+        edge = portal[info].left - 5
+        endif
+
+      ~position the name on the left and let it use all available space
+      portal[name].left = 0
+      portal[name].width = minimum(portal[name].width,edge)
+
+      ~center the name if requested or this is a show-only thing
+      if (tagis[SimpleItem.CenterName] + tagis[thing.showonly] <> 0) then
+        perform portal[name].centerhorz
+        endif
+
+      ~if this is an auto-added pick, change its font to indicate that fact
+      if (ispick + !candelete >= 2) then
+        perform portal[name].setstyle[lblAuto]
+        endif
+      ]]></position>
+	  
+	  <header><![CDATA[
+		~our header height is the height of our labels
+		height = portal[name].height
+
+		~each of our header labels has the same width as the corresponding data beneath
+		portal[hdrText].width = width
+
+		~align all header labels at the bottom of the header region
+		perform portal[hdrText].alignedge[bottom,0]
+
+		]]></header>
+		</template>		
+		
+  <template
     id="fraAbiPick"
     name="Framework Ability Pick"
     compset="FraAbility"
@@ -354,7 +490,7 @@
 
     <portal
       id="chkActive"
-      style="chkNormal">
+      style="chkDisable">
       <checkbox
         field="abilActive"
         dynamicfield="frText">
@@ -459,12 +595,38 @@
       </portal>
 
     <portal
+      id="lbldomain"
+      style="lblSecond">
+      <label>
+        <labeltext><![CDATA[
+          if (tagis[DomainTerm.?] <> 0) then
+            @text = tagnames[DomainTerm.?] & ":"
+          else
+            @text = "Domain:"
+            endif
+          ]]></labeltext>
+        </label>
+      </portal>
+
+    <portal
+      id="domain"
+      style="editNormal">
+      <edit
+        field="domDomain">
+        </edit>
+      </portal>
+
+    <portal
       id="summary"
       style="lblSmlLeft"
       showinvalid="yes">
       <label>
         <labeltext><![CDATA[
-          @text = field[summary].text
+		  if (tagis[component.CustomDesc] <> 0) then
+		    @text = field[CustSumm].text
+		  else
+            @text = field[summary].text
+		    endif
           ]]></labeltext>
         </label>
       </portal>
@@ -475,7 +637,11 @@
       <action
         action="info">
         </action>
-      <mouseinfo/>
+      <mouseinfo><![CDATA[
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
+        ]]></mouseinfo>
       </portal>
 
     <portal
@@ -509,24 +675,31 @@
       elseif (field[usrLabel1].isempty <> 0) then
         portal[lblmenu1].visible = 0
         endif
+		
       if (field[usrCandid2].isempty <> 0) then
         portal[lblmenu2].visible = 0
         portal[menu2].visible = 0
       elseif (field[usrLabel2].isempty <> 0) then
         portal[lblmenu2].visible = 0
         endif
+		
       if (empty(field[usrArray].arraytext[0]) <> 0) then
         portal[lblmenuar].visible = 0
         portal[menuarray].visible = 0
       elseif (field[usrLabelAr].isempty <> 0) then
         portal[lblmenuar].visible = 0
         endif
+		
       if (field[usrChkText].isempty <> 0) then
         portal[checkbox].visible = 0
         endif
+		
       if (field[frChkText].isempty <> 0) then
         portal[checkbox2].visible = 0
         endif
+		
+	  portal[domain].visible = tagis[User.NeedDomain]
+	  portal[lbldomain].visible = tagis[DomainTerm.?]
 
       ~position the delete portal on the far right and the info portal next to it
       perform portal[delete].alignedge[right,0]
@@ -569,6 +742,17 @@
       var maxwidth as number
       maxwidth = 150
 	  
+	  if (portal[lbldomain].visible <> 0) then
+	    portal[lbldomain].left = x
+	    x = portal[lbldomain].right + gap  
+	    endif
+	  
+	  if (portal[domain].visible <> 0) then
+	    portal[domain].left = x
+		portal[domain].width = 100
+	    x = portal[domain].right + gap  
+	    endif
+		
       if (portal[chkActive].visible <> 0) then
 	    portal[chkActive].left = x
 	    x = portal[chkActive].right + gap        
@@ -740,7 +924,11 @@
       showinvalid="yes">
       <label>
         <labeltext><![CDATA[
-          @text = field[summary].text
+		  if (tagis[component.CustomDesc] <> 0) then
+		    @text = field[CustSumm].text
+		  else
+            @text = field[summary].text
+		    endif
           ]]></labeltext>
         </label>
       </portal>
@@ -751,7 +939,11 @@
       <action
         action="info">
         </action>
-      <mouseinfo/>
+      <mouseinfo><![CDATA[
+        var mouseinfo as string
+        call MouseInfoSRA
+        @text = mouseinfo
+        ]]></mouseinfo>
       </portal>
 
     <portal
@@ -1079,6 +1271,7 @@
     <portalref portal="fraFortGlory" />
     <portalref portal="fraChsTblEdge" />
     <portalref portal="fraChsTblHind" />
+    <portalref portal="fraChsTblTattoo" />
 
     <!-- This script sizes and positions the layout and its child visual elements. -->
     <position><![CDATA[
@@ -1103,6 +1296,11 @@
 	    portal[fraChsTblHind].visible = 1
 		endif
 	  
+	  portal[fraChsTblTattoo].visible = 0
+	  if (hero.child[TattooHelper].field[ehTattooExp].isempty = 0) then
+	    portal[fraChsTblTattoo].visible = 1
+		endif
+	  
       portal[fraAbility].height = height/3
 	  
       ~position and size the table to span the full layout; it will only use the
@@ -1120,6 +1318,7 @@
       perform portal[fraFortGlory].autoplace[10]
       perform portal[fraChsTblEdge].autoplace[10]
       perform portal[fraChsTblHind].autoplace[10]
+      perform portal[fraChsTblTattoo].autoplace[10]
       
       ]]></position>
 

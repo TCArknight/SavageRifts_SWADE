@@ -11,7 +11,7 @@
   -->
   <component
     id="BioWizardCore"
-    name="Bio-Wizard Augmentation"
+    name="Bio-Wizardry Core"
     autocompset="yes">
 	  
     <!-- This contains the amount of Strain the Cyberware exerts -->
@@ -21,6 +21,30 @@
       type="derived">
       </field>
 
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bwizHost"
+      name="Host"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bwizLocation"
+      name="Location"
+      type="derived"
+      maxlength="100">
+      </field>
+
+    <!-- This is to place a value for Skill Chip Bonus -->
+    <field
+      id="bwizLifespan"
+      name="Lifespan"
+      type="derived"
+      maxlength="50">
+      </field>
+	  
     <!-- Are the Cyberware's abilities on/applicable? This is for Cyberware that either has a conditional modifier that depends on external factors
          like a Survival bonus that's only good in a certain type of terrain, or a Charisma modifier that depends on the sex of the target. 
          It's a separate issue from Equipping/Unequipping the object, as being in effect or not has no effect on the Strain -->
@@ -54,25 +78,6 @@
     name="Bio-Wizard Augmentation"
     autocompset="no"
     panellink="biowizardry">
-
-    <!-- This is a Cyberware grade field for Settings like Interface Zero 2.0 -->
-    <field
-      id="baugGrade"
-      name="Grade"
-      type="user"
-      minvalue="1"
-      maxvalue="4"
-      maxfinal="100"
-      nevercache="yes">
-      <finalize><![CDATA[
-        if (tagis[baugGrade.?] <> 0) then
-          @value = tagvalue[baugGrade.?]
-          @text = tagnames[baugGrade.?,"|"]
-        else
-          @text = "No Grade"
-          endif
-        ]]></finalize>
-      </field>
 
     <linkage linkage="baugAtt" optional="yes"/>
     <linkage linkage="baugSkill" optional="yes"/>
@@ -154,29 +159,6 @@
     autocompset="no"
     panellink="biowizardry">
 
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bsymHost"
-      name="Host"
-      type="derived"
-      maxlength="100">
-      </field>
-
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bsymLocation"
-      name="Location"
-      type="derived"
-      maxlength="100">
-      </field>
-
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bsymSpan"
-      name="Lifespan"
-      type="derived"
-      maxlength="50">
-      </field>
 	  
     <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
     <identity group="BioSymbioteSRA"/>
@@ -197,30 +179,6 @@
     name="Bio-Wizard Microbe"
     autocompset="no"
     panellink="biowizardry">
-
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bmicHost"
-      name="Host"
-      type="derived"
-      maxlength="100">
-      </field>
-
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bmicHostEnv"
-      name="Host Environment"
-      type="derived"
-      maxlength="100">
-      </field>
-
-    <!-- This is to place a value for Skill Chip Bonus -->
-    <field
-      id="bmicSpan"
-      name="Lifespan"
-      type="derived"
-      maxlength="50">
-      </field>
 	  
     <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
     <identity group="BioMicrobeSRA"/>
@@ -228,6 +186,22 @@
     <!-- Track the Frame Ability on the actor -->
     <eval index="1" phase="Setup" priority="5000"><![CDATA[
       perform forward[BioMicrobeSRA.?]
+      ]]></eval>
+
+    </component>
+
+  <component
+    id="BioParasiteSRA"
+    name="Bio-Wizard Microbe"
+    autocompset="no"
+    panellink="biowizardry">
+	  
+    <!-- Each Frame Ability needs its own identity tag to detect cascading dependencies via prereqs -->
+    <identity group="BioParasiteSRA"/>
+
+    <!-- Track the Frame Ability on the actor -->
+    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+      perform forward[BioParasiteSRA.?]
       ]]></eval>
 
     </component>

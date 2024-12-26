@@ -93,7 +93,7 @@
 	
   <!-- Cybernetics Categories -->
   <group
-    id="BioAugSRA"
+    id="BWAugmentCat"
 	sequence="explicit">
     <value id="PhysTrans"	name="Physical Transmutation" 		order="1"/>    
     <value id="Appendage"	name="Bio-Wizard Appendage" 		order="2"/>    
@@ -131,6 +131,11 @@
     <value id="Chosen" />
     <value id="skAthletic" />
     <value id="skFighting" />
+    <value id="attrAgi" />
+    <value id="attrSma" />
+    <value id="attrSpi" />
+    <value id="attrStr" />
+    <value id="attrVig" />
     </group>	
 	
   <!-- TCA: Power/Robot Armor Strength Tags  -->
@@ -230,6 +235,17 @@
     <value id="Selection3" name="Selection 3"/>
     <value id="Selection4" name="Selection 4"/>
     <value id="Selection5" name="Selection 5"/>
+    </group>
+
+  <!-- TattooCat group - tags identifying the specific category of magic tattoo
+  -->
+  <group
+    id="TattooCat"
+    dynamic="yes"
+    sequence="explicit">
+    <value id="Weapon"	name="Weapon" 		order="10"	/>
+    <value id="Summon"	name="Summoning"	order="20"	/>
+    <value id="Power" 	name="Power" 		order="30"	/>
     </group>
 	
   <!-- TCA: Savage Rifts Sources -->
@@ -386,7 +402,7 @@
   <sortset
     id="BioAugmentSRA"
     name="Bio-Augmentation sort">
-    <sortkey isfield="no" id="BioAugSRA" isascend="yes"/>
+    <sortkey isfield="no" id="BWAugmentCat" isascend="yes"/>
     <sortkey isfield="no" id="_Name_"/>
     </sortset>
 
@@ -429,4 +445,12 @@
     <sortkey isfield="no" id="ItemModType"/>
     <sortkey isfield="no" id="_Name_"/>
     </sortset>	
+
+  <sortset
+    id="TattooType"
+    name="Selections by Type and Name">
+    <sortkey isfield="no" id="TattooCat"/>
+    <sortkey isfield="no" id="_Name_"/>
+    </sortset>
+	
 </document>
