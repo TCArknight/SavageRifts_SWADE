@@ -214,21 +214,21 @@
 	  </field>	  
 
     <field
-      id="rhHinAdd"
+      id="rhHindAdd"
       name="Racial Hind AddItem Header"
       type="derived"
 	  maxlength="500">
 	  </field>
 	  
     <field
-      id="rhHinHdr"
+      id="rhHindHdr"
       name="Racial Hind Expression Header"
       type="derived"
 	  maxlength="500">
 	  </field> 
 	  
     <field
-      id="rhHinExp"
+      id="rhHindExp"
       name="Racial Hind Expression"
       type="derived"
 	  maxlength="500">

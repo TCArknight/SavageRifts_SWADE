@@ -101,14 +101,14 @@ Contributors: Salcor, Father Morpheus</info_author>
       showtemplate="raHinPick1"
       choosetemplate="SimpleItem"
 	  candidatepick="RacialHelper1"
-	  candidatefield="rhHinExp"
+	  candidatefield="rhHindExp"
 	  headertemplate="raHinPick1"
 	  addpick="resRaceHind1">
       <list>SpeciesTab.HindSelected1</list>
       <autotag group="SpeciesTab" tag="HindSelected1"/>
       <description/>
       <additem><![CDATA[      
-        @text &= hero.child[RacialHelper1].field[rhHinAdd].text
+        @text &= hero.child[RacialHelper1].field[rhHindAdd].text
         ]]></additem>
       </table_dynamic>
     </portal>
@@ -563,7 +563,7 @@ Contributors: Salcor, Father Morpheus</info_author>
 	  isheader="yes">
       <label>
       	<labeltext><![CDATA[
-  	       @text = hero.child[RacialHelper1].field[rhHinHdr].text
+  	       @text = hero.child[RacialHelper1].field[rhHindHdr].text
       	   ]]></labeltext>
         </label>
       </portal>
@@ -1323,7 +1323,7 @@ Contributors: Salcor, Father Morpheus</info_author>
 	  if (hero.child[RacialHelper1].field[rhEdgeExp2].isempty = 0) then
 	    portal[raChsEdge2].visible = 1
 		endif	  
-	  if (hero.child[RacialHelper1].field[rhHinExp].isempty = 0) then
+	  if (hero.child[RacialHelper1].field[rhHindExp].isempty = 0) then
 	    portal[raChsHindrance1].visible = 1
 		endif
 	  if (hero.child[RacialHelper1].field[rhSkillExp].isempty = 0) then

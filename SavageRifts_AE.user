@@ -999,22 +999,22 @@ perform hero.assign[Helper.AugmentInvalid]</eval>
   <thing id="rpSRAIssuesCold" name="Issues with Cold" description="The Fennodi prefer the New West’s prairies and deserts for a reason, suffering −4 to resist Cold Hazards, and +4 damage from cold-based attacks." compset="ExtRacialProp" summary="−4 to resist Cold Hazards, and +4 damage from cold-based attacks." uniqueness="unique">
     <usesource source="srcRiftsTLPGAE"/>
     </thing>
-  <thing id="rpSRANatPsiFen" name="Natural Psionics" description="Fennodi begin with Arcane Background (Psionics) and the following three powers: {i}intangibility*, protection*, and mind link{/i}. If a Fennodi chooses a framework providing Arcane Background (Psionics) he follows all the normal rules except three of his starting powers are the ones listed above (even if not normally allowed to that Framework). The Fennodi gains two additional power to his starting total (e.g., a Fennodi Burster starts with five powers, a Mind Melter with seven)." compset="ExtRacialProp">
-    <usesource source="srcRiftsTLPGAE"/>
-    <bootstrap thing="edgSRAArcPsionics"></bootstrap>
-    <bootstrap thing="powIntangiSWADE">
+  <thing id="rpSRANatPsiKit" name="Natural Psionics" description="Kittani begin with Arcane Background (Psionics) and the following three powers: arcane protection, mind link, and object reading. If a Kittani chooses a framework providing Arcane Background (Psionics) he follows all the normal rules except three of his starting powers are the ones listed above (even if not normally allowed), and gains two additional power to his starting total (e.g. a Kittani Burster starts with five powers)." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="powArcaneProtect">
       <autotag group="Arcane" tag="arcPsionicSWADE"/>
       </bootstrap>
-    <bootstrap thing="powProtection">
+    <bootstrap thing="powObjectRdSWADE">
       <autotag group="Arcane" tag="arcPsionicSWADE"/>
       </bootstrap>
     <bootstrap thing="powMindLinkSWADE">
       <autotag group="Arcane" tag="arcPsionicSWADE"/>
       </bootstrap>
+    <bootstrap thing="edgSRAArcPsionics"></bootstrap>
+    <eval phase="PreTraits" priority="5000" index="2">perform #resspent[arcPsionicSWADE,+,3,field[name].text]</eval>
     <eval phase="Setup" priority="1000">doneif (hero.tagis[User.BonusISPPowers] = 0)
 
 #resmax[arcPsionicSWADE] += 2</eval>
-    <eval phase="PreTraits" priority="5000" index="2">perform #resspent[arcPsionicSWADE,+,3,field[name].text]</eval>
     </thing>
   <thing id="rpSRASpiritualFen" name="Spiritual" description="Fennodi begin with d6 Spirit and increase their Trait maximum accordingly." compset="ExtRacialProp" summary="Start with Spirit of d6.">
     <usesource source="srcRiftsTLPGAE"/>
@@ -1063,9 +1063,9 @@ chooser = "(Hindrance.hinConfide|Hindrance.hinHeroic)"
 
 ~set up chooser expressions for Hindrances
 perform hero.child[RacialHelper1].setfocus
-focus.field[rhHinAdd].text = additem
-focus.field[rhHinExp].text = chooser
-focus.field[rhHinHdr].text = header]]></eval>
+focus.field[rhHindAdd].text = additem
+focus.field[rhHindExp].text = chooser
+focus.field[rhHindHdr].text = header]]></eval>
     <eval phase="PreTraits" priority="5000">~set resRaceEdge to selection
 #resmax[resRaceSel] += 1
 
@@ -1575,9 +1575,9 @@ chooser = "(Hindrance.hinCaution|Hindrance.hinMeanSWADE|Hindrance.hinPacify|Hind
 
 ~set up chooser expressions for Hindrances
 perform hero.child[RacialHelper1].setfocus
-focus.field[rhHinAdd].text = additem
-focus.field[rhHinExp].text = chooser
-focus.field[rhHinHdr].text = header]]></eval>
+focus.field[rhHindAdd].text = additem
+focus.field[rhHindExp].text = chooser
+focus.field[rhHindHdr].text = header]]></eval>
     <eval phase="PreTraits" priority="5000" index="2">~set resRaceEdge to selection
 #resmax[resRaceSel] += 1
 
@@ -14947,9 +14947,9 @@ chooser = "(thingid.hinArrogSWADE|thingid.hinDelude|thingid.hinGreedy|thingid.hi
 ~set up chooser expressions for Hindrances
 perform hero.child[RacialHelper1].setfocus
 
-focus.field[rhHinAdd].text = additem
-focus.field[rhHinExp].text = chooser
-focus.field[rhHinHdr].text = header]]></eval>
+focus.field[rhHindAdd].text = additem
+focus.field[rhHindExp].text = chooser
+focus.field[rhHindHdr].text = header]]></eval>
     <evalrule phase="Validate" priority="1000" message="Requires selection of Major psychology-based hindrance."><![CDATA[var myChoice as string
 var myPick as string
 var myCount as number
@@ -19167,9 +19167,9 @@ chooser = "(thingid.hinArrogSWADE|thingid.hinCurious|thingid.hinSuspicious|thing
 ~set up chooser expressions for Hindrances
 perform hero.child[RacialHelper1].setfocus
 
-focus.field[rhHinAdd].text = additem
-focus.field[rhHinExp].text = chooser
-focus.field[rhHinHdr].text = header]]></eval>
+focus.field[rhHindAdd].text = additem
+focus.field[rhHindExp].text = chooser
+focus.field[rhHindHdr].text = header]]></eval>
     </thing>
   <thing id="rpSRAExtMetamorph" name="Extended Metamorphosis" description="Royal Frilled dragons start life able to adopt a single human/humanoid form, which they can maintain for a number of hours equal to 3 × Spirit before needing at least six hours of rest. All other aspects of the Limited Metamorphosis ability are unchanged." compset="ExtRacialProp" summary="Dragon can change into a single human/humanoid form for 3xSpirit Die hours before needing at least six hours rest.">
     <fieldval field="usrChkText" value="Human Form"/>
@@ -27076,6 +27076,18 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
     </thing>
   <thing id="racSRAOgre" name="Ogre" description="Ogres are giant neanderthal-like humanoids. Not only do they look like humans, but their DNA and physiology are remarkably similar. This and other coincidences has led many scholars to speculate that ogres and humans do in fact have some sort of shared ancestry.\n\nBecause of their popularity as Splugorth slave stock and other factors, their numbers are slowly growing on Rifts Earth. Although some might think Ogres appear slightly dimwitted, they are the intellectual equivalent of humans. The main difference seems to be their increased size and raw physical power. This can be a liability, though, as many people see their threatening stature and assume the worst. The Ogre reputation for eating the flesh of humanoids hasn&apos;t seemed to help in this regard, either.\n\nOgres can be found lightly sprinkled throughout the world wherever humans thrive. They reproduce slowly and often live dispersed from one another. Ogre majority tribes are rare but not unheard of.\n\nA sizable portion of Ogres tend to assimilate into the hierarchies of other races and societies that value their impressive physical characteristics like those of the Pecos Empire as well as Orcs, Simvan, and similar D-Bees. An equal number seem to find common cause with other &quot;more civilized&quot; humanoids like Elves, Dwarves, or Humans and eagerly join their communities." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRABadRepOgre"></bootstrap>
+    <bootstrap thing="rpSRADBeeMinor">
+      <assignval field="CustDesc" value="The initial Reaction to Ogres typically start at Unfriendly, or Hostile for human supremacists. Those with an Unfriendly or lower Reaction will refuse to sell wares or provide services. Failed social checks with Hostile parties often result in violence."/>
+      <assignval field="CustSumm" value="Reactions typically start at Unfriendly, or Hostile for human supremacists."/>
+      </bootstrap>
+    <bootstrap thing="rpSRALowLightVis"></bootstrap>
+    <bootstrap thing="rpSRANearHumanPhy"></bootstrap>
+    <bootstrap thing="rpSRAPowerfulOgre"></bootstrap>
+    <bootstrap thing="rpSRASize">
+      <assignval field="CustDesc" value="Ogres stand 7’–9’ tall and weigh 250 – 400 lb. Their Size grants them +1 Toughness."/>
+      </bootstrap>
+    <bootstrap thing="rpSRASurly"></bootstrap>
     </thing>
   <thing id="grpSRATWarrior" name="Tattooed Warrior" description="Amongst the nearly innumerable slaves of Atlantis, the Tattooed Warriors are the most famous of them all. Captured, bought, or— sadly—often bred for the purpose, these &quot;T-Men&quot; and &quot;T-Women&quot; are robbed of their potential, subjected to the grueling process of being branded with magic tattoos, and conditioned to become warrior slaves or enforcers for despicable masters.\n\nThe vast majority of T-Warriors never escape their new life of continually being forced to hunt, brutalize, and murder for their puppeteers. Combined with their other traumatic experiences, T-Warriors inevitably exhibit severe emotional dysfunction, violently hot tempers, long-term psychosis, or even mental breaks and insanity." compset="Group" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -28283,14 +28295,46 @@ field[grIsEquip].value = hero.childfound[faSRAShldInnSpi].field[abilActive].valu
     <bootstrap thing="rpSRAEnvResistLem"></bootstrap>
     <bootstrap thing="rpSRAUnstableHyb"></bootstrap>
     </thing>
-  <thing id="racSRAKittani" name="Kittani" compset="Race" uniqueness="unique">
+  <thing id="racSRAKittani" name="Kittani" description="The Kittani are a technologically inclined race of cruel conquerors. They resemble ape-men with gorilla-like facial features and a bulbous, bald cranium. They&apos;re highly intelligent, industrious, and creative. In their lost and forgotten home dimension the Kittani subjugated star system after star system. That was until their galactic exploration fleets happened upon a genocidal, berserk race of hyper advanced cyborgs. The ensuing cataclysmic war destroyed the Kittani empire. The proud warrior race was forced to abandon their home planet and retreat into deep space.\n\nSplynncryth discovered an escaping Kittani armada and opened a massive arcane portal that allowed them to flee to another dimension. The Kittani leaders struck a deal with their savior, creating an alliance that has endured for over 38 millennia. The Kittani find great honor in serving their powerful overlords, who they reverence as great conquerors. In exchange these incredibly brilliant warriors invent, manufacture, and go to battle in the Splugorth&apos;s most advanced machines of war." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRAAlienPhys"></bootstrap>
+    <bootstrap thing="rpSRADBeeMajor"></bootstrap>
+    <bootstrap thing="rpSRAIntelligent"></bootstrap>
+    <bootstrap thing="rpSRANatPsiKit"></bootstrap>
+    <bootstrap thing="rpSRAStrongKit"></bootstrap>
+    <bootstrap thing="rpSRAWantedMajKit"></bootstrap>
     </thing>
-  <thing id="racSRAKydians" name="Kydians" compset="Race" uniqueness="unique">
+  <thing id="racSRAKydians" name="Kydians" description="Kydians are a race of rapidly reproducing burly giants with pink or purplish gray skin, black eyes, tiny tusks, and a pair of small horns on their chin. Their early age of maturity and quick birth rate—Kydian females birth litters of 3 to 6 young—led to the chronic overpopulation of their home world. In an unusually bloodless conquest, the Splugorth offered the teeming trillions of desperate Kydians a new life in paradise if they would serve them for the rest of time. Doomed with few years before their planet&apos;s ecosystem was predicted to collapse, the Kydians accepted the generous offer.\n\nThis pact led to 53,000 years of prosperity, health, and longevity for the race. Instead of cramped doom, the Kydians have been set loose to explore and conquer the universe. Kydians—widely known as &quot;Overlords&quot;— are the Splugorth&apos;s most common front line enforcers. Millions may die in the conquest of a planet or exploration of a dangerous new dimension, but this is a small price to pay for a luxurious life enjoying the combat and adventure every Kydian craves." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRAAlienPhys"></bootstrap>
+    <bootstrap thing="rpSRABrawny"></bootstrap>
+    <bootstrap thing="rpSRADBeeMajor"></bootstrap>
+    <bootstrap thing="rpSRAPowerfulKyd"></bootstrap>
+    <bootstrap thing="rpSRAResPathKyd"></bootstrap>
+    <bootstrap thing="rpSRASize">
+      <assignval field="raceValue" value="2"/>
+      <assignval field="CustDesc" value="Kydians stand 8’–10’ tall and weigh 400 – 600 lb. Their Size grants them +2 Toughness."/>
+      </bootstrap>
+    <bootstrap thing="rpSRASmaPenalty"></bootstrap>
+    <bootstrap thing="rpSRAWantedMajKyd"></bootstrap>
     </thing>
-  <thing id="racSRANautyll" name="Naut&apos;y;;" compset="Race" uniqueness="unique">
+  <thing id="racSRANautyll" name="Naut&apos;yll" description="The Naut&apos;Yll are organized, militaristic D-Bees bent on conquering Rifts Earth— both on the land and sea! The amphibious bipeds have webbed hands with two thick fingers and a thumb and webbed feet with three frog-like toes. Their faces sport three eyes and three short trunks, each ending in three small tentacles. Internal air/water bladders control their buoyancy, letting them swim like an eel at great speeds.\n\nThe Naut&apos;Yll are taught to hate all other intelligent beings—their word for &quot;outsider&quot; is the same as their word for &quot;evil&quot; and &quot;enemy.&quot; While most Naut&apos;Yll are fanatically loyal to their empire, a notable number have left their civilization to enjoy freedom and explore the wonders of this new world." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRAAlienPhys"></bootstrap>
+    <bootstrap thing="rpSRAAquatic"></bootstrap>
+    <bootstrap thing="rpSRACyberResist"></bootstrap>
+    <bootstrap thing="rpSRADBeeMajor"></bootstrap>
+    <bootstrap thing="rpSRADependency">
+      <assignval field="CustDesc" value="Naut&apos;Yll must immerse themselves in water for an hour out of every 24, otherwise they become Fatigued each day until Incapacitated. A day after that, they perish. Each hour spent recovering in water restores a level of Fatigue."/>
+      <assignval field="CustSumm" value="Must spend 1 hour/day immersed in water."/>
+      </bootstrap>
+    <bootstrap thing="rpSRAEnvResNau"></bootstrap>
+    <bootstrap thing="rpSRAIgnorantNau"></bootstrap>
+    <bootstrap thing="rpSRALowLightVis"></bootstrap>
+    <bootstrap thing="rpSRANatPsiNau"></bootstrap>
+    <bootstrap thing="rpSRARegeneration"></bootstrap>
+    <bootstrap thing="rpSRAStrongMinBod"></bootstrap>
+    <bootstrap thing="rpSRAWeakMagic"></bootstrap>
     </thing>
   <thing id="racSRARulians" name="Rulians" compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -28519,24 +28563,139 @@ hero.child[attrVig].field[trtMaximum].value += 1</eval>
   <thing id="rpSRASkilledSwim" name="Skilled Swimers" description="Race can move at their full Pace when swimming and are +2 on Athletics (swimming) checks." compset="ExtRacialProp" summary="Move at their full Pace when swimming. +2 on Athletics (swimming) checks.">
     <usesource source="srcRiftsTLPGAE"/>
     </thing>
-  <preclude id="edgBrawlerSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBruiserSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcSciSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcMirSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcPsiSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcGifted" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcMagSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA5" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepSlu" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA2" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA3" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA1" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA4" source="srcRiftsTLPGAE"/>
+  <thing id="rpSRAIntelligent" name="Intelligent" description="Kittani are staggeringly intelligent, begin with a d8 Smarts. This makes their natural Trait maximum d12+2." compset="ExtRacialProp" summary="Start with Smarts of d8.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitbonus[attrSma] += 2
+hero.child[attrSma].field[trtMaximum].value += 2</eval>
+    </thing>
+  <thing id="rpSRANatPsiFen" name="Natural Psionics" description="begin with Arcane Background (Psionics) and the following three powers: intangibility*, protection*, and mind link. If a Fennodi chooses a framework providing Arcane Background (Psionics) he follows all the normal rules except three of his starting powers are the ones listed above (even if not normally allowed to that Framework). The Fennodi gains two additional power to his starting total (e.g., a Fennodi Burster starts with five powers, a Mind Melter with seven)." compset="ExtRacialProp">
+    <usesource source="srcRiftsTLPGAE"/>
+    <bootstrap thing="powObjectRdSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powMindLinkSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="edgSRAArcPsionics"></bootstrap>
+    <bootstrap thing="powArcaneProtect">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <eval phase="Setup" priority="1000">doneif (hero.tagis[User.BonusISPPowers] = 0)
+
+#resmax[arcPsionicSWADE] += 2</eval>
+    <eval phase="PreTraits" priority="5000" index="2">perform #resspent[arcPsionicSWADE,+,3,field[name].text]</eval>
+    </thing>
+  <thing id="rpSRAStrongKit" name="Strong" description="Kittani start with d6 Strength, adjust Trait maximum accordingly." compset="ExtRacialProp" summary="Start with Strength of d6.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitbonus[attrStr] += 1
+hero.child[attrStr].field[trtMaximum].value += 1</eval>
+    </thing>
+  <thing id="rpSRAWantedMajKit" name="Wanted (Major)" description="Any Kittani not serving the Splugorth are hunted down as traitors. If captured they are used as gladiators and slaves. Those discovered to have been dabbling in magic are terminated—the Splugorth don&apos;t want them to learn those secrets. Other factions who discover a Kittani&apos;s origins will treat them as spies of Atlantis and seek to imprison and interrogate them for the rest of their life." compset="ExtRacialProp" summary="Hunted by the Splugorth and their minions. Other factions see the Kittani as spies for Atlantis.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hide" tag="Special"/>
+    <bootstrap thing="hinWanted">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Splugorth and their allies."/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRABrawny" name="Brawny" description="Begin with the Brawny edge." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="edgSRABrawny"></bootstrap>
+    </thing>
+  <thing id="rpSRAPowerfulKyd" name="Powerful" description="Kydians start with Strength d8 and Vigor d6, raise Trait maximums accordingly." compset="ExtRacialProp" summary="Start with Strength d8, and Vigor of d6.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitcreation[attrStr] += 2
+hero.child[attrStr].field[trtMaximum].value += 2
+
+#traitcreation[attrVig] += 1
+hero.child[attrVig].field[trtMaximum].value += 1</eval>
+    </thing>
+  <thing id="rpSRAResPathKyd" name="Restricted Path" description="Kydians cannot take an Arcane Background or Iconic Framework using ISP." compset="ExtRacialProp" summary="Cannot take any Arcane Background using ISP, nor any Iconic Framework that includes it." uniqueness="unique">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="Effects" priority="5000">perform hero.assign[Helper.ISPNotValid]</eval>
+    </thing>
+  <thing id="rpSRASmaPenalty" name="Smarts Penalty" description="Kydians suffer a −1 penalty to Smarts rolls, but not linked skills." compset="ExtRacialProp" summary="−1 to all Smarts rolls (but not Smarts linked skill checks)." uniqueness="unique">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAWantedMajKyd" name="Wanted (Major)" description="Any Kydian not serving the Splugorth are hunted down as traitors. If captured they are used as gladiators and slaves. Those discovered to have been dabbling in magic are terminated—the Splugorth don&apos;t want them to learn those secrets. Other factions who discover a Kittani&apos;s origins will treat them as spies of Atlantis and seek to imprison and interrogate them for the rest of their life." compset="ExtRacialProp" summary="Hunted by the Splugorth and their minions. Other factions see the Kittani as spies for Atlantis.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hide" tag="Special"/>
+    <bootstrap thing="hinWanted">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Splugorth and their allies."/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRADependency" name="Dependency" description="The race must consume or have contact with some sort of relatively common substance for an hour out of every 24. Creatures from water-based worlds, for example, might need to immerse themselves in water; plant people might need sunlight. Without the required contact, a character becomes Fatigued each day until Incapacitated. A day after that, they perish. Each hour spent recovering with the appropriate substance restores a level of Fatigue." compset="ExtRacialProp" summary="1 hour a day consuming/in contact with specified item/environment." uniqueness="useronce">
+    <fieldval field="raceCstVal" value="-2"/>
+    <fieldval field="raceDupMax" value="1"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    </thing>
+  <thing id="rpSRAEnvResNau" name="Environmental Resistance" description="Species can tolerate depths of up to two miles, gain a +4 bonus versus Cold, and take −4 damage from Cold attacks." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAIgnorantNau" name="Ignorant" description="The Naut&apos;Yll culture is insular, making them naive about the wider world. They suffer a −1 penalty on all Common Knowledge rolls." compset="ExtRacialProp" summary="−1 penalty on all Common Knowledge rolls">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">~ -1 to Common Knowledge rolls
+
+perform #traitroll[skCommon,-,1,field[name].text]</eval>
+    </thing>
+  <thing id="rpSRANatPsiNau" name="Natural Psionics" description="Naut&apos;Yll begin with Arcane Background (Psionics) and the following three powers: {i}arcane protection{/i}, {i}mind link{/i}, and {i}telekinesis{/i}. If a Naut&apos;Yll chooses a framework providing Arcane Background (Psionics) he follows all the normal rules except three of his starting powers are the ones listed above (even if not normally allowed), and gains two additional powers to his starting total (e.g. a Naut&apos;Yll Burster starts with five powers)." compset="ExtRacialProp" summary="Horune have AB (Psionics), {i}arcane protection{/i}, {i}mind link{/i}, and {i}telekinesis{/i}.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="powArcaneProtect">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powMindLinkSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powTelekinSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="edgSRAArcPsionics"></bootstrap>
+    <eval phase="Setup" priority="1000">doneif (hero.tagis[User.BonusISPPowers] = 0)
+
+#resmax[arcPsionicSWADE] += 2</eval>
+    </thing>
+  <thing id="rpSRAStrongMinBod" name="Strong of Mind and Body" description="Naut&apos;Yll start with Smarts d6 and Strength d6, raise Trait maximums accordingly." compset="ExtRacialProp" summary="Start with Smarts of d6 and a Strength of d6.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitbonus[attrSma] += 1
+hero.child[attrSma].field[trtMaximum].value += 1
+
+#traitbonus[attrStr] += 1
+hero.child[attrStr].field[trtMaximum].value += 1</eval>
+    </thing>
+  <thing id="rpSRAWeakMagic" name="Weakness (Magic)" description="While their arcane sensit ivity makes Naut&apos;Yll powerful psychics, they take +4 damage from magic and supernatural sources of attack." compset="ExtRacialProp" summary="+4 damage from magic and supernatural attacks.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRABadRepOgre" name="Bad Reputation (Minor)" description="It&apos;s widely known that some Ogres—but not all—enjoy the taste of humanoid flesh. The initial Reactions of strangers are one level worse than usual" compset="ExtRacialProp" summary="Initial Reactions of strangers are one level worse than usual">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAPowerfulOgre" name="Powerful" description="Ogres start with Strength d6 and Vigor d6, raise Trait maximums accordingly." compset="ExtRacialProp" summary="Start with Strength d6, and Vigor of d6.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitcreation[attrStr] += 1
+hero.child[attrStr].field[trtMaximum].value += 1
+
+#traitcreation[attrVig] += 1
+hero.child[attrVig].field[trtMaximum].value += 1</eval>
+    </thing>
+  <thing id="rpSRASurly" name="Surly" description="Ogres are either Mean, Stubborn, or Vengeful (Minor) for no extra bonus." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="Setup" priority="1000">#resmax[resRaceHind1] += 1</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[perform hero.child[RacialHelper1].setfocus
+
+var header as string
+var chooser as string
+var additem as string
+
+additem = "Add Hindrance"
+header = "Surly Hindrance: "
+header &= hero.child[resRaceHind1].field[resSummary].text
+chooser = "thingid.hinMeanSWADE|thingid.hinStubbor|thingid.hinVenge"
+
+~set up chooser expressions for Edge selection
+focus.field[rhHindAdd].text = additem
+focus.field[rhHindExp].text = chooser
+focus.field[rhHindHdr].text = header]]></eval>
+    </thing>
   <preclude id="wpSFSepLas" source="srcRiftsTLPGAE"/>
   <preclude id="wpSFSepPML" source="srcRiftsTLPGAE"/>
   <preclude id="wpImprovMd" source="srcRiftsTLPGAE"/>
@@ -28566,24 +28725,24 @@ hero.child[attrVig].field[trtMaximum].value += 1</eval>
   <preclude id="armSFSepA" source="srcRiftsTLPGAE"/>
   <preclude id="racHuman" source="srcRiftsTLPGAE"/>
   <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
-  <extthing thing="skElectron" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skPsionics" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skBattle" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skTaunt" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skOccult" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skRepair" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="skWeirdSci" group="Helper" tag="SmartsSkill"/>
-  <extthing thing="powBarrierSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powBlindSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powBoltSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powTraitSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powArcaneProtect" group="User" tag="MindMelter"/>
-  <extthing thing="skPsionics" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skSpellcst" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skFocus" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skFaith" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="powDamageFSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powEntangSWADE" group="User" tag="MindMelter"/>
+  <preclude id="edgBrawlerSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBruiserSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcSciSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcMirSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcPsiSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcGifted" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcMagSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA5" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepSlu" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA2" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA3" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA1" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA4" source="srcRiftsTLPGAE"/>
   <extthing thing="powDeflectSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powConfusiSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powEnvironSWADE" group="User" tag="MindMelter"/>
@@ -28630,4 +28789,22 @@ hero.child[attrVig].field[trtMaximum].value += 1</eval>
   <extthing thing="skScience" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skSpellcst" group="Helper" tag="SmartsSkill"/>
   <extthing thing="skSurvival" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skElectron" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skPsionics" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skBattle" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skTaunt" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skOccult" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skRepair" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="skWeirdSci" group="Helper" tag="SmartsSkill"/>
+  <extthing thing="powBarrierSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powBlindSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powBoltSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powTraitSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powArcaneProtect" group="User" tag="MindMelter"/>
+  <extthing thing="skPsionics" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skSpellcst" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skFocus" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skFaith" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="powDamageFSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powEntangSWADE" group="User" tag="MindMelter"/>
   </document>
