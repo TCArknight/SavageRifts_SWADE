@@ -90,6 +90,13 @@
 	  nexteach
 	  
     perform #resspent[resFrameSelect4,+,field[ehFrameCst4].value,"Framework"]
+   
+	~Count items with Helper.FrameSel1 tag
+    foreach pick in hero where "FrameworkSelect.Selection4"
+	  field[ehFrameCst5].value += 1
+	  nexteach
+	  
+    perform #resspent[resFrameSelect5,+,field[ehFrameCst5].value,"Framework"]
 
 		]]></eval>
 
@@ -369,14 +376,7 @@
 	
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
-
 	
-	<!-- Use the starting Advances plus the accrued Advances as our maximum -->
-    <eval index="1" phase="Setup" priority="5000" name="Calc Selected 5"><![CDATA[
-	  foreach pick in hero where "FrameworkSelect.Selection1"
-	    field[resSpent].value += 1
-	    nexteach
-      ]]></eval>
     </thing>
 	
   <thing
@@ -388,14 +388,7 @@
 	
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
-
 	
-	<!-- Use the starting Advances plus the accrued Advances as our maximum -->
-    <eval index="1" phase="Setup" priority="5000" name="Calc Selected 5"><![CDATA[
-	  foreach pick in hero where "FrameworkSelect.Selection2"
-	    field[resSpent].value += 1
-	    nexteach
-      ]]></eval>
     </thing>
 	
   <thing
@@ -407,14 +400,7 @@
 	
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
-
 	
-	<!-- Use the starting Advances plus the accrued Advances as our maximum -->
-    <eval index="1" phase="Setup" priority="5000" name="Calc Selected 5"><![CDATA[
-	  foreach pick in hero where "FrameworkSelect.Selection3"
-	    field[resSpent].value += 1
-	    nexteach
-      ]]></eval>
     </thing>
 	
   <thing
@@ -426,14 +412,7 @@
 	
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
-
 	
-	<!-- Use the starting Advances plus the accrued Advances as our maximum -->
-    <eval index="1" phase="Setup" priority="5000" name="Calc Selected 5"><![CDATA[
-	  foreach pick in hero where "FrameworkSelect.Selection4"
-	    field[resSpent].value += 1
-	    nexteach
-      ]]></eval>
     </thing>
 	
   <thing
@@ -445,13 +424,6 @@
 	
     <!-- Automatically add the resource to every actor -->
     <tag group="Helper" tag="Bootstrap"/>
-	
-	<!-- Use the starting Advances plus the accrued Advances as our maximum -->
-    <eval index="1" phase="Setup" priority="5000" name="Calc Selected 5"><![CDATA[
-	  foreach pick in hero where "FrameworkSelect.Selection5"
-	    field[resSpent].value += 1
-	    nexteach
-      ]]></eval>
 	  
     </thing>
 	

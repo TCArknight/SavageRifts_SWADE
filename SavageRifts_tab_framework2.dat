@@ -59,7 +59,7 @@
       choosetemplate="SimpleItem"
 	  candidatepick="FrameworkHelper"
 	  candidatefield="ehFrameExp3"
-	  addpick="resFrameSelect2">
+	  addpick="resFrameSelect3">
       <list>FrameworkSelect.Selection3</list>
       <autotag group="FrameworkSelect" tag="Selection3"/>
       <description/>

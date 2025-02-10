@@ -127,10 +127,9 @@
   -->
   <group
     id="FraChosen"
-    dynamic="yes">
+    dynamic="yes"
+	inherit="Skill">
     <value id="Chosen" />
-    <value id="skAthletic" />
-    <value id="skFighting" />
     <value id="attrAgi" />
     <value id="attrSma" />
     <value id="attrSpi" />

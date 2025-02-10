@@ -148,6 +148,31 @@
         ]]></additem>
       </table_dynamic>
     </portal>
+
+
+   <portal
+    id="grBotsSRA"
+    style="tblNormal">
+    <table_dynamic
+      component="Gear"
+      showtemplate="sfRoboPick"
+      choosetemplate="sfRoThing"
+      buytemplate="BuyCash"
+      selltemplate="SellCash"
+      descwidth="350">
+      <list>component.Robot</list>
+      <titlebar><![CDATA[
+        @text = "Add a Bot"
+        ]]></titlebar>
+      <description/>
+      <headertitle><![CDATA[
+        @text = "Bots"
+        ]]></headertitle>
+      <additem><![CDATA[
+        @text = "Add New Bot"
+        ]]></additem>
+      </table_dynamic>
+    </portal>
 	
   <!-- grGearThingSRA template
         Derived from the SimpleItem template, this includes the purchase cost and
@@ -730,6 +755,7 @@
     <portalref portal="grGizmosSRA" taborder="20"/>
     <portalref portal="grVehicleSRA" taborder="30"/>
     <portalref portal="grWalkerSRA" taborder="30"/>
+    <portalref portal="grBotsSRA" taborder="40"/>
 
     <!-- This script sizes and positions the layout and its child visual elements. -->
     <position><![CDATA[
@@ -740,11 +766,13 @@
       portal[grGizmosSRA].width = width
       portal[grVehicleSRA].width = width
       portal[grWalkerSRA].width = width
+      portal[grBotsSRA].width = width
 
       perform portal[grGearSRA].batchadd
       perform portal[grGizmosSRA].batchadd
       perform portal[grVehicleSRA].batchadd
       perform portal[grWalkerSRA].batchadd
+      perform portal[grBotsSRA].batchadd
 
       perform this.batchplace
       ]]></position>
@@ -762,7 +790,7 @@
   -->
   <panel
     id="gearSRA"
-    name="Gear (SRA)"
+    name="Gear"
     marginhorz="5"
     marginvert="5"
     order="220">

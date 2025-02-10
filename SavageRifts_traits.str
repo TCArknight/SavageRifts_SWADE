@@ -6,7 +6,51 @@
 
 <document signature="Hero Lab Structure">
 
+  <!-- CustomDesc component
+        Can be added to any other component to allow for a derived
+		description to display for the component.
+  -->
+  <component
+    id="CustomDesc"
+    name="Custom Description"
+	autocompset="yes">
 
+    <!-- Manage an optional user-assigned description for custom things -->
+    <field
+      id="CustDesc"
+      name="descript (custom)"
+      maxlength="2500"
+      type="derived">
+      </field>
+	  
+    <field
+      id="CustSumm"
+      name="summary (custom)"
+      maxlength="250"
+      type="derived">
+      </field>
+	  
+    <!-- If we have a user-assigned name, copy that into the live name -->
+    <eval index="1" phase="Render" priority="10000"><![CDATA[
+	  ~ if we're empty, then we use the descript field.
+	  if (field[CustDesc].isempty <> 0) then
+	    ~ if we are empty, then we use the description
+        field[CustDesc].text = field[descript].text 
+		endif
+	  
+	  if (field[CustSumm].isempty <> 0) then
+	    ~ if the summary field is empty, use the CustDesc
+		if (field[summary].isempty <> 0) then
+          field[CustSumm].text = field[CustDesc].text
+		else
+          field[CustSumm].text = field[summary].text
+		  endif
+		endif
+		
+      ]]></eval>
+	  
+    </component>
+	
   <component
     id="FraCommon"
     name="Framework Common"
@@ -112,12 +156,13 @@
     <tag group="SpecialTab" tag="RacialProp"/>
 
     <!-- Track the Frame Ability on the actor -->
-    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+    <eval index="2" phase="Setup" priority="5000"><![CDATA[
       perform forward[Framework.?]
+      perform forward[Hero.?]
       ]]></eval>
 
     <!-- If we have a user field, map it into the derived field -->
-    <eval index="2" phase="Render" priority="1000"><![CDATA[
+    <eval index="3" phase="Render" priority="1000"><![CDATA[
 	  var firstcopy as number
 	  var myid as string
 	  var mychoice as string
@@ -172,7 +217,7 @@
       ]]></eval>
 	  
     <!-- If we have a user field, map it into the derived field -->
-    <eval index="3" phase="Render" priority="1100"><![CDATA[
+    <eval index="4" phase="Render" priority="1100"><![CDATA[
 	  if (tagis[Helper.FirstCopy] <> 0) then
 	    field[spcName].text = field[shortname].text 
 		if (field[frNumCopies].value > 1) then
@@ -182,7 +227,7 @@
       ]]></eval>
 	  
     <!-- If we have a user field, map it into the derived field -->
-    <eval index="4" phase="Setup" priority="5000"><![CDATA[
+    <eval index="5" phase="Setup" priority="5000"><![CDATA[
       ~if this pick was NOT user-added, no user fields can be accessed
       doneif (isuser = 0)
 
@@ -664,8 +709,48 @@
       id="abilValue3"
       name="Extra Value 3"
       type="derived">
+      </field>	  
+	  
+    <field
+      id="abilValue4"
+      name="Extra Value 4"
+      type="derived">
+      </field>	  
+	  
+    <field
+      id="abilText2"
+      name="Extra Text 2"
+      type="derived"
+	  maxlength="25">
+      </field>  
+	  
+    <field
+      id="abilText3"
+      name="Extra Text 3"
+      type="derived"
+	  maxlength="25">
+      </field>  
+	  
+    <field
+      id="abilText4"
+      name="Extra Text 4"
+      type="derived"
+	  maxlength="25">
+      </field>
+
+    <!-- Special text details about the Ability
+         (typically used to pass info to bootstraps)	-->
+    <field
+      id="abilSpecial"
+      name="Special"
+      type="derived"
+      maxlength="200">
       </field>
 	  
+    <!-- Forward any Hero tags onto the actor -->
+    <eval index="1" phase="Setup" priority="5000"><![CDATA[
+      perform forward[Hero.?]
+      ]]></eval>
     </component>
 	
   <component
@@ -685,51 +770,6 @@
       name="Extra Value 3"
       type="derived">
       </field>
-	  
-    </component>
-	
-  <!-- CustomDesc component
-        Can be added to any other component to allow for a derived
-		description to display for the component.
-  -->
-  <component
-    id="CustomDesc"
-    name="Custom Description"
-	autocompset="yes">
-
-    <!-- Manage an optional user-assigned description for custom things -->
-    <field
-      id="CustDesc"
-      name="descript (custom)"
-      maxlength="2500"
-      type="derived">
-      </field>
-	  
-    <field
-      id="CustSumm"
-      name="summary (custom)"
-      maxlength="250"
-      type="derived">
-      </field>
-	  
-    <!-- If we have a user-assigned name, copy that into the live name -->
-    <eval index="1" phase="Render" priority="10000"><![CDATA[
-	  ~ if we're empty, then we use the descript field.
-	  if (field[CustDesc].isempty <> 0) then
-	    ~ if we are empty, then we use the description
-        field[CustDesc].text = field[descript].text 
-		endif
-	  
-	  if (field[CustSumm].isempty <> 0) then
-	    ~ if the summary field is empty, use the CustDesc
-		if (field[summary].isempty <> 0) then
-          field[CustSumm].text = field[CustDesc].text
-		else
-          field[CustSumm].text = field[summary].text
-		  endif
-		endif
-		
-      ]]></eval>
 	  
     </component>	  
 

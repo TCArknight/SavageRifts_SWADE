@@ -377,14 +377,6 @@
         field="wpNetAtk">
         </label>
       </portal>
-
-    <!-- <portal
-      id="damage"
-      style="lblNormal">
-      <label
-        field="wpShowDmg">
-        </label>
-      </portal> -->
 	  
     <portal
       id="damage"
@@ -607,12 +599,12 @@
       portal[active].visible = tagis[User.Activation]
 	  
 	  ~perform portal[rof].alignrel[ltor,active,5]
-	  perform portal[rof].centerpoint[horz,290]
+	  perform portal[rof].centerpoint[horz,250]
 
       ~position the range portal to the left of the delete button; we want the
       ~damage to be centered in its own column relative to a centerpoint position
-      ~perform portal[shots].centerpoint[horz,390]
-	  perform portal[shots].alignrel[ltor,rof,6]
+      perform portal[shots].centerpoint[horz,300]
+	  ~perform portal[shots].alignrel[ltor,rof,25]
 	  
       ~position the special portal to the left of the gear button
       perform portal[special].alignrel[rtol,gearmanage,-6]
@@ -627,11 +619,11 @@
 
       ~position the range portal to the left of the delete button; we want the
       ~damage to be centered in its own column relative to a centerpoint position
-      perform portal[range].centerpoint[horz,400]
+      perform portal[range].centerpoint[horz,375]
 
       ~position the AP portal to the left of the range column; we want the AP to
       ~be centered in its own column relative to a centerpoint position
-      perform portal[piercing].centerpoint[horz,240]
+      perform portal[piercing].centerpoint[horz,200]
 
       ~position the damage portal to the left of the AP column; we want the damage
       ~to be centered in its own column relative to a centerpoint position

@@ -47,6 +47,51 @@
 	  
     </component>
 	
+  <!-- CustomDesc component
+        Can be added to any other component to allow for a derived
+		description to display for the component.
+  -->
+  <component
+    id="CustomEqDesc"
+    name="Custom Description"
+	autocompset="yes">
+
+    <!-- Manage an optional user-assigned description for custom things -->
+    <field
+      id="CustEqDesc"
+      name="descript (custom)"
+      maxlength="2500"
+      type="derived">
+      </field>
+	  
+    <field
+      id="CustEqSumm"
+      name="summary (custom)"
+      maxlength="250"
+      type="derived">
+      </field>
+	  
+    <!-- If we have a user-assigned name, copy that into the live name -->
+    <eval index="1" phase="Render" priority="10000"><![CDATA[
+	  ~ if we're empty, then we use the descript field.
+	  if (field[CustEqDesc].isempty <> 0) then
+	    ~ if we are empty, then we use the description
+        field[CustEqDesc].text = field[descript].text 
+		endif
+	  
+	  if (field[CustEqSumm].isempty <> 0) then
+	    ~ if the summary field is empty, use the CustEqDesc
+		if (field[summary].isempty <> 0) then
+          field[CustEqSumm].text = field[CustEqDesc].text
+		else
+          field[CustEqSumm].text = field[summary].text
+		  endif
+		endif
+		
+      ]]></eval>
+	  
+    </component>
+	
   <!-- WeaponBase component
         All weapons derive from this component. Weapons track a bonus value and damage
         rating, as well as a strength requirement. The net attack value for the weapon
@@ -218,6 +263,18 @@
       field[wpNotesAlt].text = special
       ]]></eval>
 	  
+    <!-- Assign any derived special notes to the appropriate field -->
+    <eval index="2" phase="Effects" priority="1000"><![CDATA[
+      ~ if we're not a tattoo, then we're done.
+	  doneif (tagis[Helper.IsTattoo] = 0)
+	  
+	  ~ if we're not equipped, then we don't weigh anything
+	  doneif (field[grIsEquip].value <> 0)
+	  
+	  field[gearWeight].value = 0
+	  
+      ]]></eval>
+	  
     </component>
 
   <!-- DefenseSRA component -->
@@ -331,7 +388,19 @@
 
       ~we've synthesized the notes for the weapon
       field[defSpecDisp].text = special
-      ]]></eval>	  	  
+      ]]></eval>	
+	  
+    <!-- Assign any derived special notes to the appropriate field -->
+    <eval index="4" phase="Effects" priority="1000"><![CDATA[
+      ~ if we're not a tattoo, then we're done.
+	  doneif (tagis[Helper.IsTattoo] = 0)
+	  
+	  ~ if we're not equipped, then we don't weigh anything
+	  doneif (field[grIsEquip].value <> 0)
+	  
+	  field[gearWeight].value = 0
+	  
+      ]]></eval>  	  
     </component>
 
   <!-- ArmorSpecial component -->
@@ -640,6 +709,7 @@
     <compref component="WeapRange"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
     <compref component="Custom"/>
     </compset>
 
@@ -655,6 +725,7 @@
     <compref component="Modificatn"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
     <compref component="Custom"/>
     </compset>
 
@@ -667,6 +738,7 @@
     <compref component="WeapMelee"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
     <compref component="Custom"/>
     </compset>
 
@@ -678,6 +750,7 @@
     <compref component="WeaponBaseSRA"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
     <compref component="Custom"/>
     </compset>
 	
@@ -691,6 +764,8 @@
     <compref component="Defense"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
+    <compref component="Custom"/>
     </compset> 
 	
   <!-- Shield -->
@@ -703,6 +778,8 @@
     <compref component="Defense"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
+    <compref component="Custom"/>
     </compset>
 
   <!-- Shield -->
@@ -713,6 +790,8 @@
     <compref component="Defense"/>
     <compref component="Equippable"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
+    <compref component="Custom"/>
     </compset>
 	
   <!-- Power Armor -->
@@ -723,6 +802,8 @@
     <compref component="Equippable"/>
     <compref component="Vehicle"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
+    <compref component="Custom"/>
     </compset>
 
   <compset
@@ -730,6 +811,7 @@
     stackable="yes">
     <compref component="ItemMod"/>
     <compref component="Gear"/>
+    <compref component="CustomEqDesc"/>
     </compset>	
 	
   <!-- Define any entities associated with the components defined above. -->

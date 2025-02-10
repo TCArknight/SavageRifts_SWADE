@@ -165,6 +165,20 @@
       maxvalue="1"
       defvalue="0">
       </field>
+
+    <field
+      id="tatStrain"
+      name="Strain cost for the Tattoo"
+      type="derived"
+	  minvalue="0">
+	  </field>
+
+    <field
+      id="tatPPECost"
+      name="PPE cost to use the Tattoo"
+      type="derived"
+	  minvalue="0">
+	  </field>
 	  
     <!-- Each HJ Entry needs its own identity tag to detect cascading dependencies via prereqs -->
     <identity group="Tattoo"/>

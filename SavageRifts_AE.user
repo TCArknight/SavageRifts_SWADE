@@ -182,7 +182,25 @@ Empires of Humanity:
     <tag group="Hero" tag="IsSemiAquatic" name="Hero is considered Semi-Aquatic"/>
     <tag group="Helper" tag="DangerSenseActive" name="Danger Sense edge is Active"/>
     <tag group="Helper" tag="InnerSpirit"/>
+    <tag group="Helper" tag="FrameworkAdded"/>
+    <tag group="Hero" tag="NotAllowedJuicer"/>
+    <tag group="Hero" tag="NotAllowedCrazy"/>
+    <tag group="Hero" tag="AlienPhysiology" name="Hero has an Alien Physiology"/>
+    <tag group="Hero" tag="BizzarePhysiology" name="Hero has a Bizzare Physiology"/>
+    <tag group="Hero" tag="NHumanPhysiology" name="Hero has a Near-Human Physiology"/>
+    <tag group="Hero" tag="TArcher" name="Hero has the Tattooed Archer edge."/>
+    <tag group="Hero" tag="TMonster"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <tag group="Hero" tag="LeyLineSense" name="Hero has Ley Line Sense"/>
+    <tag group="Weapon" tag="Retract"/>
     <bootstrap thing="setSRARifts"></bootstrap>
+    <eval phase="PreTraits" priority="5000" index="6" name="Calc Magic Tattoos"><![CDATA[var numTat as number
+numTat = hero.tagcount[Tattoo.?]
+
+doneif (numTat = 0)
+
+#trkmax[trkSRANonABPPE] += numTat
+perform #traitadjust[trTough,+,numTat,"Magic Tattoos"]]]></eval>
     <eval phase="PreTraits" priority="5000" index="2"><![CDATA[~ if MARS, Start as Seasoned with 2 rolls on Fortune and Glory table and an
 ~ additional roll on the Hero's Journey tables.
 if (hero.tagis[Helper.IsMARS] <> 0) then
@@ -192,21 +210,6 @@ if (hero.tagis[Helper.IsMARS] <> 0) then
   endif]]>
       <before name="Calc trtFinal"/>
       </eval>
-    <eval phase="Setup" priority="1000">~begin with 2 Hero Journey selections
-#resmax[resHeroJrn] += 2
-
-~ assign all HJ tables as invalid, each Framework will delete as needed.
-~ perform hero.assign[HJInvalidCatSRA.BodArm]
-~ perform hero.assign[HJInvalidCatSRA.CCW]
-~ perform hero.assign[HJInvalidCatSRA.Cyber]
-~ perform hero.assign[HJInvalidCatSRA.Edu]
-~ perform hero.assign[HJInvalidCatSRA.EncMys]
-~ perform hero.assign[HJInvalidCatSRA.ExpWis]
-~ perform hero.assign[HJInvalidCatSRA.MagMys]
-~ perform hero.assign[HJInvalidCatSRA.Psi]
-~ perform hero.assign[HJInvalidCatSRA.Ranged]
-~ perform hero.assign[HJInvalidCatSRA.Train]
-~ perform hero.assign[HJInvalidCatSRA.Under]</eval>
     <eval phase="Effects" priority="149" index="5" name="Prepare First Copy"><![CDATA[~This eval script is meant to foreach through all the class specials
 ~and mark each as a FirstCopy or not. We do this with a foreach rather
 ~than a component script so that we can proceed from the lower level
@@ -235,23 +238,6 @@ foreach pick in hero from xCopyTracker where "!Helper.SpcDisable"
   nexteach
 
 ~The next step is going to take place in the xCopyTracker component script.]]></eval>
-    <eval phase="Initialize" priority="1000" index="3"><![CDATA[~Hide the normal Armory, special tab
-perform hero.assign[HideTab.armory]
-perform hero.assign[HideTab.gear]
-perform hero.assign[HideTab.smArmory]
-perform hero.assign[HideTab.special]
-
-~ if we're a creature, we don't need the Hero's Journey tab
-if (hero.tagis[Hero.Creature] <> 0) then
-  perform hero.assign[Helper.NoHerosJourney]
-  endif]]></eval>
-    <eval phase="PreTraits" priority="5000" index="6" name="Calc Magic Tattoos"><![CDATA[var numTat as number
-numTat = hero.tagcount[Tattoo.?]
-
-doneif (numTat = 0)
-
-#trkmax[trkSRANonABPPE] += numTat
-perform #traitadjust[trTough,+,numTat,"Magic Tattoos"]]]></eval>
     <eval phase="Setup" priority="1500" index="4"><![CDATA[trustme
 
 var myTag as string
@@ -269,6 +255,31 @@ foreach pick in hero from Arcane
 
   perform eachpick.forward[Hero.?]
   nexteach]]></eval>
+    <eval phase="Setup" priority="1000">~begin with 2 Hero Journey selections
+#resmax[resHeroJrn] += 2
+
+~ assign all HJ tables as invalid, each Framework will delete as needed.
+~ perform hero.assign[HJInvalidCatSRA.BodArm]
+~ perform hero.assign[HJInvalidCatSRA.CCW]
+~ perform hero.assign[HJInvalidCatSRA.Cyber]
+~ perform hero.assign[HJInvalidCatSRA.Edu]
+~ perform hero.assign[HJInvalidCatSRA.EncMys]
+~ perform hero.assign[HJInvalidCatSRA.ExpWis]
+~ perform hero.assign[HJInvalidCatSRA.MagMys]
+~ perform hero.assign[HJInvalidCatSRA.Psi]
+~ perform hero.assign[HJInvalidCatSRA.Ranged]
+~ perform hero.assign[HJInvalidCatSRA.Train]
+~ perform hero.assign[HJInvalidCatSRA.Under]</eval>
+    <eval phase="Initialize" priority="1000" index="3"><![CDATA[~Hide the normal Armory, special tab
+perform hero.assign[HideTab.armory]
+perform hero.assign[HideTab.gear]
+perform hero.assign[HideTab.smArmory]
+perform hero.assign[HideTab.special]
+
+~ if we're a creature, we don't need the Hero's Journey tab
+if (hero.tagis[Hero.Creature] <> 0) then
+  perform hero.assign[Helper.NoHerosJourney]
+  endif]]></eval>
     </thing>
   <thing id="racSRAAltara" name="Altara" description="The Blind Warrior Women of Altara (commonly called Warrior Women) are infamous clones bred to serve Atlantis. An Altarain has the ability to induce herself into asexual reproduction and produce a clone. Such clones rapidly mature to adults with the memories and capabilities of the spawning Altara. Most are brainwashed, abjectly loyal servants of the Splugorth, yet some break their conditioning and rebel, seeking a life outside of service to Atlantis. Though blind, Altara have extraordinary sensory abilities and are genetically engineered to be superior physical specimens.\n\nGenetically and magically designed for combat, Altara rarely speak and have a decidedly warrior-first view of everything. Rogues usually wear sunglasses, visors, goggles, or hoods to hide their Atlantean roots and tell-tale blind, sightless eyes. They do this to avoid the prejudice of those who assume they are still serving the Slavers, as well as to avoid easy detection by those who would hunt them down for Atlantis." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsTLPGAE"/>
@@ -833,6 +844,7 @@ if (hero.tagis[FraTypeSel.Psionic] <> 0) then
     </thing>
   <thing id="rpSRANearHAltara" name="Near-Human Physiology" description="Altara were modified through Splugorth bio-wizardry, giving those unfamiliar with their biology a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAStormFoulSen" name="Storm-Fouled Senses" description="In inclement weather or conditions where the environment is greatly disturbed (sand storms, fires with lots of smoke), the Altara suffer a −2 penalty to Notice, Fighting, Shooting, and Athletics (throwing)." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
@@ -856,6 +868,7 @@ if (hero.tagis[FraTypeSel.Psionic] <> 0) then
     </thing>
   <thing id="rpSRAAlienPhysDno" name="Alien Physiology" description="The physiology of D’Norr is quite alien, giving those unfamiliar with their biology a −2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.DoubleCost]
 
@@ -884,7 +897,7 @@ perform hero.assign[Helper.AugmentInvalid]</eval>
       <autotag group="WeaponDie" tag="2"/>
       </bootstrap>
     </thing>
-  <thing id="rpSRAIntelSpirit" name="Intelligent and Spiritual" description="D’Norr are highly intelligent and spiritual, beginning with a d6 Smarts and Spirit. This makes their natural maximums for those Traits d12+1." compset="ExtRacialProp" summary="Start with Smarts and Spirit of d6.">
+  <thing id="rpSRAIntelSpirit" name="Intelligent and Spiritual" description="Members of the race are highly intelligent and spiritual, beginning with a d6 Smarts and Spirit. This makes their natural maximums for those Traits d12+1." compset="ExtRacialProp" summary="Start with Smarts and Spirit of d6.">
     <usesource source="srcRiftsTLPGAE"/>
     <eval phase="PreTraits" priority="5000">#traitbonus[attrSma] += 1
 hero.child[attrSma].field[trtMaximum].value += 1
@@ -962,6 +975,7 @@ if (field[abilActive].value <> 0) then
     </thing>
   <thing id="rpSRANearHDog" name="Near-Human Physiology" description="Engineered from Rifts Earth genetic stock, those unfamiliar with Psi-Hound physiology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAOddlyBuiltDB" name="Oddly Built" description="The Psi-Hound project produces mutant canines with peculiar physical builds. Long snouts, digitigrade legs, tails, and other oddities mean most standard armor and clothing must be custom-made at double normal cost. Glitter Boy armor (and the Iconic Framework) and most human power armor is not an option." compset="ExtRacialProp" summary="Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option.">
     <usesource source="srcRiftsTLPGAE"/>
@@ -985,6 +999,7 @@ if (field[abilActive].value <> 0) then
     </thing>
   <thing id="rpSRAAlienPhysFen" name="Alien Physiology" description="Fennodi are quite alien, giving those unfamiliar with their biology a −2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost quadruple the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.QuadCost]
 ~ assign hero the invalid augments tag
@@ -1030,6 +1045,7 @@ hero.child[attrSpi].field[trtMaximum].value += 1</eval>
     </thing>
   <thing id="rpSRABizPhysGrac" name="Bizarre Physiology" description="Grackle physiology gives a −4 penalty to Healing checks. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="BizarrePhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.QuadCost]
 
@@ -1037,6 +1053,7 @@ perform hero.assign[Cyberware.QuadCost]
 perform hero.assign[Helper.NonStdBuildMaj]</eval>
     </thing>
   <thing id="rpSRACyberResGrac" name="Cyber Resistant" description="Cybernetics are incompatible with Grackle physiology. Juicer and Crazy augmentations don’t work for this race." compset="ExtRacialProp">
+    <fieldval field="raceCstVal" value="-1"/>
     <usesource source="srcRiftsTLPGAE"/>
     <eval phase="Setup" priority="500">~ assign hero the invalid augments tag
 perform hero.assign[Helper.AugmentInvalid]
@@ -1125,6 +1142,7 @@ else
     </thing>
   <thing id="rpSRAAlienPhysLyn" name="Alien Physiology" description="Lyn-Srial are quite alien, giving those unfamiliar with their biology a −2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost quadruple the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.QuadCost]
 ~ assign hero the invalid augments tag
@@ -1228,6 +1246,7 @@ hero.child[attrAgi].field[trtMaximum].value += 2</eval>
     </thing>
   <thing id="rpSRAAlienPhysQuF" name="Alien Physiology" description="Quick Flex are quite alien, giving those unfamiliar with their biology a −2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost quadruple the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.QuadCost]
 ~ assign hero the invalid augments tag
@@ -1307,6 +1326,7 @@ focus.field[trkMax].value += 5</eval>
     </thing>
   <thing id="rpSRANearHSim" name="Near-Human Physiology" description="Those unfamiliar with Simvan biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRARacEneSim" name="Racial Enemy" description="Psi-Stalker and Simvan tribes have been at war for generations. Meetings start argumentative and get worse. Simvan suffer −2 Persuasion with Psi-Stalkers." compset="ExtRacialProp" summary="−2 Persuasion with Psi-Stalkers.">
     <usesource source="srcRiftsTLPGAE"/>
@@ -1314,6 +1334,7 @@ focus.field[trkMax].value += 5</eval>
     </thing>
   <thing id="rpSRAAlienPhysTri" name="Alien Physiology" description="Trimadore are quite alien, giving those unfamiliar with their biology a −2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.DoubleCost]
 
@@ -1472,7 +1493,7 @@ doneif (state.isfocus = 0)
 
 focus.field[trkMax].value += 10</eval>
     </thing>
-  <thing id="rpSRAPsiMinDra" name="Minor Psionic" description="Dragons begin with Arcane Background (Psionics), 10 ISP, Psionics d4, speak language and two other powers chosen from the standard psionic power list on page 120." compset="ExtRacialProp" summary="10 ISP, Psionics d4, Speak language and two other powers">
+  <thing id="rpSRAPsiMinDra" name="Minor Psionic" description="Dragons begin with Arcane Background (Psionics), 10 ISP, Psionics d4, {i}speak language{/i} and two other powers chosen from the standard psionic power list on page 120." compset="ExtRacialProp" summary="10 ISP, Psionics d4, Speak language and two other powers">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="edgArcPsiSWADE"></bootstrap>
     <bootstrap thing="powSpeakSWADE">
@@ -1546,6 +1567,7 @@ perform hero.assign[Helper.CyberNotValid]</eval>
     </thing>
   <thing id="rpSRABizPhysVer" name="Bizarre Physiology" description="Vernulian physiology is quite bizarre, those unfamiliar are −4 penalty to Healing checks. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsTLFMAE"/>
+    <tag group="Hero" tag="BizarrePhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.QuadCost]
 
@@ -1638,6 +1660,7 @@ field[shortname].text = field[livename].text]]></eval>
     </thing>
   <thing id="rpSRABizPhysCac" name="Bizarre Physiology" description="Those unfamiliar with Cactus Person biology suffer a −4 penalty to Healing checks. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hero" tag="BizarrePhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.DoubleCost]</eval>
     </thing>
@@ -1698,6 +1721,7 @@ perform hero.assign[Helper.ABMiracleNotValid]</eval>
     </thing>
   <thing id="rpSRANearHDwa" name="Near-Human Physiology" description="Those unfamiliar with Dwarven biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAPhyStrEndDwa" name="Physical Strength and Endurance" description="Dwarves start with Strength d6 and Vigor d6, raise Trait maximums accordingly." compset="ExtRacialProp" summary="Start with Strength d6, and Vigor of d6.">
     <usesource source="srcRiftsArcMysAE"/>
@@ -1751,6 +1775,7 @@ hero.child[attrVig].field[trtMaximum].value += 1</eval>
     </thing>
   <thing id="rpSRANearHElf" name="Near-Human Physiology" description="Those unfamiliar with elven biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAPhysMentElf" name="Physical and Mental Prowess" description="Elves start with d6 Agility and d6 Smarts; increase Trait maximums accordingly." compset="ExtRacialProp" summary="Start with Agility d6 and Smarts d6.">
     <usesource source="srcRiftsArcMysAE"/>
@@ -1796,6 +1821,7 @@ hero.child[attrStr].field[trtMaximum].value += 1]]></eval>
     </thing>
   <thing id="rpSRANearHOrc" name="Near-Human Physiology" description="Those unfamiliar with orcish biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAPyhsStrOrc" name="Physical Strength" description="Orcs start with d6 Strength, which increases Trait maximum accordingly." compset="ExtRacialProp" summary="Start with Strength of d6.">
     <usesource source="srcRiftsTLPGAE"/>
@@ -1839,6 +1865,7 @@ hero.child[attrStr].field[trtMaximum].value += 1</eval>
     </thing>
   <thing id="rpSRABizPhysVro" name="Bizarre Physiology" description="Those unfamiliar with Vronwor biology suffer a −4 penalty to Healing checks. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp">
     <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hero" tag="BizarrePhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.DoubleCost]
 
@@ -1920,6 +1947,7 @@ hero.child[attrStr].field[trtMaximum].value = 99</eval>
     </thing>
   <thing id="rpSRANearHCen" name="Near-Human Physiology" description="Those unfamiliar with centaur biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsBloBanAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRANSBuildCen" name="Non-Standard Build" description="Centaurs have unique proportions. Subtract 2 from Trait rolls when using equipment not designed for then (including weapons and vehicles). They can&apos;t wear commonly available armor or clothing, it must be custom-designed and fitted—tripling associated costs. Glitter Boy armor (and the Iconic Framework) is not an option, neither is most power armor. Equipment and food cost double the listed price. Starting Gear is assumed to be custom-built for the character." compset="ExtRacialProp" summary="Subtract 2 from Trait rolls when using equipment not designed for Centaurs. Increased costs for gear.">
     <usesource source="srcRiftsBloBanAE"/>
@@ -1970,6 +1998,7 @@ hero.childfound[resSkill].field[resSpent].value -= 1</eval>
     </thing>
   <thing id="rpSRANearHSas" name="Near-Human Physiology" description="Those unfamiliar with sasquatch biology suffer a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsBloBanAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRANatPsiSas" name="Natural Psionics" description="Sasquatch possess an innate aptitude for Psionics. They begin with the Arcane Background (Psionics) Edge and start with the following three powers: {i}detect/conceal arcana, empathy,{/i} and {i}mind link{/i}. If a Sasquatch chooses an Iconic Framework providing Arcane Background (Psionics), he follows all the normal rules for the Framework except three of his starting powers are the ones listed above (even if not normally allowed to that Framework) and the Sasquatch gains two additional power to his starting total (so a Sasquatch Burster starts with five powers, for example)." compset="ExtRacialProp" summary="Begin with AB (Psionics) and three powers: {i}detect/conceal arcana, empathy,{/i} and {i}mind link{/i}.">
     <usesource source="srcRiftsBloBanAE"/>
@@ -2070,6 +2099,7 @@ if (field[abilActive].value <> 0) then
     </thing>
   <thing id="rpSRANearHMAB" name="Near-Human Physiology" description="Created from Rifts Earth genetic stock, those unfamiliar with the mutant&apos;s physiology suffer onlya −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsEmpHumAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAOddlyBMAB" name="Oddly Built" description="CS mutant animals have long snouts, prick ears, digitigrade &quot;backward&quot; legs, tails, and all manner of physical oddities. Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option." compset="ExtRacialProp" summary="Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option.">
     <usesource source="srcRiftsEmpHumAE"/>
@@ -2139,6 +2169,7 @@ hero.childfound[resSkill].field[resSpent].value -= 1</eval>
     </thing>
   <thing id="rpSRANearHMAR" name="Near-Human Physiology" description="Created from Rifts Earth genetic stock, those unfamiliar with the mutant&apos;s physiology suffer only a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAOddlyBMAR" name="Oddly Built" description="CS mutant animals have long snouts, prick ears, digitigrade &quot;backward&quot; legs, tails, and all manner of physical oddities. Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option." compset="ExtRacialProp" summary="Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option.">
     <usesource source="srcRiftsEmpHumAE"/>
@@ -2217,6 +2248,7 @@ focus.field[rhEdgeHdr].text = header]]></eval>
     </thing>
   <thing id="rpSRANearHMFB" name="Near-Human Physiology" description="Created from Rifts Earth genetic stock, those unfamiliar with the mutant&apos;s physiology suffer only a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsEmpHumAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAOddlyBMFB" name="Oddly Built" description="CS mutant animals have long snouts, prick ears, digitigrade &quot;backward&quot; legs, tails, and all manner of physical oddities. Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option." compset="ExtRacialProp" summary="Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option.">
     <usesource source="srcRiftsEmpHumAE"/>
@@ -2291,6 +2323,7 @@ focus.field[rhEdgeHdr].text = header]]></eval>
     </thing>
   <thing id="rpSRANearHMFK" name="Near-Human Physiology" description="Created from Rifts Earth genetic stock, those unfamiliar with the mutant&apos;s physiology suffer only a −1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls and to any cybernetics checks involving installation, repair, and modification.">
     <usesource source="srcRiftsEmpHumAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAOddlyBMFK" name="Oddly Built" description="CS mutant animals have long snouts, prick ears, digitigrade &quot;backward&quot; legs, tails, and all manner of physical oddities. Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option." compset="ExtRacialProp" summary="Rifts Earth armor and clothing must be custom-tailored at double normal cost. Glitter Boy armor (including the Iconic Framework) and human power armor is not an option.">
     <usesource source="srcRiftsEmpHumAE"/>
@@ -3739,11 +3772,12 @@ call GiveCrazyList]]></eval>
     <usesource source="srcRiftsEmpHumAE"/>
     <tag group="MinRank" tag="0"/>
     <tag group="EdgeType" tag="Iconic"/>
-    <pickreq thing="grpSRAJuicer"/>
+    <eval phase="Final" priority="1000"><![CDATA[hero.childfound[grpSRAJuicer].field[livename].text = "Juicer (Mega-Juicer)"]]></eval>
     <pickreq thing="edgSRADelphiJuice" ispreclude="yes"/>
     <pickreq thing="edgSRAHyperionTre" ispreclude="yes"/>
     <pickreq thing="edgSRAPhaetonTrea" ispreclude="yes"/>
     <pickreq thing="edgSRATitanTreat" ispreclude="yes"/>
+    <pickreq thing="grpSRAJuicer"/>
     </thing>
   <thing id="edgSRAPhaetonTrea" name="Phaeton Treatment" description="Phaeton Juicers, named after the first daredevil of Greek mythology, have a knack for mastering any mode of transportation—they can pilot, ride, drive, or handle anything. Their nanites and bio-comp system are calibrated to provide them with hyper-enhanced proprioception and reaction times.\n\nWhenever Phaetons make unskilled Agility-based skill checks, they do so at d4 instead of the usual d4−2. Additionally, attackers are −1 on attack rolls targeting any vehicle, vessel, or mount under the Phaeton Juicer’s control, and is +1 to Evade. This stacks with bonuses from abilities like Nimble." compset="Edge" summary="Make unskilled Agility-based skill checks, they do so at d4 instead of the usual d4−2. Additionally, attackers are −1 on attack rolls targeting any vehicle, vessel, or mount under the Phaeton Juicer’s control, and is +1 to Evade.">
     <usesource source="srcRiftsEmpHumAE"/>
@@ -4493,6 +4527,7 @@ perform hero.assign[HJInvalidCatSRA.MagMys]</eval>
     <pickreq thing="racSRAIntelConstr" ispreclude="yes"/>
     <pickreq thing="racSRADragonHatch" ispreclude="yes"/>
     <pickreq thing="racSRACyborg" ispreclude="yes"/>
+    <exprreq message="Framework not allowed.">hero.tagis[Hero.NotAllowedCrazy] = 0</exprreq>
     </thing>
   <thing id="grpSRACyberKnight" name="Cyber-Knight" compset="Group" uniqueness="unique">
     <usesource source="srcRiftsTLPGAE"/>
@@ -4550,7 +4585,7 @@ myCount += hero.tagcount[HJCategorySRA.Train]
     <pickreq thing="racSRADragonHatch" ispreclude="yes"/>
     <pickreq thing="racSRACyborg" ispreclude="yes"/>
     </thing>
-  <thing id="grpSRAJuicer" name="Juicer" compset="Group" uniqueness="unique">
+  <thing id="grpSRAJuicer" name="Juicer" description="Life is not cheap. But many of those going under the knife for the bio-comp and other implants to convert them into the most potent super-soldiers in the world might think it is. They often spout nihilistic phrases like, “Live fast, die young, and leave a great-looking corpse!” Most of them might even mean it at the time.\n\nInevitably, they come to understand differently as their short years pass by in a haze of bullets and blood, and their lives burn away faster and faster.\n\nA Juicer sells his most precious commodity— his very existence on the planet—for the gifts of chemical enhancement through nanotech augmentation, all managed and moderated by an internal bio-comp system. Speed, strength, and endurance 10 times that of a top athlete make a Juicer a powerful combat machine. He trades his natural lifespan to become a killing machine, rented to the highest bidder or committed to an ideal that matters more than his own life.\n\nIn many cases, he does it just to see that his family gets a decent, safe place to live and three square meals a day.\n\nWhatever the reason, the Juicer is a powerful and dangerous being for a few short years at best, and then he’s either dead or (in very, very rare cases) a shattered husk of a person yearning for glory forever lost." compset="Group" uniqueness="unique">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="faSRAIntRepSystem"></bootstrap>
     <bootstrap thing="faSRASuperEndur"></bootstrap>
@@ -4586,8 +4621,9 @@ myCount += hero.tagcount[HJCategorySRA.Under]
     <pickreq thing="racSRAIntelConstr" ispreclude="yes"/>
     <exprreq message="Must be able to be augmented.">hero.tagis[Helper.AugmentInvalid] = 0</exprreq>
     <exprreq message="Must be able to use Cybernetics">hero.tagis[Helper.CyberNotValid] = 0</exprreq>
+    <exprreq message="Framework not allowed.">hero.tagis[Hero.NotAllowedJuicer] = 0</exprreq>
     </thing>
-  <thing id="grpSRALeyLineWalk" name="Ley Line Walker" compset="Group" uniqueness="unique">
+  <thing id="grpSRALeyLineWalk" name="Ley Line Walker" description="With magic alive again in the world, there are practitioners of every style and sort found everywhere. Few command the respect or possess quite the power of the Ley Line Walker. Tied directly to the earthshattering weave of ley lines, nexuses, and Rifts covering the planet, Walkers are masters of the unleashed arcane powers that indisputably redefined existence.\n\nThe Walker’s study of ley lines doesn’t just represent raw magical might, though they have plenty of that. Ley Line Walkers are highly sought after by scholars, leaders, and explorers because of their unrivaled knowledge and understanding of the lines of power that tore the world asunder and opened the way to countless other realms." compset="Group" uniqueness="unique">
     <usesource source="srcRiftsTLPGAE"/>
     <tag group="PowerGiveG" tag="powArcaneProtect"/>
     <tag group="PowerGiveG" tag="powBanishSWADE"/>
@@ -4640,8 +4676,12 @@ myCount += hero.tagcount[HJCategorySRA.Under]
     <bootstrap thing="faSRAABMagicLLW"></bootstrap>
     <bootstrap thing="faSRAExpAwareLLW"></bootstrap>
     <bootstrap thing="faSRALeyLineMagM"></bootstrap>
-    <bootstrap thing="faSRALeyLineRejuv"></bootstrap>
-    <bootstrap thing="faSRALeyLineSense"></bootstrap>
+    <bootstrap thing="faSRALeyLineRejuv">
+      <autotag group="Helper" tag="FrameworkAdded"/>
+      </bootstrap>
+    <bootstrap thing="faSRALeyLineSense">
+      <autotag group="Helper" tag="FrameworkAdded"/>
+      </bootstrap>
     <bootstrap thing="faSRALeyLineTrans"></bootstrap>
     <bootstrap thing="faSRALeyLineWalk"></bootstrap>
     <eval phase="Setup" priority="1100">~ Ay HJ table except Psionics is valid
@@ -5068,6 +5108,7 @@ perform hero.assign[HJInvalidCatSRA.Psi]</eval>
     <pickreq thing="racSRADragonHatch" ispreclude="yes"/>
     <pickreq thing="racSRACyborg" ispreclude="yes"/>
     <pickreq thing="racSRAIntelConstr" ispreclude="yes"/>
+    <exprreq message="Framework not allowed.">hero.tagis[Hero.NotAllowedJuicer] = 0</exprreq>
     </thing>
   <thing id="grpSRAEleFusion" name="Elemental Fusionist" description="Even more so than other humans native to Rifts Earth, like Psi-Stalkers and Psi- Ghosts, the primordial arcane energies newly reawakened in the world have permanently changed those known as Elemental Fusionists. One is either born an elementalist, or not. However, unlike their fellow mutant humans, parentage does not guarantee the Fusionist&apos;s unique connection to the primeval forces of earth, air, water, and fire—no one can predict which humans will have the elemental forces awakened within them.\n\nWhat is readily apparent, though is the fact Elemental Fusionists are always born in areas far away from civilization, their true potential only able to manifest when distanced from the artificial confines of domesticated humanity. Fusionists are profoundly shaped at every level by the first element they bond with. This &quot;life sign&quot; molds their temperament, favorite places, colors, pastimes, and even destiny." compset="Group" uniqueness="unique">
     <usesource source="srcRiftsArcMysAE"/>
@@ -5086,8 +5127,10 @@ perform hero.assign[HJInvalidCatSRA.Psi]</eval>
 perform hero.assign[HJInvalidCatSRA.EncMys]
 perform hero.assign[HJInvalidCatSRA.ExpWis]
 perform hero.assign[HJInvalidCatSRA.MagMys]
-perform hero.assign[HJInvalidCatSRA.Train]</eval>
-    <pickreq thing="racSRAHuman"/>
+perform hero.assign[HJInvalidCatSRA.Train]
+
+perform hero.assign[Helper.FrameworkChoices]</eval>
+    <exprreq message="Human required."><![CDATA[hero.tagis[Race.racSRAHuman] <> 0]]></exprreq>
     </thing>
   <thing id="grpSRANegaPsychic" name="Nega-Psychic" description="A Nega-Psychic is a walking human rejection of paranormal powers and influence. A scholar or scientist might point out the irony in using inherently preternatural abilities to combat magic, psionics, and the supernatural; a Nega-Psychic simply appreciates her ability to fight back against a world full of eldritch dangers." compset="Group" uniqueness="unique">
     <usesource source="srcRiftsArcMysAE"/>
@@ -6760,6 +6803,20 @@ hero.childfound[skPsionics].field[trtNetRoll].value -= cyb</eval>
   <thing id="fcSRAUnstablePsyc" name="Unstable Psyche" description="From the start (and for no added benefit), the character gains Impulsive and a Hindrance rolled on the Psyche Degradation Table. Representing the constant degradation of the Crazy’s psychological state, she gains a Hindrance from the table each time she achieves a new Rank. Simultaneously, her abilities chaotically expand—each new Rank also roll once on the Psionics Hero&apos;s Journey table." compset="FraComp">
     <usesource source="srcRiftsTLPGAE"/>
     <bootstrap thing="hinImpulsive"></bootstrap>
+    <eval phase="Setup" priority="1000">#resmax[resFrameSelect5] += 2</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[var header as string
+var chooser as string
+var additem as string
+
+additem = "Add Unstable Psyche Hindrance"
+header = "Unstable Psyche: "
+header &= hero.child[resFrameSelect5].field[resSummary].text
+chooser = "Helper.UnstablePsyche"
+
+~set up chooser expressions for Edge selection
+hero.child[FrameworkHelper].field[ehFrameAdd5].text = additem
+hero.child[FrameworkHelper].field[ehFrameExp5].text = chooser
+hero.child[FrameworkHelper].field[ehFrameHdr5].text = header]]></eval>
     </thing>
   <thing id="faSRACyberArmorCK" name="Cyber-Armor" description="As a free action, Cyber-Knights can summon an organic metal shell granting +2 Toughness and allowing them to ignore Gritty Damage (see Blood &amp; Gore, page 116)." compset="FraAbility" summary="As a free action, summon armor that grants +2 Toughness and allow to ignore Gritty Damage">
     <fieldval field="frValue" value="2"/>
@@ -7215,6 +7272,8 @@ call GiveLLWalkerList]]></eval>
     </thing>
   <thing id="faSRALeyLineSense" name="Ley Line Sense" description="A Ley Line Walker can sense a ley line within 10 miles, and he can automatically tell how powerful it is, in what directions it flows, where it meets other ley lines at nexus points, and other aspects as might apply (such as if a huge amount of its energy is being siphoned for some other purpose).\n\nHe can also sense any nearby Rifts within 10 miles, as well as the arcane tremors created by the eruption of new or recurring Rifts within 50 miles." compset="FraAbility" summary="Sense Ley Lines (and specific details about them) or Rifts within 10 miles (50 miles for eruption of new or recurring Rifts).">
     <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hero" tag="LeyLineSense"/>
+    <eval phase="Initialize" priority="500">perform hero.pushtags[Hero.?]</eval>
     </thing>
   <thing id="faSRALeyLineTrans" name="Ley Line Transmission" description="Walkers are able to send and receive spoken messages along ley lines at any distance. This can be a wide broadcast that anyone along the line can hear, or it can be directed to a single recipient (who needs to be on the line and expecting the message)." compset="FraAbility" summary="Send and receive spoken messages along ley lines at any distance.">
     <usesource source="srcRiftsTLPGAE"/>
@@ -10767,11 +10826,13 @@ perform hero.assign[Helper.CyberNotValid]</eval>
     <fieldval field="raceCstVal" value="-1"/>
     <usesource source="srcRiftsBloBanAE"/>
     <tag group="User" tag="Creature"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRAAlienPhys" name="Alien Physiology" description="The species has unique physiology, causing problems for those unfamiliar with their biology, and medical supplies or cybernetics designed for human use.\n\nFor 2 points the race has Alien Physiology giving a –2 penalty to Healing and cybernetics checks. Juicer and Crazy augmentations don’t work for this race. Compatible medical supplies/services and cybernetics cost double the listed price." compset="ExtRacialProp" summary="Medical services and Cybernetics cost double. −2 penalty to Healing skill rolls and to any cybernetics checks. No Juicer or Crazy Augmentations work.">
     <fieldval field="raceCstVal" value="-2"/>
     <usesource source="srcRiftsBloBanAE"/>
     <tag group="User" tag="Creature"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     <eval phase="Setup" priority="500">~ assign hero the double cost tag for Cyberware
 perform hero.assign[Cyberware.DoubleCost]
 
@@ -10785,6 +10846,7 @@ perform hero.assign[Helper.AugmentInvalid]</eval>
     <fieldval field="raceCstVal" value="-3"/>
     <usesource source="srcRiftsTLPGAE"/>
     <tag group="User" tag="Creature"/>
+    <tag group="Hero" tag="BizarrePhysiology"/>
     </thing>
   <thing id="rpSRAResPathISP" name="Restricted Path (ISP)" description="The race has no capacity for psionics and cannot access ISP." compset="ExtRacialProp" summary="Cannot take any Arcane Background using ISP, nor any Iconic Framework that includes it.">
     <fieldval field="raceCstVal" value="-2"/>
@@ -12265,12 +12327,13 @@ else
     </thing>
   <thing id="wpSRAUnarmed" name="Unarmed Strike" compset="MeleeSRA" uniqueness="unique" holdable="no">
     <fieldval field="wpDamage" value="Str"/>
-    <fieldval field="wpSpecial" value=""/>
-    <fieldval field="grCost" value="0"/>
-    <fieldval field="gearWeight" value="0"/>
-    <tag group="Equipment" tag="Natural"/>
+    <usesource source="srcRiftsTLPGAE"/>
     <tag group="Weapon" tag="Unarmed"/>
     <tag group="Helper" tag="Bootstrap"/>
+    <tag group="Equipment" tag="Natural"/>
+    <eval phase="Final" priority="4999" index="2"><![CDATA[
+      ~Unarmed doesn't require a hand
+      perform delete[Equipment.Hand]]]></eval>
     <eval phase="Final" priority="6000" name="Set Unarmed Strike equipped status"><![CDATA[
           ~RDS Set the wpUnarmed equipped status according to whether there are any hands free after counting weapons
           trustme
@@ -12278,9 +12341,6 @@ else
           if (hero.tagcount[Hero.Hand] < herofield[acHands].value) then 
             field[grIsEquip].value = 1
             endif]]></eval>
-    <eval phase="Final" priority="4999" index="2"><![CDATA[
-      ~Unarmed doesn't require a hand
-      perform delete[Equipment.Hand]]]></eval>
     </thing>
   <thing id="wpSRAWilksLasTor" name="Wilk&apos;s Laser Torch" compset="MeleeSRA">
     <fieldval field="wpPiercing" value="16"/>
@@ -13292,7 +13352,6 @@ perform assign[Equipment.TwoHand]</eval>
     <tag group="Equipment" tag="ModSlotUse"/>
     <tag group="Hide" tag="Equipment"/>
     <tag group="Weapon" tag="MegaDamage"/>
-    <tag group="Weapon" tag="Retract" name="Retractable"/>
     </thing>
   <thing id="wpSRAVehMAE3" name="MAE-3 “Maysies” Hand Charges" compset="SpecWeapSRA">
     <fieldval field="wpDamage" value="4d6"/>
@@ -14847,7 +14906,9 @@ field[livename].text = newname]]></eval>
     <bootstrap thing="faSRADimShift"></bootstrap>
     <bootstrap thing="faSRADimTeleHome"></bootstrap>
     <bootstrap thing="faSRAExpAwaShift"></bootstrap>
-    <bootstrap thing="faSRALeyLinePhas"></bootstrap>
+    <bootstrap thing="faSRALeyLinePhas">
+      <autotag group="Helper" tag="FrameworkAdded"/>
+      </bootstrap>
     <bootstrap thing="faSRALLMagicShift"></bootstrap>
     <bootstrap thing="faSRAPsychoBrave"></bootstrap>
     <bootstrap thing="faSRASenseRifts"></bootstrap>
@@ -20488,11 +20549,8 @@ hero.childfound[arcPsionicSWADE].field[trkMax].value += 5</eval>
     </thing>
   <thing id="rpSRASize" name="Size" compset="ExtRacialProp">
     <usesource source="srcRiftsTLPGAE"/>
-    <eval phase="PreTraits" priority="5000"><![CDATA[if (hero.tagis[source.ShowSize] <> 0) then
-  perform #traitadjust[trSize,+,field[raceValue].value,"Size"]
-else
-  perform #traitadjust[trTough,+,field[raceValue].value,"Size"]
-  endif]]></eval>
+    <eval phase="PreTraits" priority="5000"><![CDATA[perform #traitadjust[trSize,+,field[raceValue].value,"Size"]
+perform #traitadjust[trTough,+,field[raceValue].value,"Size"]]]></eval>
     <eval phase="Render" priority="1000" index="2"><![CDATA[var sizeCat as string
 var sizeVal as number
 sizeVal = field[raceValue].value
@@ -20757,7 +20815,8 @@ field[livename].text &= " (" & sizeCat & "]"]]></eval>
     <tag group="User" tag="Creature"/>
     </thing>
   <thing id="abSRASensorSuite" name="Sensor Suite" description="+4 to Notice checks or to offset Shooting penalties; ignores Illumination penalties, detects chemicals and radiation, +1 Shooting." compset="ExtRaceAbil">
-    <eval phase="PreTraits" priority="5000">#traitbonus[skShooting] += 1</eval>
+    <eval phase="PreTraits" priority="5000">perform #traitroll[skNotice,+,4,field[name].text]
+perform #traitroll[skShooting,+,1,field[name].text]</eval>
     </thing>
   <thing id="abSRAWeaponMount" name="Weapon Mount" description="Robot has integral weapons." compset="ExtRaceAbil">
     <usesource source="srcRiftsTLPGAE"/>
@@ -22299,6 +22358,8 @@ hero.childfound[resSkill].field[resSpent].value -= 1</eval>
     </thing>
   <thing id="faSRAKWRLLSense" name="Ley Line Sense" description="A Mystic Knight can sense a ley line within 10 miles, and he can automatically tell how powerful it is, in what directions it flows, where it meets other ley lines at nexus points, and other aspects as might apply (such as if a huge amount of its energy is being siphoned for some other purpose).\n\nHe can also sense any nearby Rifts within 10 miles, as well as the arcane tremors created by the eruption of new or recurring Rifts within 50 miles." compset="FraAbility" summary="Sense Ley Lines (and specific details about them) or Rifts within 10 miles (50 miles for eruption of new or recurring Rifts).">
     <usesource source="srcRiftsBloBanAE"/>
+    <tag group="Hero" tag="LeyLineSense"/>
+    <eval phase="Initialize" priority="500">perform hero.pushtags[Hero.?]</eval>
     </thing>
   <thing id="faSRAKWROnslaught" name="Onslaught" description="Though they do not begin with Master of Magic, Knights of the White Rose may use the {i}bolt{/i} Mega Power Modifiers of Greater Bolt and Onslaught. Their bolts take the form of blue beams of energy from their eyes or hands." compset="FraAbility" summary="May use the Greater Bolt and Onslaught Mega Power Modifiers with their {i}bolt{/i}.">
     <usesource source="srcRiftsBloBanAE"/>
@@ -24241,7 +24302,7 @@ field[shortname].text &= " (" & field[domDomain].text & ")"]]></eval>
       <autotag group="ArmorSpecial" tag="MegaDamage"/>
       <assignval field="livename" value="Armored Hide"/>
       </bootstrap>
-    <eval phase="PreTraits" priority="5000">~ do this only for the FirstCopy
+    <eval phase="Effects" priority="5000">~ do this only for the FirstCopy
 doneif (tagis[Helper.FirstCopy] = 0)
 var cnt as number
 cnt = 4*field[xCount].value
@@ -26952,13 +27013,15 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
       <assignval field="domDomain" value="Splugorth and Minions"/>
       </bootstrap>
     </thing>
-  <thing id="siSRAHabit" name="Habit" compset="Simple">
+  <thing id="siSRAHabitMajor" name="Habit" compset="Simple" summary="Gain the Habit (Major) hindrance">
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="Helper" tag="BioBorgInsanity"/>
     <tag group="Helper" tag="TattooInsanity"/>
-    <bootstrap thing="hinHabitSWADE"></bootstrap>
+    <bootstrap thing="hinHabitSWADE">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
     </thing>
-  <thing id="siSRABloodthirsty" name="Bloodthirsty" compset="Simple">
+  <thing id="siSRABloodthirsty" name="Bloodthirsty" description="Gain the Bloodthirsty hindrance." compset="Simple">
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="Helper" tag="BioBorgInsanity"/>
     <tag group="Helper" tag="TattooInsanity"/>
@@ -26990,11 +27053,13 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
     <tag group="Helper" tag="TattooInsanity"/>
     <bootstrap thing="hinSuspicious"></bootstrap>
     </thing>
-  <thing id="siSRAMania" name="Mania" compset="Simple">
+  <thing id="siSRAManiaMajor" name="Mania" compset="Simple" summary="Gain the Mania (Major) hindrance.">
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="Helper" tag="BioBorgInsanity"/>
     <tag group="Helper" tag="TattooInsanity"/>
-    <bootstrap thing="hinSRAMania"></bootstrap>
+    <bootstrap thing="hinSRAMania">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
     </thing>
   <thing id="siSRAMute" name="Mute" compset="Simple">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27002,11 +27067,13 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
     <tag group="Helper" tag="TattooInsanity"/>
     <bootstrap thing="hinMute"></bootstrap>
     </thing>
-  <thing id="siSRADelusional" name="Delusional" compset="Simple">
+  <thing id="siSRADelusionMaj" name="Delusional" compset="Simple" summary="Gain the Delusional hindrance.">
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="Helper" tag="BioBorgInsanity"/>
     <tag group="Helper" tag="TattooInsanity"/>
-    <bootstrap thing="hinDelude"></bootstrap>
+    <bootstrap thing="hinDelude">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
     </thing>
   <thing id="siSRAPhobiaUV" name="Phobia (Undead, includes Vampires)" compset="Simple">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27030,13 +27097,40 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
       </bootstrap>
     <bootstrap thing="fcSRAEnemiesStone"></bootstrap>
     <bootstrap thing="fcSRAPwrActStone"></bootstrap>
+    <eval phase="Setup" priority="1100">~ assign all HJ tables as invalid, each Framework will delete as needed.
+~ perform hero.assign[HJInvalidCatSRA.BodArm]
+~ perform hero.assign[HJInvalidCatSRA.CCW]
+~ perform hero.assign[HJInvalidCatSRA.Cyber]
+~ perform hero.assign[HJInvalidCatSRA.Edu]
+~ perform hero.assign[HJInvalidCatSRA.EncMys]
+~ perform hero.assign[HJInvalidCatSRA.ExpWis]
+~ perform hero.assign[HJInvalidCatSRA.MagMys]
+~ perform hero.assign[HJInvalidCatSRA.Psi]
+~ perform hero.assign[HJInvalidCatSRA.Ranged]
+~ perform hero.assign[HJInvalidCatSRA.Train]
+~ perform hero.assign[HJInvalidCatSRA.Under]</eval>
     </thing>
   <thing id="faSRAABMagStone" name="Arcane Background (Magic)" description="Stone Masters begin with Arcane Background (Magic), the {i}barrier, burrow, and entangle{/i} powers, the Power Points and Rapid Recharge Edges, as well as a d6 Spellcasting skill. Stone Masters begin with 15 PPE (10 PPE base, plus 5 PPE from the Power Points Edge)." compset="FraAbility" summary="Arcane Background (Magic), Spellcasting d6, {i}barrier, burrow, and entangle{/i} powers, Also gain the Power Points and Rapid Recharge edges">
     <usesource source="srcRiftsAtlantisAE"/>
     <bootstrap thing="edgSRAArcMagic"></bootstrap>
-    <bootstrap thing="skSpellcst">
-      <assignval field="trtCreate" value="1"/>
+    <bootstrap thing="skSpellcst"></bootstrap>
+    <bootstrap thing="edgSRAPowerPoints">
+      <assignval field="usrChosen1" value="arcMagicSWADE" behavior="pick"/>
       </bootstrap>
+    <bootstrap thing="edgRapRchSWADE"></bootstrap>
+    <eval phase="PreTraits" priority="1000" index="3">#traitcreation[skSpellcst] += 1</eval>
+    <eval phase="Setup" priority="1000"><![CDATA[~ indicate the hero has selected an Arcane Framework
+perform hero.assign[FraTypeSel.Arcane]
+
+trustme
+perform hero.childfound[arcMagicSWADE].setfocus
+perform focus.assign[Hero.UsesPPE]
+focus.field[arcTrackerName].text = "PPE"]]></eval>
+    <eval phase="Initialize" priority="2000" index="2"><![CDATA[~ Call setup procedure for power list
+~ clearPwr - 0 = don't clear, 1 = clear all Powers
+var clearPwrs as number
+clearPwrs = 1
+call GiveStoneMstrList]]></eval>
     </thing>
   <thing id="faSRAEarthWaterSe" name="Earth &amp; Water Sense" description="Stone Masters may detect secret passages or compartments inside a stone or underground structure as an action up to Range Spirit; likewise, they sense water (lakes, streams, springs, sewers, etc) and the presence of underground supernatural beings at a Range of Spirit in miles." compset="FraAbility" summary="When inside a stone structure or undergraound, may detect secret passages or compartments within Spirit range.  Can sense water and the presence of underground supernatural beings at a Range of Spirit in miles.">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27051,6 +27145,8 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
     </thing>
   <thing id="faSRALLSenseStone" name="Ley Line Sense" description="A Stone Master can sense a ley line within 10 miles, and he can automatically tell how powerful it is, in what directions it flows, where it meets other ley lines at nexus points, and other aspects as might apply (such as if a huge amount of its energy is being siphoned for some other purpose).\n\nHe can also sense any nearby Rifts within 10 miles, as well as the arcane tremors created by the eruption of new or recurring Rifts within 50 miles." compset="FraAbility" summary="Sense Ley Lines (and specific details about them) or Rifts within 10 miles (50 miles for eruption of new or recurring Rifts).">
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hero" tag="LeyLineSense"/>
+    <eval phase="Initialize" priority="500">perform hero.pushtags[Hero.?]</eval>
     </thing>
   <thing id="faSRALevitateSton" name="Levitate Stone" description="At a cost of 1 PPE per minute Stone Masters may check Occult as an Innate Ability to activate telekinesis, only usable on stone, with a Strength of d12 plus half Spirit. This ability doesn&apos;t require Gestures or Speech, and the sorcerer may even pluck rocks out of the ground as if scooping stones from water." compset="FraAbility" summary="For 1 PPE, may check Occult as an Innate Ability to activate telekinesis, only usable on stone, with a Strength of d12 plus half Spirit.">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27073,6 +27169,19 @@ field[livename].text &= field[abilValue].value & ")"]]></eval>
   <thing id="racSRATrueAtlant" name="True Atlantean" description="Once an advanced civilization of ancient humans related to the early Greeks, and written of by Plato the Athenian philosopher and many other ancient societies, the inhabitants of ancient Atlantis became something more. Magic was their science and arcane stone pyramids the centerpiece of every settlement. The inhabitants of Atlantis used their pyramids to open portals in space and time to travel between their settlements on Earth, and to enable trade, exploration, and the colonization of the Megaverse®. Unfortunately, their scholars and researchers pushed the boundaries of dimensional travel too far, creating a super rift that decimated human civilization across the globe and cut Earth off from the natural flow of arcane energies that powered all of their technology. The Atlantean continent was cast into interdimensional oblivion and its people scattered across space-time.\n\nThousands of years later came the Great Cataclysm, and with it the return of magic and the barren continent of Atlantis to Rifts Earth. The True Atlanteans are aghast at what has become of Earth and their ancient human ancestors. The rise of the Vampire Kingdoms and the fate of their home continent—now overrun by their ancient enemies the Splugorth—is particularly distressing. Having wandered across dimensions for millennia fighting the good fight, their battle now returns to Earth." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
     <bootstrap thing="rpSRAMarkHeritage"></bootstrap>
+    <bootstrap thing="trkSRANonABPPE"></bootstrap>
+    <bootstrap thing="rpSRAAlchemEvol"></bootstrap>
+    <bootstrap thing="rpSRADimensionTra"></bootstrap>
+    <bootstrap thing="rpSRALeyLineAff"></bootstrap>
+    <bootstrap thing="rpSRAMoreHuman"></bootstrap>
+    <bootstrap thing="rpSRANatArcAffin"></bootstrap>
+    <bootstrap thing="rpSRATransformImm"></bootstrap>
+    <bootstrap thing="rpSRAVampAware"></bootstrap>
+    <bootstrap thing="rpSRAVersatile"></bootstrap>
+    <bootstrap thing="rpSRAAtlasShrug"></bootstrap>
+    <bootstrap thing="rpSRACybernetTA"></bootstrap>
+    <bootstrap thing="rpSRAHuntedStars"></bootstrap>
+    <bootstrap thing="rpSRAEndlessCrus"></bootstrap>
     </thing>
   <thing id="racSRAOgre" name="Ogre" description="Ogres are giant neanderthal-like humanoids. Not only do they look like humans, but their DNA and physiology are remarkably similar. This and other coincidences has led many scholars to speculate that ogres and humans do in fact have some sort of shared ancestry.\n\nBecause of their popularity as Splugorth slave stock and other factors, their numbers are slowly growing on Rifts Earth. Although some might think Ogres appear slightly dimwitted, they are the intellectual equivalent of humans. The main difference seems to be their increased size and raw physical power. This can be a liability, though, as many people see their threatening stature and assume the worst. The Ogre reputation for eating the flesh of humanoids hasn&apos;t seemed to help in this regard, either.\n\nOgres can be found lightly sprinkled throughout the world wherever humans thrive. They reproduce slowly and often live dispersed from one another. Ogre majority tribes are rare but not unheard of.\n\nA sizable portion of Ogres tend to assimilate into the hierarchies of other races and societies that value their impressive physical characteristics like those of the Pecos Empire as well as Orcs, Simvan, and similar D-Bees. An equal number seem to find common cause with other &quot;more civilized&quot; humanoids like Elves, Dwarves, or Humans and eagerly join their communities." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27170,20 +27279,20 @@ perform hero.assign[Helper.FrameworkChoices]</eval>
     </thing>
   <thing id="fcSRAMentalScar" name="Mentally Scarred" description="All T-Warriors are challenged by the psychological repercussions of their brutal arcane transformation, enslavement, and indoctrination.. Choose or roll twice on the Bio-Borg Insanity Table." compset="FraComp">
     <usesource source="srcRiftsAtlantisAE"/>
-    <eval phase="Setup" priority="1000">#resmax[resFrameSelect5] += 2</eval>
+    <eval phase="Setup" priority="1000">#resmax[resFrameSelect4] += 2</eval>
     <eval phase="Render" priority="10000" index="2"><![CDATA[var header as string
 var chooser as string
 var additem as string
 
 additem = "Add Insanity Hindrance"
-header = "Insanity Hindrance: "
-header &= hero.child[resFrameSelect5].field[resSummary].text
+header = "Mentally Scarred: "
+header &= hero.child[resFrameSelect4].field[resSummary].text
 chooser = "Helper.TattooInsanity"
 
 ~set up chooser expressions for Edge selection
-hero.child[FrameworkHelper].field[ehFrameAdd5].text = additem
-hero.child[FrameworkHelper].field[ehFrameExp5].text = chooser
-hero.child[FrameworkHelper].field[ehFrameHdr5].text = header]]></eval>
+hero.child[FrameworkHelper].field[ehFrameAdd4].text = additem
+hero.child[FrameworkHelper].field[ehFrameExp4].text = chooser
+hero.child[FrameworkHelper].field[ehFrameHdr4].text = header]]></eval>
     </thing>
   <thing id="fcSRAPhysRequire" name="Physical Requirements" description="Tattooed Warriors are hand picked for their fitness. Before applying the bonus from Impressive Physical Specimen they must have a minimum of d6 in Agility, Strength, and Vigor. They can&apos;t take the Blind, Elderly, Hard of Hearing, One Arm, or Slow Hindrances." compset="FraComp">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27207,20 +27316,20 @@ perform hero.assign[Helper.NotAllowedMiracle]</eval>
     <fieldval field="usrCandid2" value="thingid.attrStr|thingid.attrAgi|thingid.attrVig"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="ChooseSrc1" tag="Hero"/>
-    <eval phase="Setup" priority="1000" index="2">#resmax[resFrameSelect4] += 1</eval>
+    <eval phase="Setup" priority="1000" index="2">#resmax[resFrameSelect3] += 1</eval>
     <eval phase="Render" priority="10000"><![CDATA[var header as string
 var chooser as string
 var additem as string
 
 additem = "Add Physical Edge"
 header = "Attractive/Brawny: "
-header &= hero.child[resFrameSelect4].field[resSummary].text
+header &= hero.child[resFrameSelect3].field[resSummary].text
 chooser = "thingid.siSRAAttractEdge|thingid.siSRABrawnyEdge"
 
 ~set up chooser expressions for Edge selection
-hero.child[FrameworkHelper].field[ehFrameAdd4].text = additem
-hero.child[FrameworkHelper].field[ehFrameExp4].text = chooser
-hero.child[FrameworkHelper].field[ehFrameHdr4].text = header]]></eval>
+hero.child[FrameworkHelper].field[ehFrameAdd3].text = additem
+hero.child[FrameworkHelper].field[ehFrameExp3].text = chooser
+hero.child[FrameworkHelper].field[ehFrameHdr3].text = header]]></eval>
     <eval phase="PreTraits" priority="5000" index="3"><![CDATA[if (field[usrChosen1].ischosen <> 0) then
   field[usrChosen1].chosen.field[trtCreate].value += 1
   endif
@@ -27242,7 +27351,9 @@ if (field[usrChosen2].ischosen <> 0) then
     <bootstrap thing="trkSRANonABPPE">
       <assignval field="trkMax" value="5"/>
       </bootstrap>
-    <bootstrap thing="edgRapRchSWADE"></bootstrap>
+    <bootstrap thing="edgRapRchSWADE">
+      <autotag group="thing" tag="skipprereq"/>
+      </bootstrap>
     <eval phase="Render" priority="10000" index="2"><![CDATA[var header as string
 var chooser as string
 var additem as string
@@ -27270,37 +27381,18 @@ hero.child[TattooHelper].field[ehTattooHdr].text = header]]></eval>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="TattooCat" tag="Power"/>
     </thing>
-  <thing id="tatSRASimpMelee" name="Simple Melee" description="Conjure a Medieval Melee Weapon.\n\n{i}{b}Note: {/b}chosen weapon needs to be purchased for free on armory tab. The first such weapon will reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon.">
+  <thing id="tatSRASimpMelee" name="Simple Melee" description="Conjure a Medieval Melee Weapon.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon.">
     <fieldval field="usrCandid1" value="component.WeapMelee &amp; WeaponType.MedMelee"/>
+    <fieldval field="tatPPECost" value="1"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="TattooCat" tag="Weapon"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
     <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
 
-var selWeapon as string
-var val1 as number
-val1 = 1
-
-selWeapon = "thingid." & field[usrChosen1].chosen.idstring 
-selWeapon &= " & !Helper.IsTattoo"
-
-
-~ perform hero.firstchild[selWeapon].setfocus
-
-~ doneif (state.isfocus = 0)
-
-foreach pick in hero from WeapMelee where selWeapon
-
-  if (val1 = 1) then
-    perform eachpick.assign[Helper.IsTattoo]
-    eachpick.field[livename].text =  eachpick.field[name].text & " (Simple Tattoo)"
-    endif
-
-  val1 = 0
-  nexteach
-
-~ perform focus.assign[Helper.IsTattoo]
-~ focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
+perform field[usrChosen1].chosen.setfocus
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
     </thing>
   <thing id="wpSRABattleAx" name="Axe, Battle" compset="MeleeSRA">
     <fieldval field="gearWeight" value="4"/>
@@ -27334,45 +27426,25 @@ foreach pick in hero from WeapMelee where selWeapon
     <tag group="Equipment" tag="TwoHand"/>
     <tag group="WeaponDie" tag="5"/>
     </thing>
-  <thing id="tatSRABloodyMelee" name="Bloody Weapon" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.\n\n{i}{b}Note: {/b}chosen weapon needs to be purchased for free on armory tab. The first such weapon will reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.">
+  <thing id="tatSRABloodyMelee" name="Bloody Weapon" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.">
     <fieldval field="usrCandid1" value="component.WeapMelee &amp; WeaponType.MedMelee"/>
+    <fieldval field="tatPPECost" value="3"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="TattooCat" tag="Weapon"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
     <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
 
-var selWeapon as string
-var val1 as number
-var val2 as number
-val1 = 1
+perform field[usrChosen1].chosen.setfocus
+doneif (state.isfocus = 0)
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & " (Bloody Tattoo)"
 
-selWeapon = "thingid." & field[usrChosen1].chosen.idstring 
-selWeapon &= " & !Helper.IsTattoo"
-
-
-~ perform hero.firstchild[selWeapon].setfocus
-
-~ doneif (state.isfocus = 0)
-
-foreach pick in hero from WeapMelee where selWeapon
-
-  if (val1 = 1) then
-    perform eachpick.assign[Helper.IsTattoo]
-    eachpick.field[livename].text =  eachpick.field[name].text & " (Bloody Tattoo)"
-    eachpick.field[gearWeight].value = 0
-
-    val2 = eachpick.tagvalue[WeaponDie.?]
-    perform eachpick.assign[Helper.DieMult2]
-    perform eachpick.assign[Weapon.MegaDamage]
-    eachpick.field[wpPiercing].value = (val2 * 2)
-    
-    endif
-
-  val1 = 0
-  nexteach
-
-~ perform focus.assign[Helper.IsTattoo]
-~ focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
+var newAP as number
+newAP = focus.tagvalue[WeaponDie.?]
+perform focus.assign[Helper.DieMult2]
+perform focus.assign[Weapon.MegaDamage]
+focus.field[wpPiercing].value = (newAP * 2)]]></eval>
     </thing>
   <thing id="wpSRAThrowAx" name="Axe, Throwing" compset="RangedSRA">
     <fieldval field="wpShort" value="3"/>
@@ -27385,38 +27457,19 @@ foreach pick in hero from WeapMelee where selWeapon
     <tag group="WeaponType" tag="MedRange"/>
     <tag group="StrReqDie" tag="3"/>
     </thing>
-  <thing id="tatSRASimpleRange" name="Simple Ranged" description="Conjure a Medieval Ranged Weapon.\n\n{i}{b}Note: {/b}chosen weapon needs to be purchased for free on armory tab. The first such weapon will reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Ranged Weapon with 6 Shots.">
+  <thing id="tatSRASimpleRange" name="Simple Ranged" description="Conjure a Medieval Ranged Weapon.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Ranged Weapon with 6 Shots.">
     <fieldval field="usrCandid1" value="component.WeapRange &amp; WeaponType.MedRange"/>
+    <fieldval field="tatPPECost" value="1"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="TattooCat" tag="Weapon"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
     <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
 
-var selWeapon as string
-var val1 as number
-val1 = 1
-
-selWeapon = "thingid." & field[usrChosen1].chosen.idstring 
-selWeapon &= " & !Helper.IsTattoo"
-
-
-~ perform hero.firstchild[selWeapon].setfocus
-
-~ doneif (state.isfocus = 0)
-
-foreach pick in hero from WeapRange where selWeapon
-
-  if (val1 = 1) then
-    perform eachpick.assign[Helper.IsTattoo]
-    eachpick.field[livename].text =  eachpick.field[name].text & " (Simple Tattoo)"
-    eachpick.field[wpShots].value = 6
-    endif
-
-  val1 = 0
-  nexteach
-
-~ perform focus.assign[Helper.IsTattoo]
-~ focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
+perform field[usrChosen1].chosen.setfocus
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"
+focus.field[wpShots].value = 6]]></eval>
     </thing>
   <thing id="wpSRAMow" name="Bow" compset="RangedSRA">
     <fieldval field="wpDamage" value="2d6"/>
@@ -27452,51 +27505,34 @@ foreach pick in hero from WeapRange where selWeapon
     <tag group="ArmorStrReqDie" tag="4"/>
     <tag group="ArmorType" tag="MedShield"/>
     </thing>
-  <thing id="tatSRAShield" name="Shield" description="Conjure an Ancient or Medieval Shield of any type.\n\n{i}{b}Note: {/b}chosen weapon needs to be purchased for free on armory tab. The first such weapon will reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure an Ancient or Medieval Shield of any type.">
+  <thing id="tatSRAShield" name="Shield" description="Conjure an Ancient or Medieval Shield of any type.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure an Ancient or Medieval Shield of any type.">
     <fieldval field="usrCandid1" value="component.Shield &amp; ArmorType.MedShield"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="TattooCat" tag="Weapon"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
 
-var selWeapon as string
-var val1 as number
-val1 = 1
-
-selWeapon = "thingid." & field[usrChosen1].chosen.idstring 
-selWeapon &= " & !Helper.IsTattoo"
-
-
-~ perform hero.firstchild[selWeapon].setfocus
-
-~ doneif (state.isfocus = 0)
-
-foreach pick in hero from Shield where selWeapon
-
-  if (val1 = 1) then
-    perform eachpick.assign[Helper.IsTattoo]
-    eachpick.field[livename].text =  eachpick.field[name].text & " (Simple Tattoo)"
-    endif
-
-  val1 = 0
-  nexteach
-
-~ perform focus.assign[Helper.IsTattoo]
-~ focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
+perform field[usrChosen1].chosen.setfocus
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & " (Simple Tattoo)"]]></eval>
     </thing>
   <thing id="tatSRASumAnimal" name="Animal" description="{i}Summon ally{/i} animal, PPE cost 1 + Size (at least 1)." compset="Tattoo">
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
-    <tag group="TattooCat" tag="Summon"/>
     <tag group="User" tag="NeedDomain"/>
     <tag group="DomainTerm" tag="Animal" name="Type of Animal"/>
+    <tag group="TattooCat" tag="Summon"/>
     </thing>
   <thing id="tatSRASumMonster" name="Monster" description="{i}Summon ally{/i} animalistic supernatural creature with animal intelligence, costs 3 + Size in PPE (minimum 3)—subject to GM approval." compset="Tattoo">
+    <fieldval field="tatStrain" value="2"/>
     <usesource source="srcRiftsAtlantisAE"/>
-    <tag group="TattooCat" tag="Summon"/>
     <tag group="User" tag="NeedDomain"/>
     <tag group="DomainTerm" tag="Animal" name="Type of Animal"/>
+    <tag group="TattooCat" tag="Summon"/>
     </thing>
   <thing id="tatSRABeautDance" name="Beautiful Dancer" description="Cast the {i}puppet{/i} power with Mind Control." compset="Tattoo" uniqueness="useronce">
+    <fieldval field="tatPPECost" value="6"/>
+    <fieldval field="tatStrain" value="2"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="TattooCat" tag="Power"/>
     </thing>
@@ -27546,9 +27582,7 @@ field[usrChosen1].chosen.field[trtCreate].value += 2</eval>
     </thing>
   <thing id="faSRATrainedArena" name="Trained for the Arena" description="Tattooed Warriors gain a die type in Athletics, a die type in Fighting, their choice of either the Brawler or Martial Artist Edge, and one Combat Edge of choice." compset="FraAbility" summary="Gain a die type in Athletics, Fighting. Gain either the Brawler or Martial Artist edge and one Combat Edge of choice.">
     <usesource source="srcRiftsAtlantisAE"/>
-    <bootstrap thing="skAthletic">
-      <assignval field="trkMax" value="5"/>
-      </bootstrap>
+    <bootstrap thing="skAthletic"></bootstrap>
     <bootstrap thing="skFighting"></bootstrap>
     <eval phase="Render" priority="10000" index="2"><![CDATA[var header as string
 var chooser as string
@@ -27764,6 +27798,8 @@ hero.child[TattooHelper].field[ehTattooExp].text = chooser
 hero.child[TattooHelper].field[ehTattooHdr].text = header]]></eval>
     </thing>
   <thing id="tatSRAEyeKnow" name="Eye of Knowledge (lidless)" description="Cast {i}speak language{/i} (self)." compset="Tattoo" uniqueness="useronce">
+    <fieldval field="tatPPECost" value="1"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="TattooCat" tag="Power"/>
     </thing>
@@ -27779,42 +27815,27 @@ hero.child[TattooHelper].field[ehTattooHdr].text = header]]></eval>
       </bootstrap>
     <bootstrap thing="tatSRAHeartStaked"></bootstrap>
     </thing>
-  <thing id="tatSRAAuraWeapon" name="Aura Weapon" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type. It also has Greater {i}Smite{/i} with a trapping.\n\n{i}{b}Note: {/b}chosen weapon needs to be purchased for free on armory tab. The first such weapon will reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type. It also has Greater {i}Smite{/i} with a specified trapping.">
+  <thing id="tatSRAAuraWeapon" name="Aura Weapon" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type. It also has Greater {i}Smite{/i} with a trapping.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type. It also has Greater {i}Smite{/i} with a specified trapping.">
     <fieldval field="usrCandid1" value="component.WeapMelee &amp; WeaponType.MedMelee"/>
+    <fieldval field="tatPPECost" value="6"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
     <tag group="TattooCat" tag="Weapon"/>
-    <tag group="ChooseSrc1" tag="Thing"/>
     <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
 
-var selWeapon as string
-var val1 as number
 var val2 as number
-val1 = 1
 
-selWeapon = "thingid." & field[usrChosen1].chosen.idstring 
-selWeapon &= " & !Helper.IsTattoo"
+perform field[usrChosen1].chosen.setfocus
+doneif (state.isfocus = 0)
 
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text = focus.field[name].text & " (Aura Tattoo)"
 
-~ perform hero.firstchild[selWeapon].setfocus
-
-~ doneif (state.isfocus = 0)
-
-foreach pick in hero from WeapMelee where selWeapon
-
-  if (val1 = 1) then
-    perform eachpick.assign[Helper.IsTattoo]
-    eachpick.field[livename].text =  eachpick.field[name].text & " (Aura Tattoo)"
-    eachpick.field[gearWeight].value = 0
-
-    val2 = eachpick.tagvalue[WeaponDie.?]
-    perform eachpick.assign[Helper.DieMult2]
-    perform eachpick.assign[Weapon.MegaDamage]
-    eachpick.field[wpPiercing].value = (val2 * 2)
-    
-    endif
-
-  val1 = 0
-  nexteach]]></eval>
+val2 = focus.tagvalue[WeaponDie.?]
+perform focus.assign[Helper.DieMult2]
+perform focus.assign[Weapon.MegaDamage]
+focus.field[wpPiercing].value = (val2 * 2)]]></eval>
     </thing>
   <thing id="wpSRALongsword" name="Longsword" compset="MeleeSRA">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -27823,6 +27844,8 @@ foreach pick in hero from WeapMelee where selWeapon
     <tag group="WeaponDie" tag="4"/>
     </thing>
   <thing id="tatSRAHeartStaked" name="Heart, staked" description="Cast Exalted {i}arcane protection{/i} (self); vs undead only, 1 hour." compset="Tattoo" uniqueness="useronce">
+    <fieldval field="tatPPECost" value="1"/>
+    <fieldval field="tatStrain" value="1"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="TattooCat" tag="Power"/>
     </thing>
@@ -27984,6 +28007,7 @@ hero.childfound[resSkill].field[resSpent].value -= 1</eval>
     </thing>
   <thing id="rpSRANearHLem" name="Near-Human Physiology" description="Those unfamiliar with Lemurian physiology suffer only a −1 penalty to Healing." compset="ExtRacialProp" summary="−1 penalty to Healing skill rolls for those unfamiliar with Lemurian physiology.">
     <usesource source="srcRiftsBloBanAE"/>
+    <tag group="Hero" tag="NHumanPhysiology"/>
     </thing>
   <thing id="rpSRARetroTechMaj" name="Retrotech (Major)" description="A Lemurian wishing to interact with advanced technology must spend a Benny and check Spirit. Even with a success she makes her rolls to do so at a penalty of −2." compset="ExtRacialProp">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -28056,6 +28080,8 @@ hero.childfound[resSkill].field[resSpent].value -= 2</eval>
     </thing>
   <thing id="faSRALLSenseOcWiz" name="Ley Line Sense" description="A Ocean Wizard can sense a ley line within 10 miles, and he can automatically tell how powerful it is, in what directions it flows, where it meets other ley lines at nexus points, and other aspects as might apply (such as if a huge amount of its energy is being siphoned for some other purpose).\n\nHe can also sense any nearby Rifts within 10 miles, as well as the arcane tremors created by the eruption of new or recurring Rifts within 50 miles." compset="FraAbility" summary="Sense Ley Lines (and specific details about them) or Rifts within 10 miles (50 miles for eruption of new or recurring Rifts).">
     <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hero" tag="eyLineSense"/>
+    <eval phase="Initialize" priority="500">perform hero.pushtags[Hero.?]</eval>
     </thing>
   <thing id="faSRALLTransmitOW" name="Ley Line Transmission" description="Ocean Wizards are able to send and receive spoken messages along ley lines at any distance. This can be a wide broadcast that anyone along the line can hear, or it can be directed to a single recipient (who needs to be on the line and expecting the message)." compset="FraAbility" summary="Send and receive spoken messages along ley lines at any distance.">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -28336,14 +28362,54 @@ field[grIsEquip].value = hero.childfound[faSRAShldInnSpi].field[abilActive].valu
     <bootstrap thing="rpSRAStrongMinBod"></bootstrap>
     <bootstrap thing="rpSRAWeakMagic"></bootstrap>
     </thing>
-  <thing id="racSRARulians" name="Rulians" compset="Race" uniqueness="unique">
+  <thing id="racSRARulians" name="Rulians" description="Rulians are cone-headed D-Bees known across dimensions for their natural abilities as translators. Their services are widely sought as most beings are more comfortable communicating with a Rulian than using magic, psychic, or mechanical methods of translation which can often feel unnatural, awkward, or void of depth and nuance. \n\nRulians have especially capable vocal cords, acute hearing, and a special brain organ refined to the most minute subtleties of communication. They&apos;re naturally adept at mathematics, cryptology, as well as symbolism and make wonderful poets, mediators, artists, and historians." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRAAlienPhys"></bootstrap>
+    <bootstrap thing="rpSRABrainOvrBra"></bootstrap>
+    <bootstrap thing="rpSRADBeeMajor"></bootstrap>
+    <bootstrap thing="rpSRAIntelSpirit"></bootstrap>
+    <bootstrap thing="rpSRAPsiMinorRul"></bootstrap>
+    <bootstrap thing="rpSRALinguistSav"></bootstrap>
+    <bootstrap thing="rpSRANatTelepaths"></bootstrap>
+    <bootstrap thing="rpSRATelepathVuln"></bootstrap>
     </thing>
-  <thing id="racSRASeaTitans" name="Sea Titans" compset="Race" uniqueness="unique">
+  <thing id="racSRASeaTitans" name="Sea Titans" description="During the immediate aftermath of the Great Cataclysm, as humanity teetered on the brink of extinction, 22 crew members of the USS Ticonderoga had an unexplainable experience. While on an away mission they were all exposed to strange, powerful transdimensional radiation. After the crew recovered they realized the energy hadn&apos;t damaged their bodies, but had instead transformed and exalted them!\n\nTwo centuries later the crew members— now dubbed the Sea Titans—have developed powerful uncanny abilities and appear to no longer age. Even weirder still, they always pass on the same traits to their children… even if the other parent is a &quot;normal&quot; human. There are now over 2000 Sea Titans. Fortunately, their powers don&apos;t manifest until their late teens—they can mature into regular adults before superhuman power is thrust upon them.\n\nDespite their amazing abilities, all but six of the original Sea Titans have died— usually in service to their fellows. Learning the limits of superhuman abilities seems to be a dangerous proposition for these former mortals, and often results in agony, suffering, and regret. Still, most young Sea Titans choose to serve what remains of their country in the New Navy. A noteworthy minority instead choose to leave their family and friends behind to explore this new Earth or even see the Megaverse® for themselves." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRACyberResist"></bootstrap>
+    <bootstrap thing="rpSRADoesntBreaST"></bootstrap>
+    <bootstrap thing="rpSRAHeroic"></bootstrap>
+    <bootstrap thing="rpSRAImmPoiDisST"></bootstrap>
+    <bootstrap thing="rpSRAOverconfid"></bootstrap>
+    <bootstrap thing="rpSRAPerfFormST"></bootstrap>
+    <bootstrap thing="rpSRARegeneration"></bootstrap>
+    <bootstrap thing="rpSRASaltySide"></bootstrap>
+    <bootstrap thing="rpSRAToughness"></bootstrap>
+    <bootstrap thing="rpSRAWantedMajST"></bootstrap>
+    <bootstrap thing="rpSRAWeakSuUnholy"></bootstrap>
+    <pickreq thing="hinYoungSWADE" ispreclude="yes"/>
+    <pickreq thing="hinElderlySWADE" ispreclude="yes"/>
     </thing>
-  <thing id="racSRAZembahh" name="Zembahh" compset="Race" uniqueness="unique">
+  <thing id="racSRAZembahk" name="Zembahk" description="The Zembahk are a race of large fleshy worms with a single white eye in the center of their head and an opposable tail-end. Zembahk bodies evolved to store incredible arcane energies to fuel their supernatural abilities. The gentle creatures generally lived in harmony with nature until the Splugorth came. They enslaved the peace-loving race, and used their lobotomized bodies or vital organs (like hearts, brains, and eyes) in wicked Bio-Wizardy devices. Billions of the &quot;mystic worms&quot; are held in stasis by the Splugorth, who regularly raid their home world and various breeding colonies for new stock (these locations are a priceless secret).\n\nZembahk are almost child-like in their views on life, seeing everything in black and white. There is only good and evil, love and hate, friend and foe. They care not for possessions, desiring only freedom, goodness, and adventure." compset="Race" uniqueness="unique">
     <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="rpSRAArcFeeders"></bootstrap>
+    <bootstrap thing="rpSRABizarrePhys"></bootstrap>
+    <bootstrap thing="rpSRACannotSpZem"></bootstrap>
+    <bootstrap thing="rpSRACyberResist"></bootstrap>
+    <bootstrap thing="rpSRADBeeMajor"></bootstrap>
+    <bootstrap thing="rpSRAInstOverInt2"></bootstrap>
+    <bootstrap thing="rpSRAIntuitivePsi"></bootstrap>
+    <bootstrap thing="rpSRAIntuitiveCas"></bootstrap>
+    <bootstrap thing="rpSRALowLightVis"></bootstrap>
+    <bootstrap thing="rpSRAMysticWorm"></bootstrap>
+    <bootstrap thing="rpSRAOnePreApp"></bootstrap>
+    <bootstrap thing="rpSRAReducedPace"></bootstrap>
+    <bootstrap thing="rpSRASevResPath"></bootstrap>
+    <bootstrap thing="rpSRASize">
+      <assignval field="raceValue" value="-1"/>
+      </bootstrap>
+    <bootstrap thing="rpSRAThickSkinned"></bootstrap>
+    <bootstrap thing="rpSRAUncReflexes"></bootstrap>
+    <bootstrap thing="rpSRAWantedMajZem"></bootstrap>
     </thing>
   <thing id="hinSRARetrotech" name="Retrotech" description="Also called &quot;Retros&quot; or Luddites, some philosophies and societies reject high technology in favor of an old-world lifestyle. Such heroes are revolted by advanced tech of any kind including energy weapons, rail guns, vibro-blades, robot vehicles, computers—as well as similarly advanced Techno-Wizardry devices. Lemurians generally draw the line at Medieval technology, while most human Retrotech factions reject anything from the 1900s or later (they accept simple mechanical firearms, and tools).\n\nRetrotechs wishing to interact with advanced technology in any way (using advanced weapons, means of travel, etc.) must first check Spirit. With a success they may spend a Benny to interact with the item.\n\nIn addition, any rolls made to use the item are made at a penalty of −2. Similarly, all Trait rolls to perform actions while aboard a high-tech vehicle or wearing high-tech armor are made at a penalty of –2. Retrotechs also suffer a –1 penalty on social interactions with sentient robots, cyborgs, and other mechanical beings.\n\nWith the GM&apos;s approval, heroes with Retrotech may swap technological Starting Gear for comparable low-tech alternatives— see the Gear chapter of Arcana &amp; Mysticism for alternate Armor and Weapon options." compset="Hindrance">
     <usesource source="srcRiftsAtlantisAE"/>
@@ -28353,6 +28419,7 @@ field[grIsEquip].value = hero.childfound[faSRAShldInnSpi].field[abilActive].valu
     <fieldval field="raceCstVal" value="-2"/>
     <usesource source="srcRiftsAtlantisAE"/>
     <tag group="User" tag="Creature"/>
+    <tag group="Hero" tag="AlienPhysiology"/>
     </thing>
   <thing id="siSRAAppPerHuman" name="Appears Perfectly Human" description="Gain Semi-Aquatic* and one Novice Edge" compset="Simple">
     <tag group="Helper" tag="MutationAmphib"/>
@@ -28696,6 +28763,1391 @@ focus.field[rhHindAdd].text = additem
 focus.field[rhHindExp].text = chooser
 focus.field[rhHindHdr].text = header]]></eval>
     </thing>
+  <thing id="rpSRABrainOvrBra" name="Brains Over Brawn" description="Rulians are less physically inclined. They suffer a −1 penalty to all Agility and Strength checks (including damage), but not Agility or Strength linked skills." compset="ExtRacialProp" summary="−1 penalty to all Agility and Strength checks (including damage), but not Agility or Strength linked skills.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAPsiMinorRul" name="Minor Psionic" description="Rulians begin with Arcane Background (Psionics), 10 ISP and these three powers: {i}empathy{/i}, {i}mind link{/i}, and {i}mind reading{/i}. If a Rulian chooses a framework providing Arcane Background (Psionics), three of her starting powers are the ones listed above (even if not normally allowed to that Framework) and she adds two powers to her starting total (e.g., an Rulian Burster starts with five powers)." compset="ExtRacialProp" summary="Rulians begin with Arcane Background (Psionics), 10 ISP and these three powers: {i}empathy{/i}, {i}mind link{/i}, and {i}mind reading{/i}). If she takes a framework providing Arcane Background (Psionics), she adds two powers.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="powEmpathySWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powMindLinkSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powMindReadSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="edgArcPsiSWADE"></bootstrap>
+    <eval phase="Effects" priority="1000"><![CDATA[~Start with 2 additional powers is a Psionic Framework is selected
+if (hero.tagis[FraTypeSel.Psionic] <> 0) then
+  hero.childfound[arcPsionicSWADE].field[resMax].value += 2
+  endif]]></eval>
+    </thing>
+  <thing id="rpSRALinguistSav" name="Linguistic Savants" description="Rulians can understand or communicate in any spoken or written language by checking Smarts. As long as they don&apos;t roll a Critical Failure they communicate in the target language at a skill level equal to their Smarts die for the next 24 hours. With a success Reactions begin one step higher, and a raise grants a free reroll on all Social checks (Intimidation, Persuasion, Taunt). Each time a Rulian takes the Language skill they learn two languages. When communicating in known languages they always check with a skill level equal to Smarts and the effects of a raise as listed above." compset="ExtRacialProp" summary="Each time a Rulian takes the Language skill they learn two languages. When communicating in known languages they always check with a skill level equal to Smarts and the effects of a raise as listed above.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRANatTelepaths" name="Natural Telepaths" description="Rulians\ncan communicate entirely through a weaker form of {i}mind link{/i} (which they activate with no roll or ISP cost as a free action, Range of Spirit × 5), and gain a free reroll to read thoughts or identify emotions via {i}empathy{/i} or {i}mind reading{/i}." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRATelepathVuln" name="Telepathically Vulnerable" description="Due to their extreme empathic nature, Rulians are particularly susceptible to {i}empathy, mind link{/i}, and {i}puppet{/i}—when targeting a Rulian these powers are activated at a +2 bonus, and Rulians are at a −2 penalty on all checks to resist." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRADoesntBreaST" name="Doesn&apos;t Breathe" description="Sea Titans don&apos;t breathe, can’t drown, and don’t suffocate in a vacuum. They can survive ocean depths of up to a mile unaided." compset="ExtRacialProp" summary="Not affected by inhaled toxins, can&apos;t drown, and don&apos;t suffocate in a vacuum. Can survive up to a mile underwater.">
+    <usesource source="srcRiftsArcMysAE"/>
+    </thing>
+  <thing id="rpSRAHeroic" name="Heroic" description="Sea Titans have the strong impulse to always help those in need." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="hinHeroic"></bootstrap>
+    </thing>
+  <thing id="rpSRAImmPoiDisST" name="Immune to Poison and Disease" description="Sea Titans are effectively immortal. They can&apos;t take the Elderly or Young Hindrances and are immune to all Diseases and Poisons." compset="ExtRacialProp" summary="Immune to all Diseases and Poisons. Can&apos;t be Young or Elderly.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAOverconfid" name="Overconfident" description="Sea Titans often believe they can do anything, endangering themselves and others." compset="ExtRacialProp" summary="Gain the Overconfident hindrance.">
+    <bootstrap thing="hinConfide"></bootstrap>
+    </thing>
+  <thing id="rpSRAPerfFormST" name="Perfect Form" description="Instead of the normal rule for determining base Attributes at character creation, Sea Titans start with Strength d10, Vigor d8, and a d6 in all other Attributes. Strength and Vigor have no Trait maximum, all others remain d12." compset="ExtRacialProp" summary="Begin with Strength d10, Vigor d8 and a d6 in all other attributes. Strength and Vigor have no trait maximum.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitcreation[attrAgi] += 1
+#traitcreation[attrSma] += 1
+#traitcreation[attrSpi] += 1
+#traitcreation[attrStr] += 3
+#traitcreation[attrVig] += 2
+
+hero.child[attrStr].field[trtMaximum].value += 99
+hero.child[attrVig].field[trtMaximum].value += 99</eval>
+    </thing>
+  <thing id="rpSRASaltySide" name="Salty Side of Fate" description="Sea Titans start with one less Benny per session." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="Effects" priority="2100">#trkmax[trkBennies] -= 1</eval>
+    </thing>
+  <thing id="rpSRASupernatBeac" name="Supernatural Beacon" description="Sea Titans radiate supernatural good as if they were a beacon, all arcane sensitives are +2 to Notice this emanation. This makes them the mortal enemy of all varieties of evil." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAToughness" name="Toughness" description="Sea Titans have +3 Toughness." compset="ExtRacialProp" summary="Gain +3 Toughness.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitcreation[trTough] += 3</eval>
+    </thing>
+  <thing id="rpSRAWantedMajST" name="Wanted (Major)" description="Besides being hunted by all evil, if they ever learn the truth many powerful groups would perform grueling medical experiments and research on a captured Sea Titan. The Coalition, Splugorth, Gene Splicers, and Mindwerks would be especially interested." compset="ExtRacialProp" summary="Hunted by all evil, The Coalition, Splugorth, Gene Splicers and Mindwerks.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hide" tag="Special"/>
+    <bootstrap thing="hinWanted">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Coalition, Splugorth, Gene Splicers and Mindwerks"/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRAWeakSuUnholy" name="Weakness (Supernatural &amp; Unholy)" description="Attacks dealing bonus damage to supernatural or good/holy targets deal +4 damage to Sea Titans. Powers and abilities affecting such targets also affect them." compset="ExtRacialProp" summary="+4 damage from attacks dealing bonus damage to supernatural or holy/good targets.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAAlchemEvol" name="Alchemical Evolution" description="Instead of the normal rule for determining base Attributes at character creation, Sea Titans start with Strength d10, Vigor d8, and a d6 in all other Attributes. Strength and Vigor have no Trait maximum, all others remain d12." compset="ExtRacialProp" summary="Begin with a d8 in two attributes and a d6 in all other attributes. Strength and Spirit have d12+2 max, others d12+1.">
+    <fieldval field="usrCandid1" value="component.Attribute &amp; !(Helper.EvolvedChoice|thingid.attrSup)"/>
+    <fieldval field="usrCandid2" value="component.Attribute &amp; !(Helper.EvolvedChoice|thingid.attrSup)"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="ChooseSrc2" tag="Hero"/>
+    <tag group="Helper" tag="EvolvedChoice"/>
+    <tag group="User" tag="NoAutoName"/>
+    <eval phase="PreTraits" priority="5000"><![CDATA[#traitcreation[attrAgi] += 1
+#traitcreation[attrSma] += 1
+#traitcreation[attrSpi] += 1
+#traitcreation[attrStr] += 1
+#traitcreation[attrVig] += 1
+
+if (field[usrChosen1].ischosen <> 0) then
+  field[usrChosen1].chosen.field[trtCreate].value += 1
+  perform field[usrChosen1].chosen.assign[Helper.EvolvedChoice]
+  endif
+
+if (field[usrChosen2].ischosen <> 0) then
+  field[usrChosen2].chosen.field[trtCreate].value += 1
+  perform field[usrChosen2].chosen.assign[Helper.EvolvedChoice]
+  endif
+
+hero.child[attrAgi].field[trtMaximum].value += 1
+hero.child[attrSma].field[trtMaximum].value += 1
+hero.child[attrSpi].field[trtMaximum].value += 2
+hero.child[attrStr].field[trtMaximum].value += 2
+hero.child[attrVig].field[trtMaximum].value += 1]]></eval>
+    </thing>
+  <thing id="rpSRADimensionTra" name="Dimensional Travelers" description="Regardless of where in the Megaverse® they hail from, True Atlanteans roll Common Knowledge to operate stone pyramids (Pyramid Communication, Teleport, and Dimensional Gate), recall vampire lore, and for fluency in Dragonese/Elven and Atlantean (an ancient Greek dialect)." compset="ExtRacialProp" summary="Roll Common Knowledge to operate stone pyramids (Pyramid Communication, Teleport, and Dimensional Gate), recall vampire lore, and for fluency in Dragonese/Elven and Atlantean (an ancient Greek dialect).">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRALeyLineAff" name="Ley Line Affinity" description="True Atlanteans begin with Ley Line Sense and Phasing. They may take Ley Line Rejuvenation as a Novice Background Edge, see The Tomorrow Legion Player’s Guide. Those who take a Framework providing these abilities (like Ley Line Walker) gain a free reroll on related checks." compset="ExtRacialProp" summary="Begin with Ley Line Phasing and Ley Line Sense abilities. May take Ley Line Rejuvenation as a Novice Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hero" tag="LeyLineSense"/>
+    <bootstrap thing="faSRALeyLinePhas"></bootstrap>
+    <eval phase="Effects"><![CDATA[~ build CustSumm based on existing abilities
+var mySumm as string
+var myAbil as string
+var needSumm as number
+
+needSumm = hero.tagis[Framework.faSRALeyLineSense]
+needSumm += hero.tagis[Framework.faSRALeyLinePhas]
+
+doneif (needSumm = 0)
+
+if (hero.tagis[Framework.faSRALeyLineSense] <> 0) then
+  myAbil = splice(myAbil,"Ley Line Sense",", ")
+  endif
+
+if (hero.tagis[Framework.faSRALeyLinePhas] <> 0) then
+  myAbil = splice(myAbil,"Ley Line Phasing",", ")
+  endif
+
+if (hero.tagis[Framework.faSRALeyLineRejuv] <> 0) then
+  myAbil = splice(myAbil,"Ley Line Rejuvenation",", ")
+  endif
+
+mySumm = "Gain free reroll with " & myAbil & "."
+
+field[CustSumm].text = mySumm]]></eval>
+    <eval phase="Initialize" priority="500" index="2">perform hero.pushtags[Hero.?]</eval>
+    </thing>
+  <thing id="edgSRALeyLineRej" name="Ley Line Rejuvenation" description="While on a Ley Line, the hero gains a natural healing roll once per day." compset="Edge" summary="Gain a natural healing roll once per day.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Background"/>
+    <containerreq phase="Initialize" priority="10000"><![CDATA[Race.racSRATrueAtlant & !Framework.faSRALeyLineRejuv]]></containerreq>
+    </thing>
+  <thing id="rpSRAMoreHuman" name="More Human Than Human" description="Because of their physical alchemical transformation True Atlanteans are remarkably long-lived (500+ years), but they can&apos;t reproduce with normal humans. The Coalition isn&apos;t fully aware of their existence, but will reject them as D-Bees if their heritage becomes known (tattoos and bio-alchemy mark them as supernatural). True Atlanteans do still count as human for purposes of selecting Iconic Frameworks (like Elemental Fusionists)." compset="ExtRacialProp" summary="Long lifespan. Count as Human for Iconic Frameworks.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Race" tag="racSRAHuman"/>
+    <eval phase="Initialize" priority="500">perform forward[Race.?]</eval>
+    </thing>
+  <thing id="rpSRATransformImm" name="Transformation Immunity" description="True Atlanteans can&apos;t be turned into undead, were-animals, or anything else. In addition, the powers of {i}growth/shrink, intangibility{/i}, and {i}shape change{/i} have no effect on them. They&apos;re unaffected by Bio-Wizard Augmentation (except torture). Note that Bio-Wizard microbes, parasites, and symbiotes still have full effect." compset="ExtRacialProp" summary="Can&apos;t be turned into undead, were-animals, or anything else. In addition, the powers of {i}growth/shrink, intangibility{/i}, and {i}shape change{/i} have no effect on them. Unaffected by Bio-Wizard Augmentation.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAVampAware" name="Vampire Awareness" description="True Atlanteans may Notice any vampires within line of sight. Those who already have the ability to Notice the supernatural gain a free reroll on such checks versus vampires." compset="ExtRacialProp" summary="May Notice any vampires within line of sight. Those who already have the ability to Notice the supernatural gain a free reroll on such checks versus vampires.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="siSRANoviceEdge" name="Novice Edge" compset="Simple">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="siSRASkillPoints" name="Skill Points" compset="Simple">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAVersatile" name="Versatile" description="Begin play with either 2 additional skill points or a Novice Edge of choice (meeting its Requirements as usual). These choices are often guided by a clan&apos;s society and reflect their cultural values." compset="ExtRacialProp">
+    <fieldval field="usrCandid1" value="thingid.siSRANoviceEdge|thingid.siSRASkillPoints"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Thing"/>
+    <eval phase="PreTraits" priority="5000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+var myId as string
+myId = field[usrChosen1].chosen.idstring
+if ( compare(myId, "siSRANoviceEdge") = 0) then
+  #resmax[resRaceEdge1] += 1
+  perform hero.child[RacialHelper1].setfocus
+  focus.field[rhEdgeAdd].text = "Add Novice Edge"
+  focus.field[rhEdgeHdr].text = "Novice Edge"
+  focus.field[rhEdgeExp].text = "MinRank.0|thing.showonly"
+elseif (compare(myId, "siSRASkillPoints") = 0) then
+  #resmax[resSkill] += 2
+  endif]]></eval>
+    </thing>
+  <thing id="rpSRAAtlasShrug" name="Atlas Shrugged" description="Myths say the founder of Atlantis, the titan Atlas, was burdened with the weight of all creation on his shoulders. His offspring continue his legendary tradition and bear the fate of the Megaverse® on their collective back. True Atlanteans are either Heroic or Overconfident for no extra bonus." compset="ExtRacialProp" summary="Gain Heroic or Overconfident hindrance.">
+    <fieldval field="raceCstVal" value="-2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="Effects" priority="1000"><![CDATA[  #resmax[resRaceHind1] += 1
+  perform hero.child[RacialHelper1].setfocus
+  focus.field[rhHindAdd].text = "Add NHindrance"
+  focus.field[rhHindHdr].text = "Hindrance"
+  focus.field[rhHindExp].text = "thingid.hinHeroic|thingid.hinConfide"]]></eval>
+    </thing>
+  <thing id="rpSRACybernetTA" name="Cybernetics" description="True Atlanteans halve their max Strain threshold for cyberware. They can&apos;t become Juicers or Crazies, take any Framework with 4 or more Strain in cybernetic systems, or roll on the Cybernetics Hero’s Journey table." compset="ExtRacialProp" summary="1/2 max Strain Threshold. Can&apos;t become Juicers or Crazies, take any Framework with 4 or more Strain in cybernetic systems, or roll on the Cybernetics Hero’s Journey table.">
+    <fieldval field="raceCstVal" value="-1"/>
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="Creature"/>
+    <eval phase="Setup" priority="1000">~ Crazy or Juicer not allowed
+perform hero.assign[Hero.NotAllowedCrazy]
+perform hero.assign[Hero.NotAllowedJuicer]
+
+~ unable to take the Cybernetics HJ Table
+perform hero.assign[HJInvalidCatSRA.Cyber]</eval>
+    </thing>
+  <thing id="rpSRAHuntedStars" name="Hunted Across the Stars" description="True Atlanteans fight the Splugorth across multiple dimensions and have liberated many worlds from their oppression. In return they&apos;re hunted by the Minions of Splugorth. This includes being stalked by Sunaj Assassins, pursued by Slavers, and attacked on sight by their henchmen and allies, including many bounty hunters." compset="ExtRacialProp">
+    <fieldval field="raceCstVal" value="-2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="hinWanted">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Splugorth and their Minions"/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRASwornClan" name="Sworn to the Clan" description="True Atlanteans are raised to put the clan before self and are regularly called upon to serve the clan in their journeys through the Megaverse®. This often takes the form of performing treacherous tasks, secretly providing information, or regularly donating money and valuables to the clan’s cause." compset="ExtRacialProp">
+    <fieldval field="raceCstVal" value="-2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="hinVow">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Serve the Clan"/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRAEndlessCrus" name="The Endless Crusade" description="Just as True Atlanteans ruthlessly hunt supernatural evil, they&apos;re targeted first by the undead, demons, and servants of evil who war against them. Such beings are violent unless a social skill check is successful. Persuasion checks with evil beings or their servants are at a −2 penalty." compset="ExtRacialProp">
+    <fieldval field="raceCstVal" value="-2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="hinEnemy">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Undead &amp; Demonkind"/>
+      <assignval field="livename" value="Racial Enemies"/>
+      </bootstrap>
+    </thing>
+  <thing id="rpSRAArcFeeders" name="Arcane Feeders" description="Zembahk absorb ambient energy, and do not eat or drink." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRACannotSpZem" name="Cannot Speak" description="Zembahk have no mouth and communicate through {i}mind link{/i}, which they activate with no roll or ISP cost as a free action, Range of Spirit × 5. Ignore speech requirements for power activation." compset="ExtRacialProp" summary="Zembahk have no vocal cords and communicate entirely through {i}mind link{/i} as a free action, Range of Spirit × 5.">
+    <fieldval field="raceCstVal" value="-2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAIntuitivePsi" name="Intuitive Psionics" description="Zembahk begin with Arcane Background (Psionics), +5 ISP, and the following powers: {i}detect/conceal arcana*, healing, protection*, smite*,{/i} and {i}telekinesis{/i}. If a Zembahk chooses a Framework providing Arcane Background (Psionics) it follows all the normal rules except five of its starting powers are the ones listed above (even if not normally allowed), and gains four powers to its starting total (e.g. a Zembahk Mind Melter starts with nine powers)." compset="ExtRacialProp" summary="Begin with AB: Psionics, 5 ISP, {i}detect/conceal arcana*, healing, protection*, smite*,{/i} and {i}telekinesis{/i}.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="skPsionics"></bootstrap>
+    <bootstrap thing="powSRADetectSelf">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powHealingSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powSRAProtectSelf">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="edgSRAArcPsionics"></bootstrap>
+    <bootstrap thing="powSRASmiteSelf">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powTelekinSWADE">
+      <autotag group="Arcane" tag="arcPsionicSWADE"/>
+      </bootstrap>
+    <eval phase="Setup" priority="1000" index="2">#resmax[arcPsionicSWADE] += 2
+#trkmax[arcPsionicSWADE] -= 5
+
+doneif (hero.tagis[User.BonusISPPowers] = 0)
+
+#resmax[arcPsionicSWADE] += 4</eval>
+    </thing>
+  <thing id="rpSRAIntuitiveCas" name="Intuitive Casters" description="Zembahk begin with Arcane Background (Miracles), +5 PPE, and the following powers: {i}arcane protection, bolt, dispel, environmental protection{/i}, and {i}elemental manipulation{/i}. If a Zembahk chooses a Framework providing Arcane Background (Miracles) it follows all the normal rules except five of its starting powers are the ones listed above (even if not normally allowed), and gains four powers to its starting total (e.g. a Zembahk Mystic starts with seven Miracles powers)." compset="ExtRacialProp" summary="Begin with AB: Miracles, 5 ISP, {i}arcane protection, bolt, dispel, environmental protection{/i}, and {i}elemental manipulation{/i}.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="skFaith"></bootstrap>
+    <bootstrap thing="powArcaneProtect">
+      <autotag group="Arcane" tag="arcMiracleSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powBoltSWADE">
+      <autotag group="Arcane" tag="arcMiracleSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powDispelSWADE">
+      <autotag group="Arcane" tag="arcMiracleSWADE"/>
+      </bootstrap>
+    <bootstrap thing="edgSRAArcMiracle"></bootstrap>
+    <bootstrap thing="powEnvironSWADE">
+      <autotag group="Arcane" tag="arcMiracleSWADE"/>
+      </bootstrap>
+    <bootstrap thing="powElementSWADE">
+      <autotag group="Arcane" tag="arcMiracleSWADE"/>
+      </bootstrap>
+    <eval phase="Setup" priority="1000" index="2">#resmax[arcMiracleSWADE] += 2
+#trkmax[arcMiracleSWADE] -= 5
+
+doneif (hero.tagis[User.BonusPPEPowers] = 0)
+
+#resmax[arcMiracleSWADE] += 4</eval>
+    </thing>
+  <thing id="rpSRAMysticWorm" name="Mystic Worm" description="Zembahk begin with Spirit d6 (trait maximum d12+2), and treat all arcane skills as linked to Spirit." compset="ExtRacialProp" summary="Start with Spirit of d6  (trait maximum d12+2). Treat all arcane skills as linked to Spirit">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitbonus[attrSpi] += 1
+hero.child[attrSpi].field[trtMaximum].value += 2</eval>
+    <eval phase="Initialize" priority="500" index="2"><![CDATA[foreach pick in hero from Skill where "Helper.IsArcaneSkill"
+  perform eachpick.assign[Helper.SkillOverSpi]
+  nexteach]]></eval>
+    </thing>
+  <thing id="rpSRAOnePreApp" name="One Prehensile Appendage" description="Tasks that require two hands, such as some Athletics rolls (GM’s call) or using a two-handed weapon, suffer a −4 modifier." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAReducedPace" name="Reduced Pace" description="Reduce Pace by 1 and running die by one die type." compset="ExtRacialProp" summary="Pace -1, decrease Running die by one die type.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="Traits" priority="5500"><![CDATA[perform #traitadjust[trPace,-,1,"Reduced Pace"]]]>
+      <before name="Derived trtFinal"/>
+      <after name="Set Pace"/>
+      </eval>
+    <eval phase="PreTraits" priority="6000" index="2"><![CDATA[      	if (hero.tagis[source.RunningDie] <> 0) then
+          perform #traitadjust[trRunning,-,2,"Reduced Pace"]
+          endif]]></eval>
+    </thing>
+  <thing id="rpSRARejectMat" name="Reject the Material" description="Zembahk don&apos;t wear clothing or armor, and don&apos;t have the opposable digits needed for using complex equipment and weapons. Most have no use for starting gear, and care not for wealth." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRASevResPath" name="Severely Restricted Path" description="Zembahk are limited to the Ley Line Walker, Mind Melter, or Mystic Iconic Frameworks." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRAThickSkinned" name="Thick Skinned" description="Zembahk have +3 Toughness." compset="ExtRacialProp">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <eval phase="PreTraits" priority="5000">#traitcreation[trTough] += 3</eval>
+    </thing>
+  <thing id="rpSRAUncReflexes" name="Uncanny Reflexes" description="Zembahk&apos;s reflexes grant them −2 to be hit by any attack they are aware of and +2 on Evasion rolls." compset="ExtRacialProp" summary="−2 to be hit by any attack they are aware of and +2 on Evasion rolls.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="rpSRASizeZem" name="Size" description="The average Zembahk is 4’ long; –1 Toughness." compset="ExtRacialProp" uniqueness="unique">
+    <fieldval field="raceValue" value="-1"/>
+    <usesource source="srcRiftsTLFMAE"/>
+    <eval phase="PreTraits" priority="5000" index="2"><![CDATA[      perform #traitadjust[trTough,-,1,"Size"]
+      perform #traitadjust[trSize,-,1,"Size"]]]></eval>
+    <eval phase="Render" priority="1000"><![CDATA[var sizeCat as string
+var sizeVal as number
+sizeVal = field[raceValue].value
+field[livename].text = field[name].text & " " & sizeVal
+
+call SizeCategory
+
+field[livename].text &= " (" & sizeCat & "]"
+field[shortname].text = field[livename].text]]></eval>
+    </thing>
+  <thing id="rpSRAWantedMajZem" name="Wanted (Major)" description="Zembahk are wanetd by the Splugorth." compset="ExtRacialProp">
+    <usesource source="srcRiftsArcMysAE"/>
+    <tag group="Hide" tag="Special"/>
+    <bootstrap thing="hinWanted">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Splugorth"/>
+      </bootstrap>
+    </thing>
+  <thing id="edgSRACrysMastery" name="Crystal Mastery" description="The Stone Master adds the {i}banish, blast, blind, burst, damage field, smite{/i} and {i}teleport{/i} powers to those available through his power list—if taken those powers, and optionally bolt, have a light trapping with a +2 bonus to damage or to affect supernatural evil and beings with a Weakness to any kind of light trapping.\n\nIn addition, the Stone Master learns the summon ally power, which may only be used as a Ritual (see The Tomorrow Legion Player&apos;s Guide) or in conjunction with the Create Golem Edge." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <eval phase="Effects" priority="1000">~ set up additional available Powers
+
+perform hero.childfound[arcPsionicSWADE].setfocus
+doneif (state.isfocus = 0)
+    
+
+perform focus.delete[PowerDeny.powBanishSWADE]
+perform focus.delete[PowerDeny.powBurstSWADE]
+perform focus.delete[PowerDeny.powDamageFSWADE]
+perform focus.delete[PowerDeny.powSmiteSWADE]
+perform focus.delete[PowerDeny.powTeleporSWADE]</eval>
+    <pickreq thing="grpSRAStoneMaster"/>
+    <exprreq message="Occult d8+ required."><![CDATA[#traitfound[skOccult] >= 4]]></exprreq>
+    <exprreq message="Smarts d8+ required."><![CDATA[#trait[attrSma] >= 4]]></exprreq>
+    </thing>
+  <thing id="edgSRAGemMastery" name="Gem Mastery" description="The Stone Master has learned to unlock the ultimate power hidden within gems. By activating a magic gem at a penalty of −2 the relevant power activates with Bonus Effects listed on the Gem Magic Powers table, on page 15. The Stone Master can also use Rituals (see The Tomorrow Legion Player&apos;s Guide) to increase the effects of powers activated through Gem Magic while at a stone pyramid." compset="Edge" summary="By activating a magic gem at a penalty of −2 the relevant power activates with Bonus Effects listed on the Gem Magic Powers table. Can use Rituals to increase the effects of powers activated through Gem Magic while at a stone pyramid.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="1"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <pickreq thing="grpSRAStoneMaster"/>
+    <exprreq message="Occult d10+ required."><![CDATA[#traitfound[skOccult] >= 5]]></exprreq>
+    </thing>
+  <thing id="edgSRAGeomancy" name="Geomancy" description="The caster has learned the secrets of Geomancy, one of the oldest forms of magic known to humankind. The caster gains the {i}divination{/i} and {i}boost/lower Trait{/i} powers (any Trait) and access to all related Power Modifiers and Mega Power Modifiers, but can only activate these powers as a Ritual" compset="Edge" summary="The caster gains the {i}divination{/i} and {i}boost/lower Trait{/i} powers (any Trait) and access to all related Power Modifiers and Mega Power Modifiers, but can only activate these powers as a Ritual">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="1"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <exprreq message="Occult d8+ required."><![CDATA[#traitfound[skOccult] >= 4]]></exprreq>
+    <exprreq message="Spirit d8+ required."><![CDATA[#trait[attrSpi] >= 4]]></exprreq>
+    <prereq message="Stone Master or Elemental Fusionist (Earth) or Ley Line Walker required.">
+      <validate>var myIF as number
+
+myIF += hero.tagis[Group.grpSRAStoneMaster]
+myIF += hero.tagis[FraAbility.siSRAElementEarth]
+myIF += hero.tagis[Group.grpSRALeyLineWalk]
+
+@valid = myIF</validate>
+      </prereq>
+    </thing>
+  <thing id="edgSRAMaxiKiller" name="Maxi-Killer Treatment" description="Commonly known as Maxi-Killers, Bio- Wizard Juicers are super-soldiers created using the Splugorth’s own perversion of the human Juicer augmentation. Instead of a bio-comp, the subject is joined for life with a symbiote called the Maxi-Inducer. The symbiote attaches to the subject&apos;s back and weaves its tendrils around every muscle and organ, transformed them into a Juicer with the following changes:\n\n* Carapace: The Maxi-Inducer grows a shell, granting two levels of the Armored Hide augmentation..\n* Enhanced Regeneration: The Internal Repair System can recover Injuries once all Wounds are healed.\n* Forearm Blades: Maxi-Killers sprout wicked blades, granting the Claws Bio-Wizard Augmentation.\n\nThe Maxi-Killer loses a point of Burn, gains the Ugly (Minor) Hindrance, begins with Bio-Borg Starting Gear, rolls once on the Bio- Borg Insanity table (page 13), and can&apos;t attempt the detox process—removing the Maxi-Inducer will kill him. This Edge may only be taken at character creation, and can&apos;t be combined with other Juicer Treatments or the Freshly Juiced Edge. With the GM&apos;s permission, Races with Alien Physiology may take this Edge to become Juicers in exchange for losing an extra two points of Burn (three total) at character creation." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="User" tag="CreateOnly"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <bootstrap thing="faSRACarapaceMaxi"></bootstrap>
+    <bootstrap thing="faSRAForearmMaxi"></bootstrap>
+    <bootstrap thing="hinUglySWADE"></bootstrap>
+    <eval phase="Final" priority="1000" index="2"><![CDATA[hero.childfound[grpSRAJuicer].field[livename].text = "Juicer (Maxi-Killer)"]]></eval>
+    <eval phase="Effects" priority="1000"><![CDATA[hero.childfound[faSRAIntRepSystem].field[livename].text = "Enhanced Regeneration"
+
+hero.childfound[faSRAIntRepSystem].field[CustSumm].text = "Slow Regen (natural healing roll once per day). As an action, can make a natural healing roll at +2 to heal Wounds. Can recover Injuries once all Wounds are healed."
+
+#trkmax[trkBurn] -= 1]]></eval>
+    <eval phase="Setup" priority="1000" index="3">~ gain a Bio-Borg Insanity
+#resmax[resFrameSelect5] += 1
+
+perform hero.assign[Helper.FrameworkChoices]</eval>
+    <eval phase="Render" priority="10000" index="4"><![CDATA[var header as string
+var chooser as string
+var additem as string
+
+additem = "Add Insanity Hindrance"
+header = "Insanity Hindrance: "
+header &= hero.child[resFrameSelect5].field[resSummary].text
+chooser = "Helper.BioBorgInsanity"
+
+~set up chooser expressions for Edge selection
+hero.child[FrameworkHelper].field[ehFrameAdd5].text = additem
+hero.child[FrameworkHelper].field[ehFrameExp5].text = chooser
+hero.child[FrameworkHelper].field[ehFrameHdr5].text = header]]></eval>
+    <pickreq thing="grpSRAJuicer"/>
+    <pickreq thing="edgSRAFreshJuice" ispreclude="yes"/>
+    </thing>
+  <thing id="faSRACarapaceMaxi" name="Carapace" description="The Maxi-Inducer grows a shell, granting two levels of the Armored Hide augmentation." compset="FraAbility">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="bwaSRAArmorHide"></bootstrap>
+    <bootstrap thing="bwaSRAArmorHide"></bootstrap>
+    </thing>
+  <thing id="faSRAForearmMaxi" name="Forearm Blades" description="Maxi-Killers sprout wicked blades, granting the Claws Bio-Wizard Augmentation," compset="FraAbility">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <bootstrap thing="bwaSRAClaws"></bootstrap>
+    </thing>
+  <thing id="edgSRAMaxiWarrior" name="Maxi-Warrior" description="Some tattooed warriors—usually those captured in early childhood—are raised and indoctrinated to become the elite masters of their craft. Unlike most slaves, Maxi-Men and Maxi-Women are treated with decency and understanding by their trainers. Acts of bravery or devotion to the Splugorth are carefully rewarded with special privileges and even increased rank within the hierarchy of their minions—many Maxi- Warriors become generals, advisors, and even governors! As a result a significant number of them are quite happy with their lot, and disturbingly loyal to their masters.\n\nMaxi-Warriors only roll once on the Tattoo Insanity table (page 21). When gaining new tattoos they halve the recovery time (see Tattoo Magic Recovery on page 75). Instead of gaining the skills and Edges listed in the Tattooed Warrior&apos;s &quot;Previous Life&quot; ability, the Maxi-Warrior gains +2 skill points—which may be spent on Athletics, Fighting, or Shooting—as well as two Combat or Professional Edges of choice. This Edge may only be taken at character creation, and can&apos;t be taken in combination with the Tattooed Monster Warrior Edge.\n\n{b}NOTE: {/b}There is no check for which skills the additional points are spent on, it&apos;s up to the user to verify they spend the points on the correct skills." compset="Edge" summary="Maxi-Warriors only roll once on the Tattoo Insanity table. Previous life instead gains 2 Skill Points for use in Athletics, Fighting, or Shooting. Also 2 Combat or Professional edges.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="User" tag="CreateOnly"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <bootstrap thing="skAthletic"></bootstrap>
+    <bootstrap thing="skFighting"></bootstrap>
+    <bootstrap thing="skShooting"></bootstrap>
+    <eval phase="Setup" priority="1500"><![CDATA[#resmax[resFraEdges] += 1
+
+~ only one Insanity
+#resmax[resFrameSelect5] -= 1
+
+~ adjust Previous Life details
+perform hero.childfound[faSRAPrevLife].setfocus
+
+perform focus.assign[User.NoAutoName]
+focus.field[livename].text = "Previous Life (Maxi-Warrior)"
+focus.field[usrCandid1].text = ""
+perform focus.field[usrChosen1].reset
+focus.field[usrCandid2].text = ""
+perform focus.field[usrChosen2].reset
+
+focus.field[CustSumm].text = field[summary].text]]></eval>
+    <eval phase="Render" priority="10100" index="2"><![CDATA[var header as string
+var chooser as string
+var additem as string
+
+additem = "Add Combat/Professional Edge"
+header = "Previous Life Edge: "
+header &= hero.child[resFraEdges].field[resSummary].text
+
+chooser = "EdgeType.Combat|EdgeType.Profession"
+
+~set up chooser expressions for Edge selection
+hero.child[FrameworkHelper].field[ehFrameEdgeAdd].text = additem
+hero.child[FrameworkHelper].field[ehFrameEdgeExp].text = chooser
+hero.child[FrameworkHelper].field[ehFrameEdgeHdr].text = header]]></eval>
+    <pickreq thing="edgSRATMonster" ispreclude="yes"/>
+    <pickreq thing="grpSRATWarrior"/>
+    </thing>
+  <thing id="edgSRATattooArch" name="Tattooed Archer" description="The Tattooed Warrior specializes in the use of unique ranged weapon tattoos created by the Splugorth High Lords, and unknown to the True Atlanteans or even the Chiang-Ku! The &quot;T-Archer&quot; gains the ability to take Bloody, Aura, Serpent, Skull Pierced, and Winged versions of Medieval Ranged Weapons. Bloody thrown weapons deal the same damage as Bloody melee weapons. Bloody Shooting weapons deal 2 × their base damage in Mega Damage with AP equal to damage die type.\n\nMake the following changes to the normal abilities listed for the Tattooed Warrior:\n* Trained for the Arena: The ability instead grants a die type to Fighting, two die types to Shooting, plus the Marksman and Sharpshooting Edges (see Empires of Humanity).\n* Magic Tattoos: Instead of the currently listed magic tattoos select two Simple Weapon or Shield tattoos, four Weapon Tattoos of any kind, one Animal tattoo, one Monster tattoo, two Power Tattoos, and two additional tattoos of any type.\n\nThis Edge may only be taken at character creation, and can&apos;t be taken in combination with the Tattooed Monster Warrior Edge." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="User" tag="CreateOnly"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <bootstrap thing="skShooting"></bootstrap>
+    <bootstrap thing="edgMarksmanSWADE"></bootstrap>
+    <bootstrap thing="edgSRASharpshoot">
+      <autotag group="thing" tag="skipprereq"/>
+      </bootstrap>
+    <eval phase="PreTraits" priority="1010"><![CDATA[~ adjust the bonuses from Trained in the Arena
+#resmax[resFrameSelect2] -= 1
+#resmax[resFrameSelect3] -= 1
+
+
+#traitcreation[skAthletic] -= 1
+
+~ 2 die types to shooting
+#traitcreation[skShooting] += 2
+
+~ adjust Trained in the Arena details
+perform hero.childfound[faSRATrainedArena].setfocus
+
+focus.field[livename].text = "Trained in the Arena (T-Archer)"
+
+focus.field[CustSumm].text = "Gain a die type in Fighting, two die types in Shooting, and the Marksman and Sharpshooting edges."
+
+~ adjust Magic Tattoos details
+perform hero.childfound[faSRAMagicTattoos].setfocus
+
+focus.field[livename].text = "Magic Tattoos (T-Archer)"
+
+focus.field[CustDesc].text = focus.field[descript].text & "\n\n{b}From Tattooed Archer: {/b}Instead of the currently listed magic tattoos select two Simple Weapon or Shield tattoos, four Weapon Tattoos of any kind, one Animal tattoo, one Monster tattoo, two Power Tattoos, and two additional tattoos of any type."]]></eval>
+    <eval phase="Initialize" priority="500" index="2">Perform hero.assign[Hero.TArcher]</eval>
+    <eval phase="Render" priority="10100" index="3"><![CDATA[hero.child[FrameworkHelper].field[ehFrameExp2].text = ""
+hero.child[FrameworkHelper].field[ehFrameExp3].text = ""]]></eval>
+    <pickreq thing="grpSRATWarrior"/>
+    <pickreq thing="edgSRATMonster" ispreclude="yes"/>
+    </thing>
+  <thing id="edgSRATMonster" name="Tattooed Monster Warrior" description="Also known as &quot;T-Monster Men&quot; (or Women), the sanity of these warriors is taxed by inscribing more summoning tattoos than is normally considered safe. Many Ogres become T-Monster Warriors. Make the following changes to the normal abilities listed for the Tattooed Warrior:\n\n* Unhinged: In addition to being mentally scarred, T-Monster Warriors also roll once on the Crazy&apos;s Psyche Degradation table (see The Tomorrow Legion Player&apos;s Guide).\n\n* Hardened Summoner: When a T-Monster Warrior&apos;s tattoo creatures become \nIncapacitated he gets a free reroll on resulting Vigor checks, and with a failure he may choose to suffer a Wound instead of a level of Fatigue.\n\n* Magic Tattoos: Instead of what is listed select one Simple Weapon or Shield tattoo, two Weapon Tattoos of any type, three Animal tattoos (usually large predators), four Monster tattoos, a Skull with Batwings tattoo, a Warrior in Full Armor tattoo, and two additional tattoos of any type. This brings the total to 14 tattoos instead of 12, refactor Toughness and PPE accordingly.\n\nThis Edge may only be taken at character creation, and can&apos;t be taken in combination with the Maxi-Warrior or Tattooed Archer Edges." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="User" tag="CreateOnly"/>
+    <tag group="EdgeType" tag="Iconic"/>
+    <bootstrap thing="faSRAHardSummoner"></bootstrap>
+    <bootstrap thing="fcSRAUnhingedTat"></bootstrap>
+    <bootstrap thing="tatSRASkullBatW"></bootstrap>
+    <bootstrap thing="tatSRAWarriorFull"></bootstrap>
+    <eval phase="Initialize" priority="500" index="2">Perform hero.assign[Hero.TMonster]</eval>
+    <eval phase="PreTraits" priority="1010"><![CDATA[~ adjust Magic Tattoos details
+perform hero.childfound[faSRAMagicTattoos].setfocus
+
+focus.field[livename].text = "Magic Tattoos (T-Monster)"
+
+focus.field[CustDesc].text = focus.field[descript].text & "\n\n{b}From Tattooed Monster Warrior: {/b}Instead of what is listed select one Simple Weapon or Shield tattoo, two Weapon Tattoos of any type, three Animal tattoos (usually large predators), four Monster tattoos, a Skull with Batwings tattoo, a Warrior in Full Armor tattoo, and two additional tattoos of any type. This brings the total to 14 tattoos instead of 12, refactor Toughness and PPE accordingly."]]></eval>
+    <pickreq thing="grpSRATWarrior"/>
+    <pickreq thing="edgSRAMaxiWarrior" ispreclude="yes"/>
+    <pickreq thing="edgSRATattooArch" ispreclude="yes"/>
+    </thing>
+  <thing id="faSRAHardSummoner" name="Hardened Summoner" description="When a T-Monster Warrior&apos;s tattoo creatures become Incapacitated he gets a free reroll on resulting Vigor checks, and with a failure he may choose to suffer a Wound instead of a level of Fatigue." compset="FraAbility" summary="Gain a free reroll on related Vigor checks when tattoo creatures become incapacitated. On a Vigor check failure, may choose to suffer a Wound instead of a level of Fatigue.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    </thing>
+  <thing id="fcSRAUnhingedTat" name="Unhinged" description="In addition to being mentally scarred, T-Monster Warriors also roll once on the Crazy&apos;s Psyche Degradation table." compset="FraComp">
+    <usesource source="srcRiftsTLPGAE"/>
+    <eval phase="Setup" priority="1000">#resmax[resFrameSelect5] += 1</eval>
+    <eval phase="Render" priority="10000" index="2"><![CDATA[var header as string
+var chooser as string
+var additem as string
+
+additem = "Add Unhinged Hindrance"
+header = "Unhinged: "
+header &= hero.child[resFrameSelect5].field[resSummary].text
+chooser = "Helper.UnstablePsyche"
+
+~set up chooser expressions for Edge selection
+hero.child[FrameworkHelper].field[ehFrameAdd5].text = additem
+hero.child[FrameworkHelper].field[ehFrameExp5].text = chooser
+hero.child[FrameworkHelper].field[ehFrameHdr5].text = header]]></eval>
+    </thing>
+  <thing id="siSRABloodthirstU" name="Bloodthirsty" description="“Bathing in the blood of my enemies” has the potential to become a disturbing reality for a Crazy with this Hindrance." compset="Simple" summary="Gain the Bloodthirsty hindrance." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinBloodthSWADE"></bootstrap>
+    </thing>
+  <thing id="siSRACluelessUP" name="Clueless" description="The Crazy&apos;s fantastical perceptions and dissociations from reality affect her ability to tune in to and accurately perceive the real world." compset="Simple" summary="Gain the Clueless hindrance." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinCluelesSWADE"></bootstrap>
+    </thing>
+  <thing id="siSRADelusionUP" name="Delusional (Major)" description="This can be wacky, but psychotic delusions also lead to dire circumstances with tragic results. Crazies may suffer from multiple delusions." compset="Simple" summary="Gain the Delusional (Major) hindrance.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinDelude">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="siSRAHabitMajorUP" name="Habit (Major)" description="The Crazy has a psychosomatic belief something weird fuels her life force—bizarre compulsive associations can range from foods (spinach, ripple wine) to &quot;magic&quot; charms, sunlight (or darkness), gibberish power words, etc." compset="Simple" summary="Gain the Habit (Major) hindrance">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinHabitSWADE">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="siSRAManiaMajorUP" name="Mania (Major)" description="A variety of psychological or emotional issues can emanate from this result." compset="Simple" summary="Gain the Mania (Major) hindrance.">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinSRAMania">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="siSRAMonologuer" name="Monologuer" description="Snappy chatter or constant raving can take over a Crazy’s mind. Any time her Action Card is a Club, she checks Smarts at –2 or spends her action rambling on. She may only take free actions during her monologue." compset="Simple" summary="Any time her Action Card is a Club, she checks Smarts at –2 or spends her action rambling on. She may only take free actions during her monologue." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    </thing>
+  <thing id="siSRAOverconfidUP" name="Overconfident" description="These Crazies make even adrenaline junkies look sedate." compset="Simple" summary="Gain the Overconfident hindrance." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinConfide"></bootstrap>
+    </thing>
+  <thing id="siSRAPhobiaMajUP" name="Phobia (Major)" description="Crazies can have multiple things that irrationally terrify them." compset="Simple" summary="Gain the Phobia (Major) hindrance">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinPhobiaSWADE">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="siSRARuthlessMajU" name="Ruthless (Major)" description="Psychopaths do whatever it takes to get what they want." compset="Simple" summary="Gain the Ruthless hindrance." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinRuthless">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="siSRASuspicMajUP" name="Suspicious (Major)" description="The Crazy has crossed over into full-blown paranoia." compset="Simple" summary="Gain the Suspicious hindrance." uniqueness="useronce">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Helper" tag="UnstablePsyche"/>
+    <bootstrap thing="hinSuspicious">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    </thing>
+  <thing id="tatSRASerpWeapon" name="Serpent Weapon" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.">
+    <fieldval field="usrCandid1" value="component.WeapMelee &amp; WeaponType.MedMelee"/>
+    <fieldval field="tatPPECost" value="4"/>
+    <fieldval field="tatStrain" value="1"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <tag group="TattooCat" tag="Weapon"/>
+    <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & " (Serpent Wpn. Tattoo)"
+focus.field[wpSpecial].text = splice(focus.field[wpSpecial].text,"+8 MD vs. reptiles and dragons",", ")]]></eval>
+    </thing>
+  <thing id="tatSRAWpnPiercSku" name="Weapon Piercing a Skull" description="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type. Each hit also drains 1d4 PP.\n\n{i}{b}Note: {/b}Purchase appropriate weapon for free on armory tab. The chosen weapon will adjust to reflect the tattoo weapon.{/i}" compset="Tattoo" summary="Conjure a Medieval Melee Weapon. It deals Str + damage dice ×2 MD, with AP equal to damage die type.">
+    <fieldval field="usrCandid1" value="component.WeapMelee &amp; WeaponType.MedMelee"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="TattooCat" tag="Weapon"/>
+    <tag group="ChooseSrc1" tag="Hero"/>
+    <eval phase="Setup" priority="1000"><![CDATA[doneif (field[usrChosen1].ischosen = 0)
+
+perform field[usrChosen1].chosen.setfocus
+doneif (state.isfocus = 0)
+perform focus.assign[Helper.IsTattoo]
+focus.field[livename].text =  focus.field[name].text & "  (Piercing Skull Tattoo)"
+
+var newAP as number
+newAP = focus.tagvalue[WeaponDie.?]
+perform focus.assign[Helper.DieMult2]
+perform focus.assign[Weapon.MegaDamage]
+focus.field[wpPiercing].value = (newAP * 2)
+
+focus.field[wpSpecial].text = splice(focus.field[wpSpecial].text,"each hit drains 1d4 PP",", ")]]></eval>
+    </thing>
+  <thing id="tatSRASkullBatW" name="Skull with Bat Wings" description="Cast {i}zombie{/i} with Armed, Armor, and Skeletal." compset="Tattoo">
+    <fieldval field="tatPPECost" value="3"/>
+    <fieldval field="tatStrain" value="1"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="TattooCat" tag="Power"/>
+    </thing>
+  <thing id="tatSRAWarriorFull" name="Warrior in Full Armor" description="Cast Greater {i}protection{/i} (self) with Toughness." compset="Tattoo">
+    <fieldval field="tatPPECost" value="4"/>
+    <fieldval field="tatStrain" value="2"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="TattooCat" tag="Power"/>
+    </thing>
+  <thing id="edgSRAGladiator" name="Gladiator" description="The hero has learned to fight dirty and seize on every advantage possible in mortal combat. Whenever the hero gets a raise on a Test attempt, he may spend a Benny to gain The Drop on the opponent for that round. If many opponents are likewise affected by the same Test, he chooses one to get The Drop on." compset="Edge" summary="Whenever the hero gets a raise on a Test attempt, he may spend a Benny to gain The Drop on the opponent for that round.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Combat"/>
+    <exprreq message="Smarts d6+ required."><![CDATA[#trait[attrSma] >= 3]]></exprreq>
+    </thing>
+  <thing id="edgSRACreateGolem" name="Create Golem" description="The arcanist gains access to the following Mega Power Modifier:\n\n* {b}Golem (10 PPE):{/b} Creating a humanoid golem (see Arcana &amp; Mysticism) requires sculpting a clay body—a skilled artist or Stone Master is often employed. Once this is prepared the caster adds gems for eyes to its face, an iron heart in its chest, and a special rune marked scroll in its skull—all in total worth 2500 credits—during an hour-long ceremony. The Golem is animated to &quot;life&quot; until Incapacitated by Wounds. The Power Points used to raise it are “invested” and unavailable until it’s destroyed. The caster may terminate his creations’ animation at any time, regardless of sight, distance, or other factors. His Power Points then begin recharging normally. Golems not terminated by their caster remain animated even if their creator is slain!\n\n* {b}Permanent Golems:{/b} Most creators go a step further and use Major Item Creation (see Arcana &amp; Mysticism) during the preparation before the ceremony to infuse summon ally (cast at Veteran Rank, may not use Modifiers, counts as a Major Upgrade) and at least 10 PPE (one Major or two Minor Upgrades) into the iron heart, which maintains the power for the caster. The item becomes part of the Golem when the ceremony is completed; it remains animated even if the creator dies and will only obey the creator and those he designates." compset="Edge" summary="Gain access to the Golem Mega-Power Modifier for {i}summon ally{/i}.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="2"/>
+    <tag group="EdgeType" tag="Power"/>
+    <pickreq thing="edgSRAMastMagic"/>
+    <pickreq thing="powSumAllySWADE"/>
+    <exprreq message="Occult d8+ required."><![CDATA[#traitfound[skOccult] >= 4]]></exprreq>
+    </thing>
+  <thing id="edgSRAUnderwaterA" name="Underwater Acclimation" description="The hero has experience in underwater operations and combat. He ignores the typical −2 penalty to Agility and Agility based skills for operating while submersed (see Underwater on page 71). Heroes with the Can&apos;t Swim Hindrance can&apos;t take this Edge." compset="Edge" summary="Ignore the typical -2 penalty to Agility and Agility-based skills while submersed.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Profession"/>
+    <pickreq thing="hinCantSwim" ispreclude="yes"/>
+    <exprreq message="Athletics d6+ required."><![CDATA[#traitfound[skAthletic] >= 3]]></exprreq>
+    </thing>
+  <thing id="edgSRASalvageExp" name="Salvage Expert" description="Some heroes have a gift for salvaging damaged or wrecked equipment of vessels, and skillfully managing to retain as much value as possible in the process. As long as they have the proper equipment and crew, whether raising ships from a watery grave or retrieving other wrecked gear, the salvage expert increases the credit value of offers by +25% when Selling Gear (see The Tomorrow Legion Player&apos;s Guide) and is skilled at getting scrap value from completely wrecked items. To find the scrap value the Salvage Expert rolls Repair, the result is the percentage of the item&apos;s original value gained in credits." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Profession"/>
+    <exprreq message="Science d6+ required."><![CDATA[#traitfound[skScience] >= 3]]></exprreq>
+    <exprreq message="Repair d8+ required"><![CDATA[#traitfound[skRepair] >= 4]]></exprreq>
+    <exprreq message="Smarts d6+ required."><![CDATA[#trait[attrSma] >= 3]]></exprreq>
+    </thing>
+  <thing id="edgSRADimenSense" name="Dimension Sense" description="With a successful Occult roll, the hero can determine a wealth of information about a dimension he is in or views through a Rift. Such information might include environmental conditions, whether magic poor or rich, if there&apos;s a temporal shift, whether it is a parallel dimension or the same one as Rifts Earth (plus general distance away), if there is a strong supernatural presence on the other side, and similar relevant information.\n\nIf they know how to operate dimensional stone pyramids, heroes with this Edge (and all Shifters) may also perform Pyramid Scans." compset="Edge">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="1"/>
+    <tag group="EdgeType" tag="Weird"/>
+    <exprreq message="Ley Line Sense ability required."><![CDATA[hero.tagis[Hero.LeyLineSense] <> 0]]></exprreq>
+    <exprreq message="Occult d8+ required."><![CDATA[#traitfound[skOccult] >= 4]]></exprreq>
+    </thing>
+  <thing id="edgSRANewInk" name="New Ink" description="If the GM agrees the character has an “in” with a Tattoo Master, she gains one new magic tattoo. Non Tattooed Beings (those with more than six magic tattoos) can&apos;t take Power Tattoos unless they are of Veteran Rank or higher. This Edge may only be taken once per Rank." compset="Edge" summary="Gain a Magic Tattoo.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="0"/>
+    <tag group="EdgeType" tag="Weird"/>
+    <exprreq message="Vigor d6+ required."><![CDATA[#trait[attrVig] >= 3]]></exprreq>
+    <prereq message="Dragon or Elf or Human or Ogre or True Atlantean required. ">
+      <validate><![CDATA[validif (hero.tagis[Race.racSRADragonHatch] + hero.tagis[Race.racSRAElf] + hero.tagis[Race.racSRAHuman] + hero.tagis[Race.racSRAOgre] + hero.tagis[Race.racSRATrueAtlant] <> 0)]]></validate>
+      </prereq>
+    </thing>
+  <thing id="edgSRATatHarmony" name="Tattoo Harmony" description="The hero has mastered the art of quickly tapping her tattoos to unleash their magic. Once per round he may activate a Magic Tattoo at no Multi-Action penalty, and may even activate them while enraged, Berserk (per the Edge), or in similar states of duress." compset="Edge" summary="Once per round he may activate a Magic Tattoo at no Multi-Action penalty, and may even activate them while enraged, Berserk (per the Edge), or in similar states of duress.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="1"/>
+    <tag group="EdgeType" tag="Weird"/>
+    <exprreq message="Agility d6+ required."><![CDATA[#trait[attrAgi] >= 3]]></exprreq>
+    </thing>
+  <thing id="edgSRATatUnity" name="Tattoo Unity" description="The hero has become so attuned to the mystical markings embedded in her flesh she may activate them by concentration alone. Magic Tattoos must still be uncovered to function, but may be activated without physical touch, even if Bound." compset="Edge" summary="May activate tattoos by concentration alone. Magic Tattoos must still be uncovered to function, but may be activated without physical touch, even if Bound.">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinRank" tag="2"/>
+    <tag group="EdgeType" tag="Weird"/>
+    <pickreq thing="edgSRATatHarmony"/>
+    <exprreq message="Spirit d8+ required."><![CDATA[#trait[attrSpi] >= 4]]></exprreq>
+    </thing>
+  <thing id="eqSRAGasMask" name="Gas Mask" description="A face mask with goggles and filters designed to protect the wearer from airborne threats. Provides a +4 bonus versus airborne Poison, Disease, and Radiation by filtering out and absorbing dangerous particles. A filter lasts 8 hours before needing to be changed." compset="Equipment" summary="+4 bonus versus airborne Poison, Disease, and Radiation">
+    <fieldval field="gearWeight" value="1"/>
+    <fieldval field="grCost" value="250"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAGeigerCounte" name="Geiger Counter" description="Detects Radiation levels, and types of radiation with an Electronics or Science roll." compset="Equipment">
+    <fieldval field="gearWeight" value="1"/>
+    <fieldval field="grCost" value="50"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAPwrJawHelm" name="Power Jaw Helmet" description="This helmet—compatible with power armor systems—adds a bite attack for use in melee combat using powerful hydraulics and vibro-fields for the teeth. Styles available range from the monstrous or demonic to those resembling various animals. Cost includes integration into an existing suit of power armor." compset="Equipment">
+    <fieldval field="gearWeight" value="5"/>
+    <fieldval field="grCost" value="50000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    <bootstrap thing="wpSRAPwrJawBite"></bootstrap>
+    </thing>
+  <thing id="eqSRAHazmatSuit" name="Hazmat Suit" description="A sealed full Environmental body suit with twelve hours of air that protects the wearer from all Poisons and Disease. Provides a +4 bonus versus Radiation by blocking contact and absorbing dangerous particles." compset="Equipment" summary="A sealed full Environmental body suit with twelve hours of air that protects the wearer from all Poisons and Disease. Provides a +4 bonus versus Radiation.">
+    <fieldval field="gearWeight" value="10"/>
+    <fieldval field="grCost" value="750"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRANG600SeaPacE" name="NG-600 Sea Pack" description="An underwater jetpack based on the Coalition&apos;s &quot;Deep-Six&quot; sea pack, the NG-600 has the same attachment system as jet packs for ease of use with most environmental body armors. Avenger Armaments and the Black Market sell nearly identical Sea Packs. The system is Handling +0 with a Top Speed of 30 MPH, and a max range of 600 miles." compset="Equipment" summary="Underwater Jetpack. The system is Handling +0 with a Top Speed of 30 MPH, and a max range of 600 miles.">
+    <fieldval field="gearWeight" value="40"/>
+    <fieldval field="grCost" value="60000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAGasMaskFilt" name="Gas Mask Filter" description="A filter lasts 8 hours before needing to be changed." compset="Equipment">
+    <fieldval field="grCost" value="25"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRANG600SeaPacN" name="NG-600 Sea Pack (Nuclear)" description="An underwater jetpack based on the Coalition&apos;s &quot;Deep-Six&quot; sea pack, the NG-600 has the same attachment system as jet packs for ease of use with most environmental body armors. Avenger Armaments and the Black Market sell nearly identical Sea Packs. The system is Handling +0 with a Top Speed of 30 MPH, and a max range of 600 miles." compset="Equipment" summary="Underwater Jetpack. The system is Handling +0 with a Top Speed of 30 MPH, and a max range of 600 miles.">
+    <fieldval field="gearWeight" value="40"/>
+    <fieldval field="grCost" value="400000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="wpSRAPwrJawBite" name="Power Jaw Helmet Bite" description="The Power Jaw Helmet provides a  bite which can be used as a weapon." compset="MeleeSRA">
+    <fieldval field="wpPiercing" value="8"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Hide" tag="Equipment"/>
+    <tag group="WeaponType" tag="Natural"/>
+    <tag group="WeaponDie" tag="2"/>
+    <tag group="Helper" tag="DieMult2"/>
+    <tag group="Equipment" tag="Natural"/>
+    <tag group="Weapon" tag="MegaDamage"/>
+    </thing>
+  <thing id="eqSRAWetSuit" name="Wet Suit" description="Designed to keep the wearer warm while diving, this suit provides +2 versus Cold." compset="Equipment" summary="Suit provides a +2 bonus versus Cold.">
+    <fieldval field="gearWeight" value="2"/>
+    <fieldval field="grCost" value="50"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRASCUBAGear" name="SCUBA Gear" description="A set of self-contained underwater breathing apparatus and harness able to sustain a human with air for up to an hour per tank and allow them to safely reach a depth of 120&apos; or 20&quot;." compset="Equipment" summary="Survive underwater for up to an hour at depths of 120&apos; (20&quot;)">
+    <fieldval field="gearWeight" value="40"/>
+    <fieldval field="grCost" value="1000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRASCUBASuitReb" name="SCUBA Diving Suit &amp; Rebreather" description="A set of technologically advanced self-contained underwater breathing apparatus featuring a sealed suit with a rebreather and integrated computer. It&apos;s able to sustain a human with air for up to five hours per tank and allows the wearer to safely reach a depth of 1000&apos; or 165&quot;. Grants the wearer +4 versus Cold." compset="Equipment" summary="Survive underwater for up to five hours at depths of 1000&apos; (165&quot;). Grants +4 vs. Cold.">
+    <fieldval field="gearWeight" value="200"/>
+    <fieldval field="grCost" value="5000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAKizhSensorGa" name="Kizh Sensor Gauntlet (TW)" description="Built by the Techno-Wizards of an enslaved race known as the Kizh, the Sensor Gauntlet grants +2 to Notice and detects chemicals, heat, motion, radiation, and radar within 25” (50 yards). For one Power Point the system activates {i}darksight, detect arcana{/i}, or {i}farsight{/i} on the wearer." compset="Equipment" summary="Gain a +2 to Notice checks. Also detects chemicals,  heat, motion, radiation, and radar within 25” (50 yards).">
+    <fieldval field="gearWeight" value="5"/>
+    <fieldval field="grCost" value="64000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAWingPackTW" name="Wing Pack (TW)" description="Popular among adventurers, and unlike many comparable devices, this bit of Techno-Wizardry provides the power of flight even when traveling far away from a ley line. The backpack houses a pair of wings—often demonic or angelic—that are quite powerful. The system is Handling +0 with a Top Speed of 90 MPH. Along a ley line the range is indefinite, or it can fly for two hours from an energy reserve and costs 7 PPE to recharge." compset="Equipment" summary="A powerful pair of wings. The system is Handling +0 with a Top Speed of 90 MPH. Along a ley line the range is indefinite, or it can fly for two hours from an energy reserve and costs 7 PPE to recharge.">
+    <fieldval field="gearWeight" value="15"/>
+    <fieldval field="grCost" value="150000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="GearType" tag="Adventure"/>
+    </thing>
+  <thing id="eqSRAABS3BasSec" name="Kittani ABS-3 Basic Security Drone" description="An odd looking metallic cluster of various pods, antennae, spotlights, and weapon protrusions all clustered around a central pillar, the ABS-3 is a flexible security system able to speak prerecorded messages and warnings or act as the avatar and two-way communications conduit for personnel at a nearby security station (within a 5 mile range via scrambled radio). The drone is commonly used to patrol building and exterior grounds, but is also used for exploration, scouting, escort, and recreation (it can broadcast music and illuminate outdoor areas). It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Robot">
+    <fieldval field="shortname" value="ABS-3 Security Drone"/>
+    <fieldval field="grCost" value="3600000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinionType" tag="BotSentry"/>
+    <minion id="robotbasic">
+      <tag group="Creature" tag="creSRAABS3SecDro"/>
+      <tag group="Hide" tag="RaceChoose"/>
+      <tag group="HideTab" tag="allies"/>
+      <tag group="MinionType" tag="Creature"/>
+      <bootstrap thing="creSRAABS3SecDro"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="creSRAABS3SecDro" name="ABS-3 Security Drone" description="An odd looking metallic cluster of various pods, antennae, spotlights, and weapon protrusions all clustered around a central pillar, the ABS-3 is a flexible security system able to speak prerecorded messages and warnings or act as the avatar and two-way communications conduit for personnel at a nearby security station (within a 5 mile range via scrambled radio). The drone is commonly used to patrol building and exterior grounds, but is also used for exploration, scouting, escort, and recreation (it can broadcast music and illuminate outdoor areas). It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Creature" uniqueness="unique">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="SmaDie" tag="3"/>
+    <tag group="SpiDie" tag="3"/>
+    <tag group="StrDie" tag="8"/>
+    <tag group="VigDie" tag="6"/>
+    <tag group="AgiDie" tag="3"/>
+    <bootstrap thing="skAthletic">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skCommon">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skFighting">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skNotice">
+      <autotag group="SkillDie" tag="4"/>
+      </bootstrap>
+    <bootstrap thing="skShooting">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skStealth">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skSurvival">
+      <autotag group="SkillDie" tag="4"/>
+      </bootstrap>
+    <bootstrap thing="edgAmbidextrous"></bootstrap>
+    <bootstrap thing="hinVow">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Obey Owner"/>
+      </bootstrap>
+    <bootstrap thing="abSRANatArmor">
+      <assignval field="abilValue" value="8"/>
+      <assignval field="CustSumm" value="Heavy Alloy Casing"/>
+      <assignval field="abilValue2" value="4"/>
+      <assignval field="livename" value="Armor"/>
+      </bootstrap>
+    <bootstrap thing="abSRASize">
+      <assignval field="abilValue" value="1"/>
+      <assignval field="CustDesc" value="The Security Drone is 9&apos; tall, 5&apos; wide, and weighs 800 lbs."/>
+      </bootstrap>
+    <bootstrap thing="abSRAFlightBot">
+      <assignval field="CustDesc" value="Handling: +1, Top Speed 60 MPH"/>
+      </bootstrap>
+    <bootstrap thing="abSRAImmobileBot">
+      <assignval field="CustSumm" value="Kittani drones cannot move except when using their Flight ability."/>
+      </bootstrap>
+    <bootstrap thing="abSRASensorSuite">
+      <assignval field="livename" value="Sensor Suite, Advanced"/>
+      </bootstrap>
+    <bootstrap thing="abSRAFearless"></bootstrap>
+    <bootstrap thing="wpSRAGenSpecWpn">
+      <assignval field="livename" value="Siren"/>
+      <assignval field="CustEqDesc" value="Emits an ear splitting screech that can be heard up to half a mile away. Organics within a LBT must check Spirit or be Distracted. Activates as a free action."/>
+      <assignval field="wpSpecial" value="Organics within a LBT must check Spirit or be Distracted. Activates as a free action."/>
+      <assignval field="CustEqSumm" value="Emits an ear splitting screech that can be heard up to half a mile away. Organics within a LBT must check Spirit or be Distracted. Activates as a free action."/>
+      <assignval field="wpDamage" value="Special"/>
+      </bootstrap>
+    <bootstrap thing="abSRAWeaponMount">
+      <assignval field="livename" value="Weapon Mount (Tear Gas Grenade Launcher)"/>
+      </bootstrap>
+    <bootstrap thing="wpSRAVehGrenLaun">
+      <autotag group="Weapon" tag="MBT"/>
+      <assignval field="wpShots" value="12"/>
+      <assignval field="wpShort" value="15"/>
+      <assignval field="wpMedium" value="30"/>
+      <assignval field="wpLong" value="60"/>
+      <assignval field="livename" value="Tear Gas Grenade Launcher"/>
+      <assignval field="wpDamage" value="Mild Poison"/>
+      <assignval field="wpSpecial" value=""/>
+      <assignval field="wpFireRate" value="1"/>
+      </bootstrap>
+    <bootstrap thing="abSRAWeaponMount">
+      <assignval field="livename" value="Weapon Mount (Dual linked Laser)"/>
+      </bootstrap>
+    <bootstrap thing="wpSRAComLasPistol">
+      <assignval field="livename" value="Dual linked Laser"/>
+      <assignval field="wpShort" value="75"/>
+      <assignval field="wpMedium" value="150"/>
+      <assignval field="wpLong" value="300"/>
+      <assignval field="wpPiercing" value="5"/>
+      <assignval field="wpFireRate" value="1"/>
+      <assignval field="wpDamage" value="4d6"/>
+      </bootstrap>
+    <bootstrap thing="abSRAWeaponMount">
+      <assignval field="livename" value="Weapon Mount (AP Mini-Missile)"/>
+      </bootstrap>
+    <bootstrap thing="wpSRAMiniMissLau">
+      <autotag group="Weapon" tag="MegaDamage"/>
+      <assignval field="wpShort" value="100"/>
+      <assignval field="wpMedium" value="200"/>
+      <assignval field="wpLong" value="300"/>
+      <assignval field="wpDamage" value="4d6"/>
+      <assignval field="wpPiercing" value="20"/>
+      <assignval field="wpFireRate" value="1"/>
+      <assignval field="wpShots" value="2"/>
+      <assignval field="livename" value="AP Mini-Missile Launcher"/>
+      </bootstrap>
+    <bootstrap thing="abSRAWeaponMount">
+      <assignval field="livename" value="Weapon Mount (Siren)"/>
+      </bootstrap>
+    </thing>
+  <thing id="abSRAFlightBot" name="Flight" description="The robot can fly at the Pace indicated." compset="ExtRaceAbil" summary="The robot can fly at the Handling and Top Speed indicated." uniqueness="unique">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="User" tag="NeedValue" name="NeedValue" abbrev="NeedValue"/>
+    <tag group="User" tag="Creature" name="Creature" abbrev="Creature"/>
+    <eval phase="Traits" priority="5000"><![CDATA[if (field[abilValue].value <> 0) then
+  hero.child[trPace].field[trtSpecial].value = field[abilValue].value
+  field[livename].text = field[name].text & " (" & field[abilValue].value & chr(34) 
+  if (hero.tagis[source.RunningDie] <> 0) then
+    field[livename].text &= ", d" & hero.child[trRunning].field[trtSpecial].value & " Run"   
+    endif
+  field[livename].text &= ")"
+  endif]]></eval>
+    <eval phase="PreTraits" priority="5500" index="2"><![CDATA[if (field[abilValue2].value <> 0) then
+  if (hero.tagis[source.RunningDie] <> 0) then
+    ~ adjust the running die just for the special movement
+    hero.child[trRunning].field[trtSpecial].value += field[abilValue2].value
+    endif
+  endif]]></eval>
+    </thing>
+  <thing id="abSRAImmobileBot" name="Immobile" description="Creature cannot move except when using another ability." compset="ExtRaceAbil">
+    <usesource source="srcRiftsTLPGAE"/>
+    </thing>
+  <thing id="wpSRAWpnMntRng" name="Mounted Ranged Weapon" compset="RangedSRA">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="Hide" tag="Equipment"/>
+    <tag group="WeaponType" tag="MedRange"/>
+    </thing>
+  <thing id="wpSRAGenSpecWpn" name="Generic Special Weapon" compset="SpecWeapSRA">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="WeaponType" tag="SpecCannon"/>
+    </thing>
+  <thing id="creSRAABW4Drone" name="ABW-4 Basic Work Drone" description="An inexpensive substitute for low-skill workers, the bot is proficient at construction, maintenance, working assembly lines, loading and unloading cargo transports, stocking shelves, and similar tasks. An optional combat program suite costs 25K credits. It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Creature" uniqueness="unique">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="SmaDie" tag="3"/>
+    <tag group="SpiDie" tag="2"/>
+    <tag group="StrDie" tag="7"/>
+    <tag group="VigDie" tag="6"/>
+    <tag group="AgiDie" tag="2"/>
+    <bootstrap thing="skAthletic">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skCommon">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skElectron">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skNotice">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skPiloting">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skRepair">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="hinPacify">
+      <autotag group="User" tag="HindMajor"/>
+      </bootstrap>
+    <bootstrap thing="hinVow">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Obey Owner"/>
+      </bootstrap>
+    <bootstrap thing="edgAmbidextrous"></bootstrap>
+    <bootstrap thing="abSRANatArmor">
+      <assignval field="CustSumm" value="Medium alloy casing"/>
+      <assignval field="abilValue" value="4"/>
+      <assignval field="abilValue2" value="2"/>
+      <assignval field="livename" value="Armor"/>
+      </bootstrap>
+    <bootstrap thing="abSRAConstruct"></bootstrap>
+    <bootstrap thing="abSRAFearless">
+      <assignval field="CustDesc" value="Kittani drones are immune to Fear and Intimidation, and are programmed for emergency response."/>
+      <assignval field="CustSumm" value="Immune to Fear and Intimidation."/>
+      </bootstrap>
+    <bootstrap thing="abSRAFlight">
+      <assignval field="CustDesc" value="Handling +0, Top Speed 100 MPH"/>
+      </bootstrap>
+    <bootstrap thing="abSRAImmobileBot">
+      <assignval field="CustDesc" value="Kittani drones cannot move except when using their Flight ability."/>
+      </bootstrap>
+    <bootstrap thing="abSRASenSuiteBas"></bootstrap>
+    </thing>
+  <thing id="rpSRAFearless" name="Fearless" compset="ExtRacialProp">
+    <usesource source="srcRiftsTLPGAE"/>
+    </thing>
+  <thing id="abSRASenSuiteBas" name="Sensor Suite, Basic" description="Creature ignores Illuminantion penalties." compset="ExtRaceAbil" summary="Ignores Illumination penalties.">
+    <usesource source="srcRiftsTLPGAE"/>
+    <eval phase="PreTraits" priority="5000">perform #traitroll[skNotice,+,4,field[name].text]
+perform #traitroll[skShooting,+,1,field[name].text]</eval>
+    </thing>
+  <thing id="creSRAABW4Cbt" name="ABW-4 Basic Work Drone (Combat)" description="An inexpensive substitute for low-skill workers, the bot is proficient at construction, maintenance, working assembly lines, loading and unloading cargo transports, stocking shelves, and similar tasks. An optional combat program suite costs 25K credits. It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Creature" uniqueness="unique">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="SmaDie" tag="3"/>
+    <tag group="SpiDie" tag="2"/>
+    <tag group="StrDie" tag="7"/>
+    <tag group="VigDie" tag="6"/>
+    <tag group="AgiDie" tag="2"/>
+    <bootstrap thing="skAthletic">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skCommon">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skElectron">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skNotice">
+      <autotag group="SkillDie" tag="2"/>
+      </bootstrap>
+    <bootstrap thing="skFighting">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="skShooting">
+      <autotag group="SkillDie" tag="3"/>
+      </bootstrap>
+    <bootstrap thing="hinVow">
+      <autotag group="User" tag="HindMajor"/>
+      <assignval field="domDomain" value="Obey Owner"/>
+      </bootstrap>
+    <bootstrap thing="edgAmbidextrous"></bootstrap>
+    <bootstrap thing="abSRANatArmor">
+      <assignval field="CustSumm" value="Medium alloy casing"/>
+      <assignval field="abilValue" value="4"/>
+      <assignval field="abilValue2" value="2"/>
+      <assignval field="livename" value="Armor"/>
+      </bootstrap>
+    <bootstrap thing="abSRAConstruct"></bootstrap>
+    <bootstrap thing="abSRAFearless">
+      <assignval field="CustDesc" value="Kittani drones are immune to Fear and Intimidation, and are programmed for emergency response."/>
+      <assignval field="CustSumm" value="Immune to Fear and Intimidation."/>
+      </bootstrap>
+    <bootstrap thing="abSRAFlight">
+      <assignval field="CustDesc" value="Handling +0, Top Speed 100 MPH"/>
+      </bootstrap>
+    <bootstrap thing="abSRAImmobileBot">
+      <assignval field="CustDesc" value="Kittani drones cannot move except when using their Flight ability."/>
+      </bootstrap>
+    <bootstrap thing="abSRASenSuiteBas"></bootstrap>
+    <bootstrap thing="hinHesitant"></bootstrap>
+    </thing>
+  <thing id="eqSRAABW4Basic" name="Kittani ABW-4 Basic Work Drone" description="An inexpensive substitute for low-skill workers, the bot is proficient at construction, maintenance, working assembly lines, loading and unloading cargo transports, stocking shelves, and similar tasks. \n\n It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Robot">
+    <fieldval field="grCost" value="3000000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinionType" tag="BotBasic"/>
+    <minion id="robotbasic">
+      <tag group="Creature" tag="creSRAABW4Drone"/>
+      <tag group="Hide" tag="RaceChoose"/>
+      <tag group="HideTab" tag="allies"/>
+      <tag group="MinionType" tag="Creature"/>
+      <bootstrap thing="creSRAABW4Drone"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="eqSRAABW4Combat" name="Kittani ABW-4 Basic Combat Drone" description="An inexpensive substitute for low-skill workers, the bot is proficient at construction, maintenance, working assembly lines, loading and unloading cargo transports, stocking shelves, and similar tasks. \n\n It has a nuclear engine allowing it to function tirelessly around-the-clock." compset="Robot">
+    <fieldval field="grCost" value="3025000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="MinionType" tag="BotBasic"/>
+    <minion id="robotbasic">
+      <tag group="Creature" tag="creSRAABW4Cbt"/>
+      <tag group="Hide" tag="RaceChoose"/>
+      <tag group="HideTab" tag="allies"/>
+      <tag group="MinionType" tag="Creature"/>
+      <bootstrap thing="creSRAABW4Cbt"></bootstrap>
+      </minion>
+    </thing>
+  <thing id="armSRASepNavTNG" name="-- Naval Body Armor (Triax/NG) --" description="These naval body armors have been in use since before the Great Cataclysm and \nare produced primarily by Triax, Northern Gun, and of course the Black Market." compset="ArmorSRA" isshowonly="yes">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="ArmorType" tag="NavalTriNG" name="Naval (Triax/NG)"/>
+    </thing>
+  <thing id="armSRASepNavAven" name="-- Naval Body Armor (Avenger Armaments) --" description="The secrets to producing these advanced maritime body armors were licensed to Avenger Armaments by Tritonia and the New Navy in an effort to spur naval exploration." compset="ArmorSRA" isshowonly="yes">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="ArmorType" tag="NavalAvenger" name="Naval (Avenger Armaments)"/>
+    </thing>
+  <thing id="armSRALEWS9EBA" name="LEWS-9 Light Wet Suit EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="3"/>
+    <fieldval field="defToughness" value="1"/>
+    <fieldval field="defSpecial" value="Water Pace 4&quot; (aqua-jet boots), Max Depth 500&apos;, 3 hour air supply (2 tanks)."/>
+    <fieldval field="grCost" value="18000"/>
+    <fieldval field="gearWeight" value="14"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorType" tag="NavalTriNG"/>
+    <tag group="ArmorStrReqDie" tag="2"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRAMEWS10EBA" name="MEWS-10 Medium Wet Suit EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="5"/>
+    <fieldval field="defToughness" value="2"/>
+    <fieldval field="defSpecial" value="Water Pace 6&quot; (aqua-jet boots), Max Depth 2000&apos;, 8 to 12 hour air supply (rebreather)."/>
+    <fieldval field="grCost" value="50000"/>
+    <fieldval field="gearWeight" value="30"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorType" tag="NavalTriNG"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorSpecial" tag="FullEnvPro"/>
+    </thing>
+  <thing id="armSRALIU1EBA" name="Cyborg LI-U1 Light Deep-Sea EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="3"/>
+    <fieldval field="defToughness" value="3"/>
+    <fieldval field="defSpecial" value="Max Depth 1.5 miles, 20 to 24 hour air supply (rebreather). Usually paired with an NG-600 Sea Pack or vehicle."/>
+    <fieldval field="grCost" value="50000"/>
+    <fieldval field="gearWeight" value="30"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorType" tag="NavalTriNG"/>
+    <tag group="ArmorStrReqDie" tag="7"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorSpecial" tag="MegaDamage"/>
+    <tag group="ArmorSpecial" tag="AgiNonComPen1"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRATriSCUBA" name="Tritonia SCUBA Medium Plate EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="6"/>
+    <fieldval field="defToughness" value="2"/>
+    <fieldval field="defSpecial" value="+2 Athletics (swimming), Max Depth 2000&apos;, 10 hour air supply."/>
+    <fieldval field="grCost" value="65000"/>
+    <fieldval field="gearWeight" value="21"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorType" tag="NavalAvenger"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRATriAmphib" name="Tritonia Amphib Heavy Plate EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="7"/>
+    <fieldval field="defSpecial" value="+2 Athletics (swimming), Max Depth 2000&apos;, 10 hour air supply. Suit can flood with water for Aquatic Amphibs to breathe. No extra cost for Amphib Non-Standard Build."/>
+    <fieldval field="grCost" value="75000"/>
+    <fieldval field="gearWeight" value="24"/>
+    <fieldval field="defToughness" value="3"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorStrReqDie" tag="4"/>
+    <tag group="ArmorType" tag="NavalAvenger"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRAUSNLtPadd" name="US Navy Light Padded EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="4"/>
+    <fieldval field="defToughness" value="2"/>
+    <fieldval field="defSpecial" value="+2 Athletics (swimming), Max Depth 1000&apos;, 5 hour air supply."/>
+    <fieldval field="grCost" value="45000"/>
+    <fieldval field="gearWeight" value="11"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorType" tag="NavalAvenger"/>
+    <tag group="ArmorStrReqDie" tag="2"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRAUSMCMedPl" name="US Marine Corps Medium Plate EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="6"/>
+    <fieldval field="defToughness" value="3"/>
+    <fieldval field="defSpecial" value="+2 Athletics (swimming), Max Depth 2000&apos;, 5 hour air supply."/>
+    <fieldval field="grCost" value="60000"/>
+    <fieldval field="gearWeight" value="21"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorType" tag="NavalAvenger"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    </thing>
+  <thing id="armSRASepAtlKit" name="-- Atlantean (Kittant) Body Armor --" description="Kittani armors come in modular sections designed to accommodate creatures of all kinds. Halve cost increases when customizing them for races with Non-Standard Build." compset="ArmorSRA" isshowonly="yes">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="ArmorType" tag="AtlantKitt" name="Atlantean (Kittani)"/>
+    </thing>
+  <thing id="armSRASepAtlSplu" name="-- Atlantean (Splugorth) Body Armor --" description="The Splugorth regularly sell skin suits like those worn by the Altara Blind Warrior Women for use in the gladiatorial arena, and occasionally even magical armor amulets." compset="ArmorSRA" isshowonly="yes">
+    <usesource source="srcRiftsTLPGAE"/>
+    <tag group="ArmorType" tag="AtlantSplu" name="Atlantean (Splugorth)"/>
+    </thing>
+  <thing id="armSRAPathfindLtC" name="Pathfinder Light Composite EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="5"/>
+    <fieldval field="defToughness" value="1"/>
+    <fieldval field="gearWeight" value="11"/>
+    <fieldval field="grCost" value="55000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorStrReqDie" tag="2"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    <tag group="ArmorType" tag="AtlantKitt"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    </thing>
+  <thing id="armSRAPilgMedComp" name="Pilgrim Medium Composite EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="6"/>
+    <fieldval field="defToughness" value="2"/>
+    <fieldval field="gearWeight" value="13"/>
+    <fieldval field="grCost" value="65000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    <tag group="ArmorType" tag="AtlantKitt"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    </thing>
+  <thing id="armSRAPioneerHvyC" name="Pioneer Heavy Composite EBA" compset="ArmorSRA">
+    <fieldval field="defDefense" value="7"/>
+    <fieldval field="defToughness" value="3"/>
+    <fieldval field="gearWeight" value="15"/>
+    <fieldval field="grCost" value="75000"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    <tag group="ArmorType" tag="AtlantKitt"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    </thing>
+  <thing id="armSRACentHvyCom" name="Cenaur Heavy Composite EBA" description="Can only be worn by centaurs and similar four legged D-Bees of Size 1 or larger." compset="ArmorSRA">
+    <fieldval field="defDefense" value="8"/>
+    <fieldval field="defToughness" value="3"/>
+    <fieldval field="gearWeight" value="100"/>
+    <fieldval field="grCost" value="125000"/>
+    <fieldval field="defSpecial" value="Can only be worn by centaurs and similar four legged D-Bees of Size 1 or larger."/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorStrReqDie" tag="3"/>
+    <tag group="ArmorSpecial" tag="EBA"/>
+    <tag group="ArmorType" tag="AtlantKitt"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    </thing>
+  <thing id="armSRASkinSuitLt" name="Skin Suit Light Padded Armor" compset="ArmorSRA">
+    <fieldval field="defDefense" value="4"/>
+    <fieldval field="defToughness" value="1"/>
+    <fieldval field="defSpecial" value="No environmental protection or standard body armor systems."/>
+    <fieldval field="grCost" value="20000"/>
+    <fieldval field="gearWeight" value="8"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="ArmorStrReqDie" tag="2"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorType" tag="AtlantSplu"/>
+    </thing>
+  <thing id="armSRATalisArmBW" name="Talisman of Armor (BW)" compset="ArmorSRA">
+    <fieldval field="defDefense" value="8"/>
+    <fieldval field="grCost" value="20000000"/>
+    <fieldval field="gearWeight" value="0.1"/>
+    <fieldval field="defSpecial" value="May be activated three times a day for 5 rounds as a free action."/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Equipment" tag="StackArmor"/>
+    <tag group="ArmorLoc" tag="Torso"/>
+    <tag group="ArmorLoc" tag="Head"/>
+    <tag group="ArmorLoc" tag="Legs"/>
+    <tag group="ArmorLoc" tag="Arms"/>
+    <tag group="ArmorType" tag="AtlantSplu"/>
+    </thing>
+  <thing id="vhSRALEA51Mermaid" name="LEA-51 Mermaid" description="The LEA-51 &quot;Mermaid&quot; deep sea power armor features a pair of improved jet engine pods sprouting from its shoulders and able to propel the suit through both water and air. The Mermaid is a venerable pre-rifts design manufactured globally from the NGR to Ishpeming." compset="PowerArmorSRA">
+    <fieldval field="vhSize" value="1"/>
+    <fieldval field="vhArmor" value="7"/>
+    <fieldval field="vhPAPace" value="10"/>
+    <fieldval field="vhPARunning" value="8"/>
+    <fieldval field="vhTopSpeed" value="40"/>
+    <fieldval field="gearWeight" value="450"/>
+    <fieldval field="grCost" value="2500000"/>
+    <fieldval field="vhCost" value="2.5 M"/>
+    <fieldval field="vhSpecial" value="Flight System (Handling +2, 100 MPH), Water System (Handling +2, 50 MPH), Max Depth 1 mile"/>
+    <fieldval field="vhLoadout" value="Weapons:{br}* 2x Quad Linked Blue-Green Wrist Lasers (Both Forearms, Range 18/36/72, Damage 3d6, AP 2, RoF 1, Reaction Fire){br}* Engine Pod Mini-Missiles (Shoulders, Fixed Forward, Mini-Missile, RoF 6, Shots 6)"/>
+    <fieldval field="vhTough" value="4"/>
+    <fieldval field="grMaxMods" value="1"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="Vehicle" tag="Nimble"/>
+    <tag group="VehType" tag="PowerAr"/>
+    <tag group="VehEra" tag="RiftsEra"/>
+    <tag group="Vehicle" tag="MDCArmor"/>
+    <tag group="vhArmorStrRiftsAE" tag="8"/>
+    <child entity="LoadOut">
+      <bootstrap thing="wpSRAGenSpecWpn">
+        <autotag group="Weapon" tag="ReactFire"/>
+        <assignval field="stackQty" value="2"/>
+        <assignval field="wpShort" value="18"/>
+        <assignval field="wpMedium" value="36"/>
+        <assignval field="wpLong" value="72"/>
+        <assignval field="wpDamage" value="3d6"/>
+        <assignval field="wpPiercing" value="2"/>
+        <assignval field="wpLocation" value="Both Forearms"/>
+        <assignval field="livename" value="Quad Linked Blue-Green Laser"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAMiniMissLau">
+        <assignval field="wpLocation" value="Shoulders, Fixed Forward"/>
+        <assignval field="livename" value="Engine Pod Mini-Missiles"/>
+        <assignval field="wpFireRate" value="6"/>
+        <assignval field="wpShots" value="6"/>
+        <assignval field="wpSpecial" value=""/>
+        </bootstrap>
+      </child>
+    </thing>
+  <thing id="vhSRAMEA52Orca" name="MEA-52 Orca" description="The MEA-52 &quot;Orca&quot; is named for its bulky build and silver with black stylized coloring. Its unique shoulder weapon gimbals house ion blasters and paired vibro-swords that can be used to rake and impale opponents or detached and used as paired melee weapons. The Orca is a venerable pre-rifts design manufactured globally from the NGR to Ishpeming." compset="PowerArmorSRA">
+    <fieldval field="vhSize" value="2"/>
+    <fieldval field="vhArmor" value="10"/>
+    <fieldval field="vhPAPace" value="10"/>
+    <fieldval field="vhPARunning" value="8"/>
+    <fieldval field="vhTopSpeed" value="40"/>
+    <fieldval field="gearWeight" value="800"/>
+    <fieldval field="grCost" value="4000000"/>
+    <fieldval field="vhCost" value="4 M"/>
+    <fieldval field="vhSpecial" value="Flight System (Handling +1, 80 MPH), Water System (Handling +1, 40 MPH), Max Depth 1 mile."/>
+    <fieldval field="vhTough" value="5"/>
+    <fieldval field="grMaxMods" value="1"/>
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="VehType" tag="PowerAr"/>
+    <tag group="VehEra" tag="RiftsEra"/>
+    <tag group="Vehicle" tag="MDCArmor"/>
+    <tag group="vhArmorStrRiftsAE" tag="10"/>
+    <child entity="LoadOut">
+      <bootstrap thing="wpSRABlueGrnLasLt">
+        <autotag group="portal" tag="mwpPowerAr"/>
+        <assignval field="wpShort" value="5"/>
+        <assignval field="wpMedium" value="10"/>
+        <assignval field="wpLong" value="20"/>
+        <assignval field="wpDamage" value="3d4"/>
+        <assignval field="wpPiercing" value="2"/>
+        <assignval field="wpLocation" value="Both Hands"/>
+        <assignval field="livename" value="Blue-Green Laser Finger"/>
+        <assignval field="stackQty" value="2"/>
+        <assignval field="wsLinked" value="1"/>
+        </bootstrap>
+      <bootstrap thing="wpSRANG57">
+        <autotag group="Weapon" tag="ReactFire"/>
+        <autotag group="portal" tag="mwpPowerAr"/>
+        <assignval field="wpDamage" value="1-3d8+3"/>
+        <assignval field="wpFireRate" value="1"/>
+        <assignval field="wpShort" value="18"/>
+        <assignval field="wpMedium" value="36"/>
+        <assignval field="wpLong" value="72"/>
+        <assignval field="wpLocation" value="Shoulders"/>
+        <assignval field="livename" value="Dual Linked Ion Blasters"/>
+        </bootstrap>
+      <bootstrap thing="wpSRAVehVibroSwd">
+        <autotag group="portal" tag="mwpPowerAr"/>
+        <assignval field="wpLocation" value="Shoulder Mounted or Handheld"/>
+        <assignval field="wpDamage" value="Str+d10"/>
+        <assignval field="wpPiercing" value="10"/>
+        <assignval field="wpSpecial" value="+6 damage if the Orca moves 6”+ before attacking"/>
+        <assignval field="livename" value="&quot;Wing&quot; Vibro-Swords"/>
+        </bootstrap>
+      </child>
+    </thing>
+  <thing id="wpSRABlueGrnLasLt" name="Light Blue-Green Laser" description="In addition to normal laser properties, these lasers use a light frequency that can fire through water at full effect—no range or damage penalty." compset="SpecWeapSRA">
+    <usesource source="srcRiftsAtlantisAE"/>
+    <tag group="WeaponType" tag="SFLasers"/>
+    </thing>
+  <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBrawlerSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgBruiserSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcSciSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcMirSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcPsiSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcGifted" source="srcRiftsTLPGAE"/>
+  <preclude id="edgArcMagSWADE" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA5" source="srcRiftsTLPGAE"/>
+  <preclude id="wpSFSepSlu" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA2" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA3" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA1" source="srcRiftsTLPGAE"/>
+  <preclude id="vhSFSepWA4" source="srcRiftsTLPGAE"/>
   <preclude id="wpSFSepLas" source="srcRiftsTLPGAE"/>
   <preclude id="wpSFSepPML" source="srcRiftsTLPGAE"/>
   <preclude id="wpImprovMd" source="srcRiftsTLPGAE"/>
@@ -28724,25 +30176,12 @@ focus.field[rhHindHdr].text = header]]></eval>
   <preclude id="edgRich2SWADE" source="srcRiftsTLPGAE"/>
   <preclude id="armSFSepA" source="srcRiftsTLPGAE"/>
   <preclude id="racHuman" source="srcRiftsTLPGAE"/>
-  <preclude id="edgAristocrat" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBrawlerSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgPwrPtsSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBrawnySWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgBruiserSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcSciSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepPla" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcMirSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepBla" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcPsiSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepFlW" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcGifted" source="srcRiftsTLPGAE"/>
-  <preclude id="edgArcMagSWADE" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA5" source="srcRiftsTLPGAE"/>
-  <preclude id="wpSFSepSlu" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA2" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA3" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA1" source="srcRiftsTLPGAE"/>
-  <preclude id="vhSFSepWA4" source="srcRiftsTLPGAE"/>
+  <extthing thing="skPsionics" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skSpellcst" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skFocus" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="skFaith" group="Helper" tag="IsArcaneSkill"/>
+  <extthing thing="powDamageFSWADE" group="User" tag="MindMelter"/>
+  <extthing thing="powEntangSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powDeflectSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powConfusiSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powEnvironSWADE" group="User" tag="MindMelter"/>
@@ -28801,10 +30240,4 @@ focus.field[rhHindHdr].text = header]]></eval>
   <extthing thing="powBoltSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powTraitSWADE" group="User" tag="MindMelter"/>
   <extthing thing="powArcaneProtect" group="User" tag="MindMelter"/>
-  <extthing thing="skPsionics" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skSpellcst" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skFocus" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="skFaith" group="Helper" tag="IsArcaneSkill"/>
-  <extthing thing="powDamageFSWADE" group="User" tag="MindMelter"/>
-  <extthing thing="powEntangSWADE" group="User" tag="MindMelter"/>
   </document>

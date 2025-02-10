@@ -707,6 +707,40 @@
     perform focus.delete[PowerDeny.powSRAWarGiftSelf]
 	]]></procedure>
 
+  <procedure id="GiveStoneMstrList" scripttype="eval"><![CDATA[
+    ~declare variables that are used to communicate with our caller
+    var clearPwrs as number
+	
+	~ other variables
+    var myTag as string
+	
+	~ set up available Powers
+	perform hero.childfound[arcMagicSWADE].setfocus
+	doneif (state.isfocus = 0)
+    
+    ~ all powers are denied if clearTags = 1
+	if (clearPwrs = 1) then
+	  foreach thing in Power
+	    myTag = "PowerDeny." & eachthing.idstring
+	    perform focus.assignstr[myTag]
+	    nexteach
+	  endif
+	  
+    perform focus.delete[PowerDeny.powBarrierSWADE]
+    perform focus.delete[PowerDeny.powBoltSWADE]
+    perform focus.delete[PowerDeny.powBurrowSWADE]
+    perform focus.delete[PowerDeny.powDetectSWADE]
+    perform focus.delete[PowerDeny.powConfusiSWADE]
+    perform focus.delete[PowerDeny.powElementSWADE]
+    perform focus.delete[PowerDeny.powEntangSWADE]
+    perform focus.delete[PowerDeny.powEnvironSWADE]
+    perform focus.delete[PowerDeny.powHavocSWADE]
+    perform focus.delete[PowerDeny.powLightDarkSWADE]
+    perform focus.delete[PowerDeny.powProtection]
+    perform focus.delete[PowerDeny.powWallWlkSWADE]
+    perform focus.delete[PowerDeny.powWarriorSWADE]
+	]]></procedure>
+
   <procedure id="GiveStdArcaneList" scripttype="eval"><![CDATA[
     ~declare variables that are used to communicate with our caller
     var clearPwrs as number

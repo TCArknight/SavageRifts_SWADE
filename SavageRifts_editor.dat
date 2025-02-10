@@ -1150,11 +1150,19 @@
       helptext="Specify the type for this vehicle.">
       <it_tagpick group="TattooCat" tag="?" dynamic="yes"/>
       </inputthing>
-
+    <inputthing
+      name="PPE Cost"
+      helptext="Specify the number of PPE to use the tattoo.">
+      <it_field field="tatPPECost"/>
+      </inputthing>
+    <inputthing
+      name="Strain Cost"
+      helptext="Specify the number of strain spent to gain the tattoo.">
+      <it_field field="tatStrain"/>
+      </inputthing>
     <inputthing>
       <it_groupref id="UserSelect"/>
       </inputthing>
-
     <inputthing>
       <it_groupref id="SourceInfo"/>
       </inputthing>

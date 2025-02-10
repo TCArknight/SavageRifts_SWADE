@@ -255,10 +255,6 @@ SWADE version of Savage Rifts
 	- Stone Master
 		- Gem Magic
 - Races
-	- Kittani
-	- Kydians
-	- Naut'Yll
-	- Ogres
 	- Rulians
 	- Sea Titans
 	- True Atlanteans
@@ -303,7 +299,11 @@ SWADE version of Savage Rifts
 - Races
 	- Amphibs
 	- Horune
+	- Kittani
+	- Kydians
 	- Lemurians
+	- Naut'Yll
+	- Ogres
 - Hindrances
 	- Retrotech (Major)
 - Gear
